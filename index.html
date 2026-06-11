@@ -92,13 +92,60 @@ li{margin-bottom:6px;font-size:14px}
 .chapter-indicator{font-size:13px;color:var(--text2)}
 .to-top{position:fixed;bottom:24px;right:24px;width:40px;height:40px;background:var(--accent);color:#fff;border:none;border-radius:50%;cursor:pointer;display:none;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(37,99,235,.3);z-index:60;font-size:16px}
 .to-top.show{display:flex}
+/* ===== Landing Page Styles ===== */
+.landing-page{display:flex;flex-direction:column;min-height:calc(100vh - 64px);animation:fadeIn .5s}
+.landing-hero{background:linear-gradient(135deg,#0f172a 0%,#1e293b 50%,#0ea5e9 100%);position:relative;overflow:hidden;padding:48px 40px 56px;border-radius:0 0 24px 24px;color:#fff}
+.landing-hero::before{content:'';position:absolute;top:-50%;right:-20%;width:500px;height:500px;background:rgba(14,165,233,.08);border-radius:50%}
+.landing-hero::after{content:'';position:absolute;bottom:-30%;left:-10%;width:400px;height:400px;background:rgba(37,99,235,.06);border-radius:50%}
+.landing-hero-content{position:relative;z-index:2}
+.landing-hero h2{font-size:36px;margin:0 0 8px;font-weight:700;letter-spacing:-.5px}
+.landing-hero .subtitle{font-size:17px;color:#94a3b8;margin:0 0 24px}
+.landing-hero .author{font-size:14px;color:#60a5fa;font-style:italic;margin:0 0 32px}
+.landing-stats{display:flex;gap:32px;flex-wrap:wrap}
+.landing-stat{display:flex;align-items:center;gap:12px}
+.landing-stat .num{font-size:32px;font-weight:700;color:#38bdf8}
+.landing-stat .label{font-size:13px;color:#94a3b8;line-height:1.4}
+.landing-body{padding:32px 40px}
+.landing-section-title{font-size:18px;font-weight:600;color:var(--text);margin:0 0 20px;display:flex;align-items:center;gap:8px}
+.landing-section-title::before{content:'';display:inline-block;width:4px;height:20px;background:var(--accent);border-radius:2px}
+.landing-modules{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;margin-bottom:32px}
+.landing-mod-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px;cursor:pointer;transition:all .2s;position:relative;overflow:hidden}
+.landing-mod-card:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.08);border-color:var(--accent)}
+.landing-mod-card .mod-num{position:absolute;top:10px;right:14px;font-size:36px;font-weight:700;color:rgba(37,99,235,.08);line-height:1}
+.landing-mod-card .mod-title{font-size:14px;font-weight:600;color:var(--text);margin:0 0 6px;padding-right:28px}
+.landing-mod-card .mod-count{font-size:12px;color:var(--text2);margin:0 0 10px}
+.landing-mod-card .mod-chips{display:flex;flex-wrap:wrap;gap:4px}
+.landing-mod-card .chip{font-size:11px;padding:2px 8px;border-radius:4px;background:#eff6ff;color:#1d4ed8;font-weight:500}
+.landing-mod-card:hover .chip{background:#dbeafe}
+.landing-start{display:flex;justify-content:center;padding:16px 0 32px}
+.landing-start-btn{background:linear-gradient(135deg,var(--accent) 0%,var(--accent2) 100%);color:#fff;border:none;padding:14px 48px;border-radius:12px;font-size:16px;font-weight:600;cursor:pointer;transition:all .2s;box-shadow:0 4px 16px rgba(37,99,235,.3)}
+.landing-start-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(37,99,235,.4)}
+.landing-featured{background:linear-gradient(135deg,#eff6ff 0%,#f0f9ff 100%);border:1px solid #dbeafe;border-radius:12px;padding:20px;margin-bottom:32px}
+.landing-featured h4{margin:0 0 12px;color:#1e40af;font-size:14px}
+.landing-featured p{margin:0;color:#475569;font-size:13px;line-height:1.7}
+/* Landing TOC */
+.landing-toc{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:24px}
+.landing-toc-mod{margin-bottom:18px}
+.landing-toc-mod:last-child{margin-bottom:0}
+.landing-toc-mod-title{font-size:14px;font-weight:600;color:var(--text);margin:0 0 8px;display:flex;align-items:center;gap:8px;cursor:pointer;user-select:none;padding:4px 0}
+.landing-toc-mod-title::before{content:'';display:inline-block;width:3px;height:14px;background:var(--accent);border-radius:2px;flex-shrink:0}
+.landing-toc-mod-title .toc-arrow{font-size:10px;color:var(--text2);transition:transform .2s;margin-left:auto}
+.landing-toc-mod.expanded .toc-arrow{transform:rotate(90deg)}
+.landing-toc-items{display:none;padding-left:12px;border-left:2px solid #e2e8f0;margin-left:1px}
+.landing-toc-mod.expanded .landing-toc-items{display:block}
+.landing-toc-item{display:flex;align-items:center;padding:5px 8px;border-radius:6px;cursor:pointer;font-size:13px;color:var(--text);transition:all .15s;text-decoration:none;margin-bottom:2px}
+.landing-toc-item:hover{background:#eff6ff;color:var(--accent)}
+.landing-toc-item .toc-idx{font-size:11px;color:var(--text2);margin-right:10px;min-width:28px;text-align:right;flex-shrink:0}
+.landing-toc-item:hover .toc-idx{color:var(--accent)}
+.landing-toc-item .toc-title{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+@media(max-width:768px){.landing-hero{padding:32px 20px 40px}.landing-hero h2{font-size:26px}.landing-body{padding:24px 20px}.landing-modules{grid-template-columns:1fr}.landing-stats{gap:20px}.landing-toc{padding:16px}}
 @media(max-width:768px){.sidebar{width:260px}.main{margin-left:0}.content{padding:20px}.topbar{padding:12px 20px}.nav-buttons{padding:16px 20px}}
 </style>
 </head>
 <body>
 <div class="app">
 <aside class="sidebar" id="sidebar">
-<div class="sidebar-header"><h1>半导体硅片材料</h1><p>完整技术知识库 · 60个知识章节</p><p style="font-size:11px;color:#60a5fa;margin-top:6px;font-style:italic;">Created By Alex Jin</p></div>
+<div class="sidebar-header" onclick="exitToLanding()" style="cursor:pointer;" title="点击返回首页"><h1>半导体硅片材料</h1><p>完整技术知识库 · 60个知识章节</p><p style="font-size:11px;color:#60a5fa;margin-top:6px;font-style:italic;">Created By Alex Jin</p></div>
 <div class="search-box"><input type="text" id="searchInput" placeholder="搜索知识点..." autocomplete="off"></div>
 <div class="search-results" id="searchResults" style="display:none"></div>
 <nav class="nav-tree" id="navTree"></nav>
@@ -106,7 +153,7 @@ li{margin-bottom:6px;font-size:14px}
 <div class="sidebar-toggle" id="sidebarToggle">&#9664;</div>
 <main class="main" id="main">
 <div class="topbar">
-<div class="breadcrumb" id="breadcrumb">知识库</div>
+<div class="breadcrumb" id="breadcrumb"><span style="cursor:pointer;color:var(--accent);" onclick="exitToLanding()">知识库</span></div>
 <div class="topbar-actions">
 <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
 <span class="progress-text" id="progressText">0/60</span>
@@ -3201,6 +3248,103 @@ const MODULES=[
   <li>建立<strong>技术文档库</strong>，分类整理产品规格书、COA、8D报告等</li>
   <li>参与<strong>客户技术交流</strong>，在实战中积累经验</li>
 </ul>`,
+"landing":`<div class="landing-page">
+<div class="landing-hero">
+  <div class="landing-hero-content">
+    <h2>半导体硅片材料</h2>
+    <p class="subtitle">完整技术知识库 &middot; 从晶体物理到产业格局</p>
+    <p class="author">Created By Alex Jin</p>
+    <div class="landing-stats">
+      <div class="landing-stat">
+        <span class="num">10</span>
+        <span class="label">知识模块</span>
+      </div>
+      <div class="landing-stat">
+        <span class="num">60</span>
+        <span class="label">核心章节</span>
+      </div>
+      <div class="landing-stat">
+        <span class="num">6</span>
+        <span class="label">大知识体系</span>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="landing-body">
+  <div class="landing-featured">
+    <h4>知识库导读</h4>
+    <p>本知识库系统性覆盖半导体硅片材料的完整技术体系，从半导体物理基础出发，依次深入电阻率与电学特性、单晶硅生长技术、硅片加工工艺、产品类型体系、关键规格参数、器件应用对应、检测方法、产业链格局及扩展知识。适合硅片行业新人、销售人员、技术支持工程师及产业链相关从业者系统学习。</p>
+  </div>
+  <div class="landing-section-title">知识模块总览</div>
+  <div class="landing-modules">
+    <div class="landing-mod-card" onclick="loadChapter(0)">
+      <span class="mod-num">01</span>
+      <div class="mod-title">半导体物理基础</div>
+      <div class="mod-count">10 个章节</div>
+      <div class="mod-chips"><span class="chip">能带理论</span><span class="chip">晶格结构</span><span class="chip">掺杂机理</span></div>
+    </div>
+    <div class="landing-mod-card" onclick="loadChapter(10)">
+      <span class="mod-num">02</span>
+      <div class="mod-title">电阻率与电学特性</div>
+      <div class="mod-count">6 个章节</div>
+      <div class="mod-chips"><span class="chip">轻掺</span><span class="chip">重掺</span><span class="chip">器件对应</span></div>
+    </div>
+    <div class="landing-mod-card" onclick="loadChapter(16)">
+      <span class="mod-num">03</span>
+      <div class="mod-title">单晶硅生长技术</div>
+      <div class="mod-count">8 个章节</div>
+      <div class="mod-chips"><span class="chip">CZ法</span><span class="chip">FZ法</span><span class="chip">MCZ</span></div>
+    </div>
+    <div class="landing-mod-card" onclick="loadChapter(24)">
+      <span class="mod-num">04</span>
+      <div class="mod-title">硅片加工工艺</div>
+      <div class="mod-count">10 个章节</div>
+      <div class="mod-chips"><span class="chip">切割</span><span class="chip">CMP</span><span class="chip">清洗</span></div>
+    </div>
+    <div class="landing-mod-card" onclick="loadChapter(34)">
+      <span class="mod-num">05</span>
+      <div class="mod-title">硅片类型与产品体系</div>
+      <div class="mod-count">6 个章节</div>
+      <div class="mod-chips"><span class="chip">抛光片</span><span class="chip">外延片</span><span class="chip">SOI</span></div>
+    </div>
+    <div class="landing-mod-card" onclick="loadChapter(40)">
+      <span class="mod-num">06</span>
+      <div class="mod-title">关键规格参数解读</div>
+      <div class="mod-count">7 个章节</div>
+      <div class="mod-chips"><span class="chip">TTV</span><span class="chip">LPD</span><span class="chip">SEMI标准</span></div>
+    </div>
+    <div class="landing-mod-card" onclick="loadChapter(47)">
+      <span class="mod-num">07</span>
+      <div class="mod-title">器件应用对应关系</div>
+      <div class="mod-count">7 个章节</div>
+      <div class="mod-chips"><span class="chip">CPU/GPU</span><span class="chip">DRAM</span><span class="chip">IGBT</span></div>
+    </div>
+    <div class="landing-mod-card" onclick="loadChapter(54)">
+      <span class="mod-num">08</span>
+      <div class="mod-title">检测方法与仪器</div>
+      <div class="mod-count">6 个章节</div>
+      <div class="mod-chips"><span class="chip">四探针</span><span class="chip">FTIR</span><span class="chip">TXRF</span></div>
+    </div>
+    <div class="landing-mod-card" onclick="loadChapter(60)">
+      <span class="mod-num">09</span>
+      <div class="mod-title">产业链与市场格局</div>
+      <div class="mod-count">7 个章节</div>
+      <div class="mod-chips"><span class="chip">五大寡头</span><span class="chip">国产替代</span><span class="chip">AI驱动</span></div>
+    </div>
+    <div class="landing-mod-card" onclick="loadChapter(67)">
+      <span class="mod-num">10</span>
+      <div class="mod-title">扩展知识</div>
+      <div class="mod-count">6 个章节</div>
+      <div class="mod-chips"><span class="chip">缺陷工程</span><span class="chip">Qualification</span><span class="chip">术语表</span></div>
+    </div>
+  </div>
+  <div class="landing-start">
+    <button class="landing-start-btn" onclick="enterStudy()">开始学习 &rarr;</button>
+  </div>
+  <div class="landing-section-title">完整目录大纲</div>
+  <div class="landing-toc" id="landingToc"></div>
+</div>
+</div>`,
 "s10-6":`<div class="chapter-header">
   <div class="chap-num">模块十 · 第 6/6 节</div>
   <h2>行业术语中英文对照表</h2>
@@ -3247,10 +3391,16 @@ const MODULES=[
 let ALL_ITEMS=[];
 MODULES.forEach((mod,mi)=>{mod.items.forEach(item=>{ALL_ITEMS.push({...item,moduleIdx:mi,moduleTitle:mod.title})})});
 let currentIdx=0;
-function init(){renderNav();loadChapter(0);setupSearch();setupSidebarToggle();setupScrollTop()}
+let isLanding=true;
+function init(){renderNav();showLanding();setupSearch();setupSidebarToggle();setupScrollTop()}
+function showLanding(){isLanding=true;document.getElementById('content').innerHTML=CONTENT['landing'];document.getElementById('breadcrumb').innerHTML='<span style=\"color:var(--text2)\">知识库首页</span>';document.querySelector('.nav-buttons').style.display='none';document.getElementById('progressFill').style.width='0%';document.getElementById('progressText').textContent='0/60';document.querySelectorAll('.nav-item').forEach(el=>el.classList.remove('active'));fillLandingToc();window.scrollTo({top:0,behavior:'smooth'})}
+function fillLandingToc(){const tocEl=document.getElementById('landingToc');if(!tocEl)return;let html='';ALL_ITEMS.forEach((item,idx)=>{const isFirstInMod=item.mod===1||idx===0;const isNewMod=isFirstInMod&&(idx===0||ALL_ITEMS[idx-1].moduleTitle!==item.moduleTitle);if(isNewMod&&idx>0)html+='</div></div>';if(isNewMod){html+=`<div class="landing-toc-mod ${item.moduleIdx===0?'expanded':''}" data-mi="${item.moduleIdx}"><div class="landing-toc-mod-title" onclick="toggleTocMod(this)">${item.moduleTitle}<span class="toc-arrow">&#9654;</span></div><div class="landing-toc-items">`}html+=`<div class="landing-toc-item" onclick="loadChapter(${idx})"><span class="toc-idx">${item.mod}/${item.tot}</span><span class="toc-title">${item.title}</span></div>`});if(ALL_ITEMS.length>0)html+='</div></div>';tocEl.innerHTML=html}
+function toggleTocMod(el){el.closest('.landing-toc-mod').classList.toggle('expanded')}
+function enterStudy(){isLanding=false;document.querySelector('.nav-buttons').style.display='';loadChapter(0)}
+function exitToLanding(){showLanding()}
 function renderNav(){const tree=document.getElementById('navTree');let html='';MODULES.forEach((mod,mi)=>{html+=`<div class="nav-group ${mi===0?'expanded':''}" data-mi="${mi}"><div class="nav-group-title" onclick="toggleGroup(${mi})"><span>${mod.title}</span><span class="arrow">&#9654;</span></div><div class="nav-group-items">`;let offset=0;for(let i=0;i<mi;i++)offset+=MODULES[i].items.length;mod.items.forEach((item,ii)=>{const gi=offset+ii;html+=`<div class="nav-item ${gi===0?'active':''}" data-idx="${gi}" onclick="loadChapter(${gi})"><span class="idx">${item.mod}/${item.tot}</span>${item.title}</div>`});html+=`</div></div>`});tree.innerHTML=html}
 function toggleGroup(mi){document.querySelectorAll('.nav-group')[mi].classList.toggle('expanded')}
-function loadChapter(idx){if(idx<0||idx>=ALL_ITEMS.length)return;currentIdx=idx;const item=ALL_ITEMS[idx];const html=CONTENT[item.id]||`<div class="chapter-header"><h2>${item.title}</h2><p>内容准备中...</p></div>`;document.getElementById('content').innerHTML=html;document.querySelectorAll('.nav-item').forEach(el=>el.classList.remove('active'));const activeEl=document.querySelector(`.nav-item[data-idx="${idx}"]`);if(activeEl){activeEl.classList.add('active');const group=activeEl.closest('.nav-group');if(group&&!group.classList.contains('expanded'))group.classList.add('expanded');activeEl.scrollIntoView({behavior:'smooth',block:'nearest'})}document.getElementById('breadcrumb').innerHTML=`知识库 / <span>${item.moduleTitle}</span> / ${item.title}`;updateNavButtons();updateProgress();window.scrollTo({top:0,behavior:'smooth'})}
+function loadChapter(idx){if(idx<0||idx>=ALL_ITEMS.length)return;isLanding=false;currentIdx=idx;const item=ALL_ITEMS[idx];const html=CONTENT[item.id]||`<div class="chapter-header"><h2>${item.title}</h2><p>内容准备中...</p></div>`;document.getElementById('content').innerHTML=html;document.querySelector('.nav-buttons').style.display='';document.querySelectorAll('.nav-item').forEach(el=>el.classList.remove('active'));const activeEl=document.querySelector(`.nav-item[data-idx="${idx}"]`);if(activeEl){activeEl.classList.add('active');const group=activeEl.closest('.nav-group');if(group&&!group.classList.contains('expanded'))group.classList.add('expanded');activeEl.scrollIntoView({behavior:'smooth',block:'nearest'})}document.getElementById('breadcrumb').innerHTML=`知识库 / <span>${item.moduleTitle}</span> / ${item.title}`;updateNavButtons();updateProgress();window.scrollTo({top:0,behavior:'smooth'})}
 function updateNavButtons(){const prevBtn=document.getElementById('prevBtn'),nextBtn=document.getElementById('nextBtn'),prevTitle=document.getElementById('prevTitle'),nextTitle=document.getElementById('nextTitle'),indicator=document.getElementById('chapterIndicator');if(currentIdx>0){prevBtn.classList.remove('disabled');prevTitle.textContent=ALL_ITEMS[currentIdx-1].title}else{prevBtn.classList.add('disabled');prevTitle.textContent='无'}if(currentIdx<ALL_ITEMS.length-1){nextBtn.classList.remove('disabled');nextTitle.textContent=ALL_ITEMS[currentIdx+1].title}else{nextBtn.classList.add('disabled');nextTitle.textContent='完成'}indicator.textContent=`${currentIdx+1} / ${ALL_ITEMS.length}`}
 function updateProgress(){const pct=((currentIdx+1)/ALL_ITEMS.length*100).toFixed(0);document.getElementById('progressFill').style.width=pct+'%';document.getElementById('progressText').textContent=`${currentIdx+1}/${ALL_ITEMS.length}`}
 function goPrev(){loadChapter(currentIdx-1)}
@@ -3258,7 +3408,7 @@ function goNext(){loadChapter(currentIdx+1)}
 function setupSearch(){const input=document.getElementById('searchInput'),results=document.getElementById('searchResults');input.addEventListener('input',function(){const q=this.value.trim().toLowerCase();if(!q){results.style.display='none';return}const matches=ALL_ITEMS.filter(item=>item.title.toLowerCase().includes(q)||item.moduleTitle.toLowerCase().includes(q)).slice(0,10);if(matches.length===0){results.innerHTML='<div class="search-result-item">无匹配结果</div>'}else{results.innerHTML=matches.map(m=>{const gIdx=ALL_ITEMS.indexOf(m);return`<div class="search-result-item" onclick="loadChapter(${gIdx});document.getElementById('searchResults').style.display='none'"><div class="res-title">${m.title}</div><div class="res-path">${m.moduleTitle} · ${m.mod}/${m.tot}</div></div>`}).join('')}results.style.display='block'});document.addEventListener('click',function(e){if(!e.target.closest('.search-box')&&!e.target.closest('.search-results'))results.style.display='none'})}
 function setupSidebarToggle(){const toggle=document.getElementById('sidebarToggle'),sidebar=document.getElementById('sidebar'),main=document.getElementById('main');toggle.addEventListener('click',function(){sidebar.classList.toggle('collapsed');main.style.marginLeft=sidebar.classList.contains('collapsed')?'0':'';toggle.innerHTML=sidebar.classList.contains('collapsed')?'&#9654;':'&#9664;'})}
 function setupScrollTop(){const btn=document.getElementById('toTop');window.addEventListener('scroll',function(){btn.classList.toggle('show',window.scrollY>300)})}
-document.addEventListener('keydown',function(e){if(e.target.tagName==='INPUT')return;if(e.key==='ArrowLeft'||e.key==='ArrowUp')goPrev();if(e.key==='ArrowRight'||e.key==='ArrowDown')goNext()});
+document.addEventListener('keydown',function(e){if(e.target.tagName==='INPUT'||isLanding)return;if(e.key==='ArrowLeft'||e.key==='ArrowUp')goPrev();if(e.key==='ArrowRight'||e.key==='ArrowDown')goNext()});
 init();
 </script>
 </body>
