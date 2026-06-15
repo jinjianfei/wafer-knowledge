@@ -3,27 +3,2441 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>商务报告逻辑</title>
-<style>
-:root{--bg:#f5f6fa;--accent:#2563eb;--text:#1e293b;--text2:#475569}
-*{margin:0;padding:0;box-sizing:border-box}
-body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans SC","PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--text);display:flex;align-items:center;justify-content:center;min-height:100vh;text-align:center;padding:20px}
-.container{max-width:480px}
-.icon{font-size:64px;margin-bottom:24px;display:block}
-h1{font-size:28px;margin-bottom:12px}
-p{color:var(--text2);font-size:16px;line-height:1.7;margin-bottom:32px}
-.back-btn{display:inline-block;background:var(--accent);color:#fff;padding:12px 32px;border-radius:8px;text-decoration:none;font-size:15px;font-weight:500;transition:all .2s}
-.back-btn:hover{background:#1d4ed8;transform:translateY(-2px)}
-.footer{position:fixed;bottom:20px;font-size:12px;color:#94a3b8}
-</style>
+<title>华为一报一会 · 经营分析学习指南</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div class="container">
-  <span class="icon">&#128221;</span>
-  <h1>商务报告逻辑</h1>
-  <p>该知识库正在筹备中，敬请期待。<br>将涵盖华为"一报一会"方法论、商务报告结构设计、逻辑表达、数据呈现与汇报技巧等完整体系。</p>
-  <a href="../index.html" class="back-btn">返回主页</a>
-  <div class="footer">Created By Alex Jin</div>
+<div class="layout">
+
+<!-- 移动端头部 -->
+<div class="mobile-header">
+  <button class="mobile-menu-btn" onclick="toggleMobileMenu()" aria-label="菜单">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+  </button>
+  <span style="font-size:14px;font-weight:700;color:#1a3a6b;">华为一报一会</span>
+  <div style="width:20px;"></div>
 </div>
+
+<!-- 侧边栏 -->
+<aside class="sidebar" id="sidebar">
+  <div class="logo">
+    <div class="logo-icon" style="background:#1a3a6b;border-radius:12px;display:flex;align-items:center;justify-content:center;">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+        <line x1="3" y1="9" x2="21" y2="9"/>
+        <line x1="9" y1="21" x2="9" y2="9"/>
+        <line x1="15" y1="15" x2="15" y2="9"/>
+        <line x1="12" y1="15" x2="12" y2="9"/>
+      </svg>
+    </div>
+    <div>
+      <div class="logo-title">经营分析学习</div>
+      <div class="logo-sub">华为方法论 · 述职报告</div>
+    </div>
+  </div>
+  <div class="section-header">
+    <button class="section-title" id="collapseAllBtn" title="展开/收起所有分类">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      华为经营分析会方法论
+    </button>
+    <button class="collapse-btn" onclick="toggleAllCategories()" title="展开/收起所有分类">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 15l-6-6-6 6"/></svg>
+    </button>
+  </div>
+  <div id="navContainer"></div>
+
+  <div style="margin-top:24px;padding:16px 20px;border-top:1px solid #f3f4f6;">
+    <a href="#" onclick="event.preventDefault();showReports();closeMobileMenu();" style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;background:#f8fafc;color:#4b5563;font-size:13px;font-weight:600;text-decoration:none;transition:background .2s;" onmouseover="this.style.background='#f3f4f6'" onmouseout="this.style.background='#f8fafc'">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+        <polyline points="14 2 14 8 20 8"/>
+        <line x1="16" y1="13" x2="8" y2="13"/>
+        <line x1="16" y1="17" x2="8" y2="17"/>
+        <polyline points="10 9 9 9 8 9"/>
+      </svg>
+      述职报告
+      <span style="margin-left:auto;font-size:11px;color:#9ca3af;background:#fff;padding:2px 8px;border-radius:10px;">备注</span>
+    </a>
+  </div>
+</aside>
+
+<!-- 移动端遮罩 -->
+<div class="mobile-overlay" id="mobileOverlay" onclick="closeMobileMenu()"></div>
+
+<!-- 主内容区 -->
+<main class="main" id="mainContent">
+
+<!-- ========== Slide 01 ========== -->
+<section class="slide" id="slide01">
+  <div class="slide-header">
+    <span class="slide-page" style="background:#2563eb;color:#fff;">01</span>
+    <div class="slide-meta">
+      <h2 class="slide-title">经营分析会是战略落地关键抓手</h2>
+      <p class="slide-subtitle">DSTE战略执行的核心枢纽</p>
+      <div class="slide-tags"><span class="slide-tag">DSTE</span><span class="slide-tag">战略执行</span><span class="slide-tag">经营分析</span></div>
+    </div>
+  </div>
+  <div class="slide-body">
+    <div class="slide-ppt">
+<div class="ppt-container">
+  <div class="ppt-header">
+    <div class="ppt-header-left">
+      <div class="ppt-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="1.5"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7z"/><path d="M9 10h6"/></svg></div>
+      <div class="ppt-title">华为经营分析会及经营报告</div>
+    </div>
+    <div class="ppt-page">01/16</div>
+  </div>
+  <div class="ppt-subtitle"><svg viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="1.5"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7z"/><path d="M9 10h6"/></svg>从DSTE到"一报一会"，把战略规划、滚动预测、差距分析和任务令执行连接成可闭环的经营管理体系。<span class="tag">战略定位</span><span class="tag">经营报告</span><span class="tag">滚动预测</span><span class="tag">闭环执行</span></div>
+
+  <!-- Main 4-step flow -->
+  <div class="flow-row">
+    <div class="flow-step">
+      <div class="flow-step-num">01</div>
+      <div class="flow-step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2"/></svg></div>
+      <div class="flow-step-title">战略规划</div>
+      <div class="flow-step-desc">明确方向、目标与关键举措</div>
+    </div>
+    <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+    <div class="flow-step">
+      <div class="flow-step-num">02</div>
+      <div class="flow-step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="M8 13v4m4-6v6m4-8v8"/><circle cx="17" cy="17" r="3"/></svg></div>
+      <div class="flow-step-title">经营分析报告</div>
+      <div class="flow-step-desc">全面复盘，揭示差距与根因</div>
+    </div>
+    <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+    <div class="flow-step">
+      <div class="flow-step-num">03</div>
+      <div class="flow-step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><circle cx="16" cy="3.13" r="4"/><path d="M6 15l4 4 4-4"/><path d="M14 13h6"/></svg></div>
+      <div class="flow-step-title">经营分析会</div>
+      <div class="flow-step-desc">共识问题、决策举措与优先级</div>
+    </div>
+    <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+    <div class="flow-step">
+      <div class="flow-step-num">04</div>
+      <div class="flow-step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="M9 13l2 2 4-4"/><path d="M20 12a8 8 0 0 1-8 8 8 8 0 0 1-8-8"/><path d="M20 4v4h-4"/></svg></div>
+      <div class="flow-step-title">任务令闭环</div>
+      <div class="flow-step-desc">发布任务令，闭环执行到结果</div>
+    </div>
+  </div>
+
+  <!-- 4 info cards -->
+  <div class="info-grid">
+    <div class="info-card">
+      <div class="info-card-icon" style="background:#eff6ff;border:1px solid #dbeafe;border-radius:8px;"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2"/><path d="M18 6l-2 2"/><circle cx="18" cy="6" r="1.5" fill="#2563eb"/></svg></div>
+      <div class="info-card-body">
+        <div class="info-card-title">目标达成</div>
+        <div class="info-card-desc">聚焦关键目标与关键举措，提升目标达成率与经营绩效。</div>
+      </div>
+    </div>
+    <div class="info-card">
+      <div class="info-card-icon" style="background:#fffbeb;border:1px solid #fcd34d;border-radius:8px;"><svg viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="1.5"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><circle cx="12" cy="17" r="0.8" fill="#d97706"/></svg></div>
+      <div class="info-card-body">
+        <div class="info-card-title">问题暴露</div>
+        <div class="info-card-desc">系统识别差距与根因，聚焦真正的经营问题。</div>
+      </div>
+    </div>
+    <div class="info-card">
+      <div class="info-card-icon" style="background:#eff6ff;border:1px solid #dbeafe;border-radius:8px;"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="12" x2="15" y2="12"/><line x1="17" y1="16" x2="23" y2="16"/></svg></div>
+      <div class="info-card-body">
+        <div class="info-card-title">资源调度</div>
+        <div class="info-card-desc">基于优先级与价值贡献，高效调配资源与能力。</div>
+      </div>
+    </div>
+    <div class="info-card">
+      <div class="info-card-icon" style="background:#eff6ff;border:1px solid #dbeafe;border-radius:8px;"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+      <div class="info-card-body">
+        <div class="info-card-title">组织改进</div>
+        <div class="info-card-desc">通过持续闭环与复盘，驱动组织能力持续提升。</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom 3 modules -->
+  <div class="info-grid" style="grid-template-columns:repeat(3,1fr);">
+    <div class="info-card">
+      <div class="info-card-icon" style="background:#eff6ff;border:1px solid #dbeafe;border-radius:8px;"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+      <div class="info-card-body">
+        <div class="info-card-title">一报一会</div>
+        <div class="info-card-desc">一份经营分析报告+一次经营分析会，形成问题共识与决策闭环。</div>
+      </div>
+    </div>
+    <div class="info-card">
+      <div class="info-card-icon" style="background:#eff6ff;border:1px solid #dbeafe;border-radius:8px;"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><path d="M3 3v18h18"/><rect x="7" y="10" width="3" height="8" rx="1"/><rect x="12" y="6" width="3" height="12" rx="1"/><rect x="17" y="12" width="3" height="6" rx="1"/><polyline points="8 10 12.5 6 17 12"/></svg></div>
+      <div class="info-card-body">
+        <div class="info-card-title">3GAP + 3LIST</div>
+        <div class="info-card-desc">识别战略、执行、能力三类差距，输出问题清单、机会清单与任务清单。</div>
+      </div>
+    </div>
+    <div class="info-card">
+      <div class="info-card-icon" style="background:#eff6ff;border:1px solid #dbeafe;border-radius:8px;"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><polyline points="3 17 8 12 13 15 21 7"/><polyline points="18 7 21 7 21 10"/></svg></div>
+      <div class="info-card-body">
+        <div class="info-card-title">滚动预测</div>
+        <div class="info-card-desc">滚动预测业绩与关键指标，支撑及时决策与动态调整。</div>
+      </div>
+    </div>
+  </div>
+</div>
+    </div>
+    <div class="guide-section">
+      <div class="guide-header">
+        <div class="guide-title">学习引导</div>
+        <p class="guide-text">掌握本页核心知识点，结合实际工作场景思考如何应用。</p>
+      </div>
+      <div class="guide-grid">
+        <div class="guide-item">
+          <div class="guide-item-title">经营分析会的定位</div>
+          <div class="guide-item-desc">经营分析会是DSTE（从战略到执行）体系中的核心枢纽，承接战略解码，驱动执行闭环。它不是简单的汇报会，而是推动战略落地的关键抓手。</div>
+        </div>
+        <div class="guide-item">
+          <div class="guide-item-title">DSTE四大环节</div>
+          <div class="guide-item-desc">DSTE包含战略制定→战略解码→战略执行与监控→战略评估，经营分析会贯穿执行与监控环节，确保战略不偏离。</div>
+        </div>
+        <div class="guide-item">
+          <div class="guide-item-title">作战会议的属性</div>
+          <div class="guide-item-desc">华为将经营分析会定位为"作战会议"，核心目标是打仗、打胜仗，而非向上级汇报工作。</div>
+        </div>
+        <div class="guide-item" style="background:linear-gradient(135deg,#fefce8 0%,#fef9c3 100%);border:1px solid #fde047;">
+          <div class="guide-item-title" style="color:#a16207;display:flex;align-items:center;gap:6px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ca8a04" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            自检思考
+          </div>
+          <div class="guide-item-desc" style="color:#854d0e;">你所在企业的经营分析会是否真正聚焦于"作战"而非"汇报"？</div>
+        </div>
+        <div class="guide-item" style="background:linear-gradient(135deg,#fefce8 0%,#fef9c3 100%);border:1px solid #fde047;">
+          <div class="guide-item-title" style="color:#a16207;display:flex;align-items:center;gap:6px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ca8a04" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            自检思考
+          </div>
+          <div class="guide-item-desc" style="color:#854d0e;">经营分析会与战略解码、绩效考核之间是否形成了闭环？</div>
+        </div>
+      </div>
+    </div>
+    <div class="quote-box">
+      <div class="quote-icon">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
+      </div>
+      <div class="quote-text">战略不是研究未来做什么，而是研究今天做什么才有未来。—— 彼得·德鲁克</div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== Slide 02 ========== -->
+<section class="slide" id="slide02">
+  <div class="slide-header">
+    <span class="slide-page" style="background:#2563eb;color:#fff;">02</span>
+    <div class="slide-meta">
+      <h2 class="slide-title">经营分析会是作战会议</h2>
+      <p class="slide-subtitle">聚焦打仗，而非汇报</p>
+      <div class="slide-tags"><span class="slide-tag">作战会议</span><span class="slide-tag">问题驱动</span><span class="slide-tag">实战导向</span></div>
+    </div>
+  </div>
+  <div class="slide-body">
+    <div class="slide-ppt">
+<div class="ppt-container">
+  <div class="ppt-header">
+    <div class="ppt-header-left">
+      <div class="ppt-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="1.5"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7z"/><path d="M9 10h6"/></svg></div>
+      <div class="ppt-title">DSTE体系中的战略定位</div>
+    </div>
+    <div class="ppt-page">02/16</div>
+  </div>
+  <div class="ppt-subtitle"><svg viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="1.5"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7z"/><path d="M9 10h6"/></svg>经营分析会位于DSTE执行与监控环节，是把战略规划、年度BP、滚动预测和任务令连接成作战闭环的关键节点。<span class="tag">作战会议</span><span class="tag">目标达成</span><span class="tag">闭环管理</span></div>
+
+  <!-- Main 7-step flow -->
+  <div class="flow-row">
+    <div class="flow-step" style="min-width:100px;">
+      <div class="flow-step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><polygon points="12 6 14 12 12 18 10 12" fill="#2563eb" opacity="0.2"/><path d="M12 6l2 6-2 6-2-6z"/></svg></div>
+      <div class="flow-step-title">战略规划SP</div>
+      <div class="flow-step-desc">方向</div>
+    </div>
+    <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+    <div class="flow-step" style="min-width:100px;">
+      <div class="flow-step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><text x="12" y="17" text-anchor="middle" fill="#2563eb" font-size="8" font-weight="700">¥</text></svg></div>
+      <div class="flow-step-title">经营计划与预算BP</div>
+      <div class="flow-step-desc">预算</div>
+    </div>
+    <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+    <div class="flow-step" style="min-width:80px;">
+      <div class="flow-step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3" fill="#2563eb" opacity="0.2"/><path d="M12 4v2m0 12v2M4 12h2m12 0h2"/></svg></div>
+      <div class="flow-step-title">KPI/PBC</div>
+      <div class="flow-step-desc">责任</div>
+    </div>
+    <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+    <div class="flow-step" style="min-width:80px;">
+      <div class="flow-step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><polyline points="3 17 8 12 13 15 21 7"/><polyline points="18 7 21 7 21 10"/></svg></div>
+      <div class="flow-step-title">滚动预测</div>
+      <div class="flow-step-desc">预测</div>
+    </div>
+    <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+    <div class="flow-step" style="min-width:100px;background:linear-gradient(135deg,#eff6ff,#dbeafe);border-color:#3b82f6;">
+      <div class="flow-step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="3" fill="#eff6ff"/><circle cx="10" cy="10" r="4" stroke="#2563eb"/><line x1="16" y1="16" x2="13" y2="13"/><path d="M6 16h8"/></svg></div>
+      <div class="flow-step-title">经营分析会</div>
+      <div class="flow-step-desc">决策</div>
+    </div>
+    <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+    <div class="flow-step" style="min-width:80px;">
+      <div class="flow-step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="M9 13l2 2 4-4"/></svg></div>
+      <div class="flow-step-title">任务令</div>
+      <div class="flow-step-desc">执行</div>
+    </div>
+  </div>
+
+  <!-- Two column: 三大价值 + 数据 -->
+  <div class="two-col">
+    <div>
+      <div style="font-size:13px;font-weight:700;color:#1e293b;margin-bottom:10px;">三大价值定位</div>
+      <div class="info-grid" style="grid-template-columns:1fr;">
+        <div class="info-card">
+      <div class="info-card-icon" style="background:#eff6ff;border:1px solid #dbeafe;border-radius:8px;"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><path d="M21 20l-6-12-3 6-3-6-6 12"/></svg></div>
+      <div class="info-card-body">
+        <div class="info-card-title">01 将战略变成结果</div>
+        <div class="info-card-desc">作战指挥会：集中力量打胜仗<br/>→ 洞察：从目标到结果</div>
+      </div>
+    </div>
+        <div class="info-card">
+      <div class="info-card-icon" style="background:#eff6ff;border:1px solid #dbeafe;border-radius:8px;"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+      <div class="info-card-body">
+        <div class="info-card-title">02 提升组织能力</div>
+        <div class="info-card-desc">差距分析后沉淀：流程、规则、制度<br/>→ 洞察：从问题到能力</div>
+      </div>
+    </div>
+        <div class="info-card">
+      <div class="info-card-icon" style="background:#eff6ff;border:1px solid #dbeafe;border-radius:8px;"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M12 2v4m0 12v4M2 12h4m12 0h4"/><path d="M4.93 4.93l2.83 2.83m8.48 8.48l2.83 2.83M4.93 19.07l2.83-2.83m8.48-8.48l2.83-2.83"/></svg></div>
+      <div class="info-card-body">
+        <div class="info-card-title">03 检测一线授权</div>
+        <div class="info-card-desc">让听得见炮声的人：指挥战斗<br/>→ 洞察：从前线到资源</div>
+      </div>
+    </div>
+      </div>
+    </div>
+    <div>
+      <div style="font-size:13px;font-weight:700;color:#1e293b;margin-bottom:10px;">2024-2025经营恢复数据卡组</div>
+      <div class="data-grid">
+        <div class="data-card">
+    <div class="data-card-value">8600<span style="font-size:14px">亿元</span></div>
+    <div class="data-card-label">2024年营收</div>
+    <div class="data-card-change">+2.2%</div>
+  </div>
+        <div class="data-card">
+    <div class="data-card-value">8800<span style="font-size:14px">亿元</span></div>
+    <div class="data-card-label">2025年营收</div>
+    <div class="data-card-change">+2.2%</div>
+  </div>
+        <div class="data-card">
+    <div class="data-card-value">680<span style="font-size:14px">亿元</span></div>
+    <div class="data-card-label">2025年净利润</div>
+    <div class="data-card-change">+8.7%</div>
+  </div>
+      </div>
+      <div style="font-size:11px;color:#64748b;margin-top:8px;text-align:center;">研发投入 1797亿元 | 经营现金流 1274亿元 | 现金储备充裕</div>
+    </div>
+  </div>
+
+  <!-- 传统汇报会 vs 华为经营分析会 -->
+  <table class="compare-table">
+    <tr><th>维度</th><th>传统汇报会</th><th>华为经营分析会</th></tr>
+    <tr><td>会议性质</td><td>工作通报</td><td>作战指挥</td></tr>
+    <tr><td>讨论焦点</td><td>过去成绩</td><td>差距+机会</td></tr>
+    <tr><td>输出物</td><td>会议纪要</td><td>任务令</td></tr>
+    <tr><td>管理动作</td><td>听汇报</td><td>调资源/定责任</td></tr>
+  </table>
+
+  <div class="ppt-banner">
+    <div class="ppt-banner-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2"/><path d="M18 6l-2 2"/><circle cx="18" cy="6" r="1.5" fill="#2563eb"/></svg></div>
+    <div class="ppt-banner-text">差异不在会议形式，而在是否形成可追踪的经营动作。</div>
+  </div>
+</div>
+    </div>
+    <div class="guide-section">
+      <div class="guide-header">
+        <div class="guide-title">学习引导</div>
+        <p class="guide-text">掌握本页核心知识点，结合实际工作场景思考如何应用。</p>
+      </div>
+      <div class="guide-grid">
+        <div class="guide-item">
+          <div class="guide-item-title">作战会议的本质</div>
+          <div class="guide-item-desc">作战会议的核心是解决问题、打赢战役。会上不谈成绩，只谈差距、根因和行动。每个议题都必须有明确的决策人和完成时间。</div>
+        </div>
+        <div class="guide-item">
+          <div class="guide-item-title">问题驱动的文化</div>
+          <div class="guide-item-desc">华为经营分析会强调"问题文化"，鼓励暴露问题而非掩盖问题。只有发现问题，才能解决问题。</div>
+        </div>
+        <div class="guide-item">
+          <div class="guide-item-title">会前准备要求</div>
+          <div class="guide-item-desc">会前必须完成经营分析报告，数据要准、问题要清、根因要透。会上不做数据展示，只做问题讨论和决策。</div>
+        </div>
+        <div class="guide-item" style="background:linear-gradient(135deg,#fefce8 0%,#fef9c3 100%);border:1px solid #fde047;">
+          <div class="guide-item-title" style="color:#a16207;display:flex;align-items:center;gap:6px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ca8a04" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            自检思考
+          </div>
+          <div class="guide-item-desc" style="color:#854d0e;">你的经营分析会是"作战会"还是"汇报会"？</div>
+        </div>
+        <div class="guide-item" style="background:linear-gradient(135deg,#fefce8 0%,#fef9c3 100%);border:1px solid #fde047;">
+          <div class="guide-item-title" style="color:#a16207;display:flex;align-items:center;gap:6px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ca8a04" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            自检思考
+          </div>
+          <div class="guide-item-desc" style="color:#854d0e;">会上是否敢于暴露真实问题，还是只展示成绩？</div>
+        </div>
+      </div>
+    </div>
+    <div class="quote-box">
+      <div class="quote-icon">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
+      </div>
+      <div class="quote-text">胜则举杯相庆，败则拼死相救。—— 华为狼性文化</div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== Slide 03 ========== -->
+<section class="slide" id="slide03">
+  <div class="slide-header">
+    <span class="slide-page" style="background:#2563eb;color:#fff;">03</span>
+    <div class="slide-meta">
+      <h2 class="slide-title">经营分析报告为谁而写</h2>
+      <p class="slide-subtitle">面向行动，而非面向领导</p>
+      <div class="slide-tags"><span class="slide-tag">报告定位</span><span class="slide-tag">面向行动</span><span class="slide-tag">问题导向</span></div>
+    </div>
+  </div>
+  <div class="slide-body">
+    <div class="slide-ppt">
+<div class="ppt-container">
+  <div class="ppt-header">
+    <div class="ppt-header-left">
+      <div class="ppt-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="1.5"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7z"/><path d="M9 10h6"/></svg></div>
+      <div class="ppt-title">经营分析会的六大典型问题</div>
+    </div>
+    <div class="ppt-page">03/16</div>
+  </div>
+  <div class="ppt-subtitle"><svg viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="1.5"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7z"/><path d="M9 10h6"/></svg>很多企业把经营分析会开成了例行汇报，问题不在会议数量，而在没有真正围绕目标、差距、机会和行动展开。<span class="tag">问题识别</span><span class="tag">典型症状</span><span class="tag">管理反思</span></div>
+
+  <!-- 6 problem cards -->
+  <div class="problem-grid">
+    <div class="problem-card">
+      <div class="problem-num">01</div>
+      <div class="problem-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="1" fill="#2563eb"/><line x1="12" y1="4" x2="12" y2="8"/><line x1="12" y1="16" x2="12" y2="20"/><line x1="4" y1="12" x2="8" y2="12"/><line x1="16" y1="12" x2="20" y2="12"/></svg></div>
+      <div>
+        <div class="problem-title">会议定位错误</div>
+        <div class="problem-desc">把作战会开成汇报会、邀功会、诉苦会</div>
+      </div>
+    </div>
+    <div class="problem-card">
+      <div class="problem-num">02</div>
+      <div class="problem-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><path d="M12 14v3m-2 0h4"/></svg></div>
+      <div>
+        <div class="problem-title">会议安排混乱</div>
+        <div class="problem-desc">汇报主题重复、材料五花八门、参会人低效陪会</div>
+      </div>
+    </div>
+    <div class="problem-card">
+      <div class="problem-num">03</div>
+      <div class="problem-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><path d="M3 3v18h18"/><path d="M7 12l4-4 4 4 5-5"/><circle cx="20" cy="7" r="2" fill="none" stroke="#2563eb"/></svg></div>
+      <div>
+        <div class="problem-title">差距分析走过场</div>
+        <div class="problem-desc">只讲结果，不讲差距和机会</div>
+      </div>
+    </div>
+    <div class="problem-card">
+      <div class="problem-num">04</div>
+      <div class="problem-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><polyline points="3 17 8 12 13 15 18 8"/><circle cx="8" cy="12" r="1.5" fill="#2563eb"/><circle cx="13" cy="15" r="1.5" fill="#2563eb"/><circle cx="18" cy="8" r="1.5" fill="#2563eb"/></svg></div>
+      <div>
+        <div class="problem-title">报告没有预测</div>
+        <div class="problem-desc">只有历史数据，没有全年判断</div>
+      </div>
+    </div>
+    <div class="problem-card">
+      <div class="problem-num">05</div>
+      <div class="problem-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><circle cx="12" cy="17" r="0.8" fill="#2563eb"/></svg></div>
+      <div>
+        <div class="problem-title">缺乏根因分析</div>
+        <div class="problem-desc">没有找到问题本质与机会点</div>
+      </div>
+    </div>
+    <div class="problem-card">
+      <div class="problem-num">06</div>
+      <div class="problem-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="15" x2="15" y2="15"/></svg></div>
+      <div>
+        <div class="problem-title">行动措施假大空</div>
+        <div class="problem-desc">措施永远正确，却无法落地</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom tag row -->
+  <div class="tag-row" style="justify-content:center;margin-top:8px;">
+    <div class="tag-item" style="background:#fef2f2;border-color:#fecaca;color:#dc2626;"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2"/></svg>不聚焦目标</div>
+    <div class="tag-item" style="background:#fffbeb;border-color:#fcd34d;color:#d97706;"><svg viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="1.5"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><circle cx="12" cy="17" r="0.8" fill="#d97706"/></svg>不暴露问题</div>
+    <div class="tag-item" style="background:#f0fdf4;border-color:#86efac;color:#059669;"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="M12 15l-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></svg>不形成动作</div>
+  </div>
+
+  <div class="ppt-banner">
+    <div class="ppt-banner-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><circle cx="12" cy="16" r="0.8" fill="#d97706"/></svg></div>
+    <div class="ppt-banner-text">六大问题的共同根源，是没有把经营分析会当作作战指挥系统。</div>
+  </div>
+</div>
+    </div>
+    <div class="guide-section">
+      <div class="guide-header">
+        <div class="guide-title">学习引导</div>
+        <p class="guide-text">掌握本页核心知识点，结合实际工作场景思考如何应用。</p>
+      </div>
+      <div class="guide-grid">
+        <div class="guide-item">
+          <div class="guide-item-title">报告的受众是谁</div>
+          <div class="guide-item-desc">经营分析报告的首要受众是经营团队自己，而非上级领导。报告的目的是指导行动，而非展示业绩。</div>
+        </div>
+        <div class="guide-item">
+          <div class="guide-item-title">面向行动的原则</div>
+          <div class="guide-item-desc">每段分析都要指向行动：是什么问题→为什么发生→谁负责→什么时候完成。没有行动结论的分析是无效的。</div>
+        </div>
+        <div class="guide-item">
+          <div class="guide-item-title">数据与故事的平衡</div>
+          <div class="guide-item-desc">报告需要数据支撑，但不能只有数据。要讲清楚数据背后的业务逻辑、问题根因和改进方向。</div>
+        </div>
+        <div class="guide-item" style="background:linear-gradient(135deg,#fefce8 0%,#fef9c3 100%);border:1px solid #fde047;">
+          <div class="guide-item-title" style="color:#a16207;display:flex;align-items:center;gap:6px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ca8a04" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            自检思考
+          </div>
+          <div class="guide-item-desc" style="color:#854d0e;">你的经营分析报告是"写给自己看"还是"写给领导看"？</div>
+        </div>
+        <div class="guide-item" style="background:linear-gradient(135deg,#fefce8 0%,#fef9c3 100%);border:1px solid #fde047;">
+          <div class="guide-item-title" style="color:#a16207;display:flex;align-items:center;gap:6px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ca8a04" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            自检思考
+          </div>
+          <div class="guide-item-desc" style="color:#854d0e;">报告中的每个问题是否都对应了明确的行动计划和责任人？</div>
+        </div>
+      </div>
+    </div>
+    <div class="quote-box">
+      <div class="quote-icon">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
+      </div>
+      <div class="quote-text">数据是经营的镜子，行动是经营的根本。—— 华为财经体系</div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== Slide 04 ========== -->
+<section class="slide" id="slide04">
+  <div class="slide-header">
+    <span class="slide-page" style="background:#2563eb;color:#fff;">04</span>
+    <div class="slide-meta">
+      <h2 class="slide-title">一报一会的终极目的</h2>
+      <p class="slide-subtitle">对齐目标、识别差距、落实行动</p>
+      <div class="slide-tags"><span class="slide-tag">一报一会</span><span class="slide-tag">目标对齐</span><span class="slide-tag">差距管理</span></div>
+    </div>
+  </div>
+  <div class="slide-body">
+    <div class="slide-ppt">
+<div class="ppt-container">
+  <div class="ppt-header">
+    <div class="ppt-header-left">
+      <div class="ppt-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="1.5"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7z"/><path d="M9 10h6"/></svg></div>
+      <div class="ppt-title">战略到执行的关键：三个会议</div>
+    </div>
+    <div class="ppt-page">04/16</div>
+  </div>
+  <div class="ppt-subtitle"><svg viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="1.5"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7z"/><path d="M9 10h6"/></svg>战略务虚会、战略解码会与经营分析会分别解决方向、路径和纠偏问题，构成从战略到执行的关键会议链条。<span class="tag">方向共识</span><span class="tag">路径规划</span><span class="tag">行动纠偏</span></div>
+
+  <!-- 3 meeting cards -->
+  <div class="meeting-grid">
+    <div class="meeting-card">
+      <div class="meeting-header">
+        <div class="meeting-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><polygon points="12 6 14 12 12 18 10 12" fill="#2563eb" opacity="0.2"/><path d="M12 6l2 6-2 6-2-6z"/></svg></div>
+        <div class="meeting-name">战略务虚会</div>
+      </div>
+      <div class="meeting-desc">聚焦外部环境与内部能力的深度思考，明确企业发展的方向与目标，统一高层认知。</div>
+      <div class="meeting-points">
+        <div class="meeting-point"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>明确目标</div>
+        <div class="meeting-point"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><circle cx="6" cy="19" r="3"/><circle cx="18" cy="5" r="3"/><path d="M12 19h4.5a3.5 3.5 0 0 0 0-7h-5a3.5 3.5 0 0 1 0-7H12"/></svg>选择方向</div>
+        <div class="meeting-point"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>统一认知</div>
+      </div>
+      <div class="meeting-freq"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><path d="M12 14v3m-2 0h4"/></svg>频度：年度 / 半年度</div>
+    </div>
+    <div class="meeting-card">
+      <div class="meeting-header">
+        <div class="meeting-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="M8 13v4m4-6v6m4-8v8"/><circle cx="17" cy="17" r="3"/></svg></div>
+        <div class="meeting-name">战略解码会</div>
+      </div>
+      <div class="meeting-desc">将战略转化为可执行的业务计划与行动路径，明确关键举措与资源配置，形成共识。</div>
+      <div class="meeting-points">
+        <div class="meeting-point"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><circle cx="6" cy="19" r="3"/><circle cx="18" cy="5" r="3"/><path d="M12 19h4.5a3.5 3.5 0 0 0 0-7h-5a3.5 3.5 0 0 1 0-7H12"/></svg>规划路线</div>
+        <div class="meeting-point"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>分解任务</div>
+        <div class="meeting-point"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" fill="#eff6ff"/></svg>明确关键成功要素</div>
+      </div>
+      <div class="meeting-freq"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><path d="M12 14v3m-2 0h4"/></svg>频度：年度 / 半年度</div>
+    </div>
+    <div class="meeting-card">
+      <div class="meeting-header">
+        <div class="meeting-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="3" fill="#eff6ff"/><circle cx="10" cy="10" r="4" stroke="#2563eb"/><line x1="16" y1="16" x2="13" y2="13"/><path d="M6 16h8"/></svg></div>
+        <div class="meeting-name">经营分析会</div>
+      </div>
+      <div class="meeting-desc">基于经营数据与业务复盘，发现问题、分析原因，及时调整策略，推动目标达成。</div>
+      <div class="meeting-points">
+        <div class="meeting-point"><svg viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><circle cx="12" cy="16" r="0.8" fill="#d97706"/></svg>行动纠偏</div>
+        <div class="meeting-point"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><circle cx="12" cy="17" r="0.8" fill="#2563eb"/></svg>解决问题</div>
+        <div class="meeting-point"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="M9 13l2 2 4-4"/></svg>调资源、下任务令</div>
+      </div>
+      <div class="meeting-freq"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><path d="M12 14v3m-2 0h4"/></svg>频度：月度 / 双周</div>
+    </div>
+  </div>
+
+  <!-- Bottom flow -->
+  <div class="task-flow" style="background:#f8fafc;border-radius:10px;padding:14px;">
+    <div class="task-flow-item"><span style="font-weight:800;color:#1e40af;">SP</span></div>
+    <div class="task-flow-conn">→</div>
+    <div class="task-flow-item"><span style="font-weight:800;color:#1e40af;">BP</span></div>
+    <div class="task-flow-conn">→</div>
+    <div class="task-flow-item"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><path d="M3 3v18h18"/><rect x="7" y="10" width="4" height="8" rx="1"/><rect x="15" y="6" width="4" height="12" rx="1"/></svg><span>执行与监控</span></div>
+  </div>
+
+  <div class="ppt-banner">
+    <div class="ppt-banner-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+    <div class="ppt-banner-text">三个会议不是替代关系，而是前后衔接的作战体系。</div>
+  </div>
+</div>
+    </div>
+    <div class="guide-section">
+      <div class="guide-header">
+        <div class="guide-title">学习引导</div>
+        <p class="guide-text">掌握本页核心知识点，结合实际工作场景思考如何应用。</p>
+      </div>
+      <div class="guide-grid">
+        <div class="guide-item">
+          <div class="guide-item-title">"一报"的含义</div>
+          <div class="guide-item-desc">"一报"指经营分析报告，是经营分析会的输入。报告质量决定会议效率，报告要聚焦关键差距和核心问题。</div>
+        </div>
+        <div class="guide-item">
+          <div class="guide-item-title">"一会"的含义</div>
+          <div class="guide-item-desc">"一会"指经营分析会，是报告的延续和落地。会上对报告中的问题进行讨论、决策，形成行动计划。</div>
+        </div>
+        <div class="guide-item">
+          <div class="guide-item-title">终极目的</div>
+          <div class="guide-item-desc">一报一会的终极目的是实现：目标对齐（上下同欲）、差距识别（看清现实）、行动落实（闭环管理）。</div>
+        </div>
+        <div class="guide-item" style="background:linear-gradient(135deg,#fefce8 0%,#fef9c3 100%);border:1px solid #fde047;">
+          <div class="guide-item-title" style="color:#a16207;display:flex;align-items:center;gap:6px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ca8a04" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            自检思考
+          </div>
+          <div class="guide-item-desc" style="color:#854d0e;">你的一报一会是否形成了"报告→会议→行动→跟踪"的完整闭环？</div>
+        </div>
+        <div class="guide-item" style="background:linear-gradient(135deg,#fefce8 0%,#fef9c3 100%);border:1px solid #fde047;">
+          <div class="guide-item-title" style="color:#a16207;display:flex;align-items:center;gap:6px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ca8a04" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            自检思考
+          </div>
+          <div class="guide-item-desc" style="color:#854d0e;">会议结束后，行动项的落实率如何？</div>
+        </div>
+      </div>
+    </div>
+    <div class="quote-box">
+      <div class="quote-icon">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
+      </div>
+      <div class="quote-text">经营管理的本质就是差距管理——发现差距、分析差距、关闭差距。—— 华为经营管理理念</div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== Slide 05 ========== -->
+<section class="slide" id="slide05">
+  <div class="slide-header">
+    <span class="slide-page" style="background:#0891b2;color:#fff;">05</span>
+    <div class="slide-meta">
+      <h2 class="slide-title">会议管理制度</h2>
+      <p class="slide-subtitle">四层会议体系与闭环机制</p>
+      <div class="slide-tags"><span class="slide-tag">会议体系</span><span class="slide-tag">四层会议</span><span class="slide-tag">闭环管理</span></div>
+    </div>
+  </div>
+  <div class="slide-body">
+    <div class="slide-ppt">
+<div class="ppt-container">
+  <div class="ppt-header">
+    <div class="ppt-header-left">
+      <div class="ppt-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="1.5"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7z"/><path d="M9 10h6"/></svg></div>
+      <div class="ppt-title">经营分析的"一报一会"制度</div>
+    </div>
+    <div class="ppt-page">05/16</div>
+  </div>
+  <div class="ppt-subtitle"><svg viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="1.5"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7z"/><path d="M9 10h6"/></svg>高质量经营报告负责暴露问题和机会，高质量经营会议负责形成决策与任务令，两者合在一起才是真正有效的经营分析。<span class="tag">一报</span><span class="tag">一会</span><span class="tag">任务令</span></div>
+
+  <!-- 一报 + 一会 -->
+  <div class="two-col">
+    <div class="section-box">
+      <div class="section-box-title" style="justify-content:center;border-bottom:1px solid #e2e8f0;padding-bottom:8px;margin-bottom:12px;">一报：经营分析报告</div>
+      <div class="info-grid" style="grid-template-columns:1fr 1fr;gap:8px;">
+        <div class="info-card" style="padding:10px;">
+          <div class="info-card-icon" style="width:32px;height:32px;"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2"/></svg></div>
+          <div class="info-card-body">
+            <div class="info-card-title" style="font-size:12px;">围绕年度目标</div>
+            <div class="info-card-desc">对齐战略与目标，明确经营方向</div>
+          </div>
+        </div>
+        <div class="info-card" style="padding:10px;">
+          <div class="info-card-icon" style="width:32px;height:32px;"><svg viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="1.5"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><circle cx="12" cy="17" r="0.8" fill="#d97706"/></svg></div>
+          <div class="info-card-body">
+            <div class="info-card-title" style="font-size:12px;">暴露问题与风险</div>
+            <div class="info-card-desc">揭示差距与不足，识别潜在风险</div>
+          </div>
+        </div>
+        <div class="info-card" style="padding:10px;">
+          <div class="info-card-icon" style="width:32px;height:32px;"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+          <div class="info-card-body">
+            <div class="info-card-title" style="font-size:12px;">识别机会与策略</div>
+            <div class="info-card-desc">发现增长机会，提出应对策略</div>
+          </div>
+        </div>
+        <div class="info-card" style="padding:10px;">
+          <div class="info-card-icon" style="width:32px;height:32px;"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7A8.38 8.38 0 0 1 4 11.5a8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/><circle cx="9" cy="12" r="0.8" fill="#2563eb"/><circle cx="12" cy="12" r="0.8" fill="#2563eb"/><circle cx="15" cy="12" r="0.8" fill="#2563eb"/></svg></div>
+          <div class="info-card-body">
+            <div class="info-card-title" style="font-size:12px;">形成讨论议题</div>
+            <div class="info-card-desc">聚焦关键议题，供会议深入讨论</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="section-box">
+      <div class="section-box-title" style="justify-content:center;border-bottom:1px solid #e2e8f0;padding-bottom:8px;margin-bottom:12px;">一会：经营分析会议</div>
+      <div class="info-grid" style="grid-template-columns:1fr 1fr;gap:8px;">
+        <div class="info-card" style="padding:10px;">
+          <div class="info-card-icon" style="width:32px;height:32px;"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/><path d="M12 3v2"/></svg></div>
+          <div class="info-card-body">
+            <div class="info-card-title" style="font-size:12px;">一把手主持</div>
+            <div class="info-card-desc">一把手牵头主持，确保方向和决断</div>
+          </div>
+        </div>
+        <div class="info-card" style="padding:10px;">
+          <div class="info-card-icon" style="width:32px;height:32px;"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+          <div class="info-card-body">
+            <div class="info-card-title" style="font-size:12px;">有事论事</div>
+            <div class="info-card-desc">聚焦事实与数据，直面问题本质</div>
+          </div>
+        </div>
+        <div class="info-card" style="padding:10px;">
+          <div class="info-card-icon" style="width:32px;height:32px;"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><path d="M20 8v6"/><path d="M23 11h-6"/></svg></div>
+          <div class="info-card-body">
+            <div class="info-card-title" style="font-size:12px;">围绕议题决策</div>
+            <div class="info-card-desc">针对议题充分讨论，形成明确决策</div>
+          </div>
+        </div>
+        <div class="info-card" style="padding:10px;">
+          <div class="info-card-icon" style="width:32px;height:32px;"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="M9 13l2 2 4-4"/></svg></div>
+          <div class="info-card-body">
+            <div class="info-card-title" style="font-size:12px;">输出任务令</div>
+            <div class="info-card-desc">明确责任、动作、时间与要求</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 输出结果 -->
+  <div style="text-align:center;font-size:13px;font-weight:700;color:#1e293b;margin:12px 0 8px;">输出结果</div>
+  <div class="info-grid" style="grid-template-columns:repeat(4,1fr);gap:8px;">
+    <div class="info-card">
+      <div class="info-card-icon" style="background:#eff6ff;border:1px solid #dbeafe;border-radius:8px;"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></div>
+      <div class="info-card-body">
+        <div class="info-card-title">统一判断</div>
+        <div class="info-card-desc">统一对经营状况的认知与判断</div>
+      </div>
+    </div>
+    <div class="info-card">
+      <div class="info-card-icon" style="background:#eff6ff;border:1px solid #dbeafe;border-radius:8px;"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="M9 13l2 2 4-4"/></svg></div>
+      <div class="info-card-body">
+        <div class="info-card-title">形成决议</div>
+        <div class="info-card-desc">形成明确、可执行的会议决议</div>
+      </div>
+    </div>
+    <div class="info-card">
+      <div class="info-card-icon" style="background:#eff6ff;border:1px solid #dbeafe;border-radius:8px;"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/><circle cx="12" cy="14" r="2"/><path d="M12 12v-2"/></svg></div>
+      <div class="info-card-body">
+        <div class="info-card-title">调配资源</div>
+        <div class="info-card-desc">按决议统筹资源，保障重点落地</div>
+      </div>
+    </div>
+    <div class="info-card">
+      <div class="info-card-icon" style="background:#eff6ff;border:1px solid #dbeafe;border-radius:8px;"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1 2.12-9.36L23 10"/></svg></div>
+      <div class="info-card-body">
+        <div class="info-card-title">闭环跟踪</div>
+        <div class="info-card-desc">跟踪执行效果，形成管理闭环</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom formula -->
+  <div class="formula-box" style="margin-top:12px;">
+    <div class="formula-part"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="M8 13v4m4-6v6m4-8v8"/><circle cx="17" cy="17" r="3"/></svg><span class="formula-part-text">高质量经营报告</span></div>
+    <div class="formula-op">+</div>
+    <div class="formula-part"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><circle cx="16" cy="3.13" r="4"/><path d="M6 15l4 4 4-4"/><path d="M14 13h6"/></svg><span class="formula-part-text">高质量经营会议</span></div>
+    <div class="formula-op">=</div>
+    <div class="formula-part"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2"/></svg><span class="formula-part-text">高质量"一报一会"</span></div>
+  </div>
+</div>
+    </div>
+    <div class="guide-section">
+      <div class="guide-header">
+        <div class="guide-title">学习引导</div>
+        <p class="guide-text">掌握本页核心知识点，结合实际工作场景思考如何应用。</p>
+      </div>
+      <div class="guide-grid">
+        <div class="guide-item">
+          <div class="guide-item-title">四层会议体系</div>
+          <div class="guide-item-desc">华为建立四层经营分析会议体系：公司级（ST/EMT）、体系级、产品线/地区部级、代表处级。每层聚焦不同粒度的问题。</div>
+        </div>
+        <div class="guide-item">
+          <div class="guide-item-title">会议闭环机制</div>
+          <div class="guide-item-desc">完整的会议闭环包括：会前准备（报告+议题）→会中控制（聚焦+决策）→会后跟踪（行动+闭环）。</div>
+        </div>
+        <div class="guide-item">
+          <div class="guide-item-title">会议纪律</div>
+          <div class="guide-item-desc">严格的时间控制（每议题限时）、发言人准备要求、会议纪要的24小时内发出、行动项的定期跟踪。</div>
+        </div>
+        <div class="guide-item" style="background:linear-gradient(135deg,#fefce8 0%,#fef9c3 100%);border:1px solid #fde047;">
+          <div class="guide-item-title" style="color:#a16207;display:flex;align-items:center;gap:6px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ca8a04" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            自检思考
+          </div>
+          <div class="guide-item-desc" style="color:#854d0e;">你的企业是否建立了分层分类的经营分析会议体系？</div>
+        </div>
+        <div class="guide-item" style="background:linear-gradient(135deg,#fefce8 0%,#fef9c3 100%);border:1px solid #fde047;">
+          <div class="guide-item-title" style="color:#a16207;display:flex;align-items:center;gap:6px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ca8a04" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            自检思考
+          </div>
+          <div class="guide-item-desc" style="color:#854d0e;">会议是否有严格的闭环管理机制，还是"会上激动、会后不动"？</div>
+        </div>
+      </div>
+    </div>
+    <div class="quote-box">
+      <div class="quote-icon">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
+      </div>
+      <div class="quote-text">会议是管理成本的集中体现，高效的会议是高效管理的缩影。—— 华为行政管理</div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== Slide 06 ========== -->
+<section class="slide" id="slide06">
+  <div class="slide-header">
+    <span class="slide-page" style="background:#0891b2;color:#fff;">06</span>
+    <div class="slide-meta">
+      <h2 class="slide-title">经营分析会输入与输出</h2>
+      <p class="slide-subtitle">会前准备、会中控制、会后跟踪</p>
+      <div class="slide-tags"><span class="slide-tag">输入输出</span><span class="slide-tag">会前准备</span><span class="slide-tag">会后跟踪</span></div>
+    </div>
+  </div>
+  <div class="slide-body">
+    <div class="slide-ppt">
+<div class="ppt-container">
+  <div class="ppt-header">
+    <div class="ppt-header-left">
+      <div class="ppt-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="1.5"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7z"/><path d="M9 10h6"/></svg></div>
+      <div class="ppt-title">经营报告全景图：五段论</div>
+    </div>
+    <div class="ppt-page">06/16</div>
+  </div>
+  <div class="ppt-subtitle"><svg viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="1.5"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7z"/><path d="M9 10h6"/></svg>经营分析报告不是材料堆砌，而是一套围绕经营目标展开的结构化表达，前后一致、首尾呼应。<span class="tag">结构设计</span><span class="tag">前后一致</span><span class="tag">闭环表达</span></div>
+
+  <!-- 5-step flow -->
+  <div class="flow-row">
+    <div class="flow-step">
+      <div class="flow-step-num">01</div>
+      <div class="flow-step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="M9 13l2 2 4-4"/></svg></div>
+      <div class="flow-step-title">遗留问题进展</div>
+      <div class="flow-step-desc">上期问题是否解决、责任人是否兑现</div>
+    </div>
+    <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+    <div class="flow-step">
+      <div class="flow-step-num">02</div>
+      <div class="flow-step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><path d="M3 3v18h18"/><rect x="7" y="10" width="3" height="8" rx="1"/><rect x="12" y="6" width="3" height="12" rx="1"/><rect x="17" y="14" width="3" height="4" rx="1"/></svg></div>
+      <div class="flow-step-title">经营审视</div>
+      <div class="flow-step-desc">看规模、利润、效率、风险的整体状态</div>
+    </div>
+    <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+    <div class="flow-step">
+      <div class="flow-step-num">03</div>
+      <div class="flow-step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><path d="M3 3v18h18"/><polyline points="7 14 11 10 15 13 21 7"/><polyline points="21 7 21 11 17 11"/></svg></div>
+      <div class="flow-step-title">滚动预测</div>
+      <div class="flow-step-desc">判断全年目标能否达成，识别缺口</div>
+    </div>
+    <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+    <div class="flow-step">
+      <div class="flow-step-num">04</div>
+      <div class="flow-step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><circle cx="11" cy="15" r="0.8" fill="#d97706"/><line x1="11" y1="8" x2="11" y2="12"/></svg></div>
+      <div class="flow-step-title">差距与根因分析</div>
+      <div class="flow-step-desc">打开分类、层层下钻，找到问题本质</div>
+    </div>
+    <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+    <div class="flow-step">
+      <div class="flow-step-num">05</div>
+      <div class="flow-step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="M9 13l2 2 4-4"/></svg></div>
+      <div class="flow-step-title">本期需跟踪问题</div>
+      <div class="flow-step-desc">形成本期要跟踪、要决策、要闭环的事项</div>
+    </div>
+  </div>
+
+  <!-- Bottom 3 modules -->
+  <div class="info-grid" style="grid-template-columns:repeat(3,1fr);">
+    <div class="info-card">
+      <div class="info-card-icon" style="background:#eff6ff;border-color:#dbeafe;"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2"/><path d="M18 6l-2 2"/><circle cx="18" cy="6" r="1.5" fill="#2563eb"/></svg></div>
+      <div class="info-card-body">
+        <div class="info-card-title">发现问题</div>
+        <div class="info-card-desc">从结果看现象，识别偏差<br/>明确需要关注的问题</div>
+      </div>
+    </div>
+    <div class="info-card">
+      <div class="info-card-icon" style="background:#fffbeb;border-color:#fcd34d;"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+      <div class="info-card-body">
+        <div class="info-card-title">剖析问题</div>
+        <div class="info-card-desc">从结构看本质，定位根因<br/>厘清影响与逻辑关系</div>
+      </div>
+    </div>
+    <div class="info-card">
+      <div class="info-card-icon" style="background:#f0fdf4;border-color:#86efac;"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="M9 13l2 2 4-4"/><path d="M20 12a8 8 0 0 1-8 8 8 8 0 0 1-8-8"/><path d="M20 4v4h-4"/></svg></div>
+      <div class="info-card-body">
+        <div class="info-card-title">闭环管理</div>
+        <div class="info-card-desc">从行动到结果，形成闭环<br/>确保问题真正解决</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ppt-banner">
+    <div class="ppt-banner-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 19.24 7 20"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 19.24 17 20"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2z"/></svg></div>
+    <div class="ppt-banner-text">五段论的价值，在于把"看结果"升级为"管结果"。</div>
+  </div>
+</div>
+    </div>
+    <div class="guide-section">
+      <div class="guide-header">
+        <div class="guide-title">学习引导</div>
+        <p class="guide-text">掌握本页核心知识点，结合实际工作场景思考如何应用。</p>
+      </div>
+      <div class="guide-grid">
+        <div class="guide-item">
+          <div class="guide-item-title">会前输入</div>
+          <div class="guide-item-desc">经营分析报告（含差距分析、根因分析、行动计划草案）、关键数据仪表盘、上次会议行动项完成状态、本次会议的议题清单。</div>
+        </div>
+        <div class="guide-item">
+          <div class="guide-item-title">会中控制</div>
+          <div class="guide-item-desc">聚焦核心议题、严格控制时间、推动现场决策、明确责任人和完成标准。避免漫无边际的讨论。</div>
+        </div>
+        <div class="guide-item">
+          <div class="guide-item-title">会后输出</div>
+          <div class="guide-item-desc">会议纪要（含决策结论、行动项、责任人、完成时间）、会议决议的同步发布、行动项的跟踪机制。</div>
+        </div>
+        <div class="guide-item" style="background:linear-gradient(135deg,#fefce8 0%,#fef9c3 100%);border:1px solid #fde047;">
+          <div class="guide-item-title" style="color:#a16207;display:flex;align-items:center;gap:6px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ca8a04" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            自检思考
+          </div>
+          <div class="guide-item-desc" style="color:#854d0e;">会前报告是否提前分发，让与会者有时间阅读和思考？</div>
+        </div>
+        <div class="guide-item" style="background:linear-gradient(135deg,#fefce8 0%,#fef9c3 100%);border:1px solid #fde047;">
+          <div class="guide-item-title" style="color:#a16207;display:flex;align-items:center;gap:6px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ca8a04" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            自检思考
+          </div>
+          <div class="guide-item-desc" style="color:#854d0e;">会后是否有机制确保行动项得到有效跟踪和落实？</div>
+        </div>
+      </div>
+    </div>
+    <div class="quote-box">
+      <div class="quote-icon">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
+      </div>
+      <div class="quote-text">没有跟踪的会议决议，只是一纸空文。—— 华为项目管理实践</div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== Slide 07 ========== -->
+<section class="slide" id="slide07">
+  <div class="slide-header">
+    <span class="slide-page" style="background:#059669;color:#fff;">07</span>
+    <div class="slide-meta">
+      <h2 class="slide-title">3GAP + 3LIST 前瞻管理</h2>
+      <p class="slide-subtitle">从差距出发，以清单落地</p>
+      <div class="slide-tags"><span class="slide-tag">3GAP</span><span class="slide-tag">3LIST</span><span class="slide-tag">前瞻管理</span></div>
+    </div>
+  </div>
+  <div class="slide-body">
+    <div class="slide-ppt">
+<div class="ppt-container">
+  <div class="ppt-header">
+    <div class="ppt-header-left">
+      <div class="ppt-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="1.5"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7z"/><path d="M9 10h6"/></svg></div>
+      <div class="ppt-title">滚动预测：经营分析报告的灵魂</div>
+    </div>
+    <div class="ppt-page">07/16</div>
+  </div>
+  <div class="ppt-subtitle"><svg viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="1.5"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7z"/><path d="M9 10h6"/></svg>预测不是拍脑袋，而是围绕年度目标持续修正判断，用预测来提前发现缺口、提前配置资源。<span class="tag">目标牵引</span><span class="tag">按月滚动</span><span class="tag">资源配置</span></div>
+
+  <!-- 3 main steps -->
+  <div class="flow-row">
+    <div class="flow-step" style="flex:1;">
+      <div class="flow-step-num">01</div>
+      <div class="flow-step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2"/><rect x="10" y="17" width="4" height="3" rx="1" fill="#2563eb" opacity="0.2"/></svg></div>
+      <div class="flow-step-title">盯住年度目标</div>
+      <div class="flow-step-desc" style="text-align:left;">
+        <ul><li>明确年度经营目标</li><li>拆解关键指标与里程碑</li><li>锁定目标与优先级</li></ul>
+      </div>
+    </div>
+    <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+    <div class="flow-step" style="flex:1;">
+      <div class="flow-step-num">02</div>
+      <div class="flow-step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><path d="M16 14l-2 2-2-2"/><path d="M20 16a8 8 0 0 0-8-8" stroke="#3b82f6"/></svg></div>
+      <div class="flow-step-title">按月滚动预测</div>
+      <div class="flow-step-desc" style="text-align:left;">
+        <ul><li>按月更新假设与数据</li><li>对比实际与预测差异</li><li>动态修正预测与计划</li></ul>
+      </div>
+    </div>
+    <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+    <div class="flow-step" style="flex:1;">
+      <div class="flow-step-num">03</div>
+      <div class="flow-step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><circle cx="12" cy="4" r="2"/><path d="M12 6v4"/><path d="M8 10h8v4H8z" rx="1"/><path d="M6 14h4v4H6z" rx="1"/><path d="M14 14h4v4h-4z" rx="1"/></svg></div>
+      <div class="flow-step-title">按区域/客户/产品展开预测</div>
+      <div class="flow-step-desc" style="text-align:left;">
+        <ul><li>多维度拆解预测结构</li><li>定位差异与增长机会</li><li>支撑精细化经营管理</li></ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- 预测三板斧 -->
+  <div style="font-size:13px;font-weight:700;color:#1e293b;margin-bottom:10px;text-align:center;">预测三板斧</div>
+  <div class="info-grid" style="grid-template-columns:repeat(3,1fr);">
+    <div class="info-card">
+      <div class="info-card-icon" style="background:#eff6ff;"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="13" y2="17"/></svg></div>
+      <div class="info-card-body">
+        <div class="info-card-title">机会清单管理</div>
+        <ul><li>全面识别增长机会</li><li>分级评估机会质量</li><li>持续跟踪转化进度</li></ul>
+      </div>
+    </div>
+    <div class="info-card">
+      <div class="info-card-icon" style="background:#fffbeb;"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg></div>
+      <div class="info-card-body">
+        <div class="info-card-title">项目/管道基线</div>
+        <ul><li>建立项目分层结构</li><li>明确阶段与赢单概率</li><li>形成可追溯的管道基线</li></ul>
+      </div>
+    </div>
+    <div class="info-card">
+      <div class="info-card-icon" style="background:#f0fdf4;"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><path d="M3 3v18h18"/><rect x="7" y="14" width="3" height="4" rx="1"/><rect x="12" y="10" width="3" height="8" rx="1"/><rect x="17" y="6" width="3" height="12" rx="1"/></svg></div>
+      <div class="info-card-body">
+        <div class="info-card-title">量价结构化拆解</div>
+        <ul><li>拆解量、价、结构驱动</li><li>分析关键变量与弹性</li><li>提升预测准确性</li></ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4 value cards -->
+  <div class="info-grid" style="grid-template-columns:repeat(4,1fr);margin-top:12px;">
+    <div class="info-card">
+      <div class="info-card-icon" style="background:#eff6ff;border:1px solid #dbeafe;border-radius:8px;"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 12 15 16 11"/></svg></div>
+      <div class="info-card-body">
+        <div class="info-card-title">更好驾驭不确定性</div>
+        <div class="info-card-desc">提前识别风险与机会<br/>动态调整应对策略<br/>增强经营韧性</div>
+      </div>
+    </div>
+    <div class="info-card">
+      <div class="info-card-icon" style="background:#eff6ff;border:1px solid #dbeafe;border-radius:8px;"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 2a10 10 0 0 1 10 10H12z" fill="#eff6ff"/></svg></div>
+      <div class="info-card-body">
+        <div class="info-card-title">更有效的资源配置</div>
+        <div class="info-card-desc">聚焦高回报机会<br/>优化资源投放结构<br/>提升投入产出效率</div>
+      </div>
+    </div>
+    <div class="info-card">
+      <div class="info-card-icon" style="background:#eff6ff;border:1px solid #dbeafe;border-radius:8px;"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><polyline points="3 17 8 12 13 15 21 7"/><polyline points="18 7 21 7 21 10"/></svg></div>
+      <div class="info-card-body">
+        <div class="info-card-title">科学及时的经营决策</div>
+        <div class="info-card-desc">数据驱动决策判断<br/>支撑快速响应调整<br/>提升决策质量与速度</div>
+      </div>
+    </div>
+    <div class="info-card">
+      <div class="info-card-icon" style="background:#eff6ff;border:1px solid #dbeafe;border-radius:8px;"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="M12 15l-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/></svg></div>
+      <div class="info-card-body">
+        <div class="info-card-title">抓住战机</div>
+        <div class="info-card-desc">发现增长窗口<br/>快速配置资源<br/>赢得市场先机</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ppt-banner">
+    <div class="ppt-banner-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 19.24 7 20"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 19.24 17 20"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2z"/></svg></div>
+    <div class="ppt-banner-text">预测的追求：客观、可信、及时、严肃。</div>
+  </div>
+</div>
+    </div>
+    <div class="guide-section">
+      <div class="guide-header">
+        <div class="guide-title">学习引导</div>
+        <p class="guide-text">掌握本页核心知识点，结合实际工作场景思考如何应用。</p>
+      </div>
+      <div class="guide-grid">
+        <div class="guide-item">
+          <div class="guide-item-title">3GAP框架</div>
+          <div class="guide-item-desc">业绩GAP（实际vs目标）、机会GAP（市场机会vs已获取）、能力GAP（所需能力vs现有能力）。三个维度全面审视经营状况。</div>
+        </div>
+        <div class="guide-item">
+          <div class="guide-item-title">3LIST框架</div>
+          <div class="guide-item-desc">问题清单（待解决的关键问题）、机会清单（待抓取的市场机会）、行动清单（待执行的行动项）。清单化管理确保落地。</div>
+        </div>
+        <div class="guide-item">
+          <div class="guide-item-title">前瞻管理的要义</div>
+          <div class="guide-item-desc">不仅要"看过去"（业绩回顾），更要"看未来"（机会预判和风险预警），实现从"事后分析"到"事前预防"的转变。</div>
+        </div>
+        <div class="guide-item" style="background:linear-gradient(135deg,#fefce8 0%,#fef9c3 100%);border:1px solid #fde047;">
+          <div class="guide-item-title" style="color:#a16207;display:flex;align-items:center;gap:6px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ca8a04" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            自检思考
+          </div>
+          <div class="guide-item-desc" style="color:#854d0e;">你的分析是否同时覆盖了业绩差距、机会差距和能力差距？</div>
+        </div>
+        <div class="guide-item" style="background:linear-gradient(135deg,#fefce8 0%,#fef9c3 100%);border:1px solid #fde047;">
+          <div class="guide-item-title" style="color:#a16207;display:flex;align-items:center;gap:6px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ca8a04" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            自检思考
+          </div>
+          <div class="guide-item-desc" style="color:#854d0e;">是否建立了问题清单、机会清单和行动清单的跟踪机制？</div>
+        </div>
+      </div>
+    </div>
+    <div class="quote-box">
+      <div class="quote-icon">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
+      </div>
+      <div class="quote-text">管理就是预测，预测就是管理。—— 彼得·德鲁克</div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== Slide 08 ========== -->
+<section class="slide" id="slide08">
+  <div class="slide-header">
+    <span class="slide-page" style="background:#059669;color:#fff;">08</span>
+    <div class="slide-meta">
+      <h2 class="slide-title">五步差距分析法</h2>
+      <p class="slide-subtitle">看清现状、找到根因、明确机会</p>
+      <div class="slide-tags"><span class="slide-tag">差距分析</span><span class="slide-tag">五步法</span><span class="slide-tag">根因定位</span></div>
+    </div>
+  </div>
+  <div class="slide-body">
+    <div class="slide-ppt">
+<div class="ppt-container">
+  <div class="ppt-header">
+    <div class="ppt-header-left">
+      <div class="ppt-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="1.5"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7z"/><path d="M9 10h6"/></svg></div>
+      <div class="ppt-title">3GAP + 3LIST：前瞻管理框架</div>
+    </div>
+    <div class="ppt-page">08/16</div>
+  </div>
+  <div class="ppt-subtitle"><svg viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="1.5"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7z"/><path d="M9 10h6"/></svg>经营管理的核心，不只是复盘差距，更是通过差距识别机会、通过机会形成行动，实现预测内抓执行、预测外找机会。<span class="tag">看差距</span><span class="tag">找机会</span><span class="tag">促执行</span></div>
+
+  <!-- GAP + LIST 对照 -->
+  <div class="gaplist-grid">
+    <div>
+      <div style="font-size:14px;font-weight:700;color:#1e40af;margin-bottom:10px;">3GAP 差距分析</div>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <div class="gaplist-card">
+          <div class="gaplist-icon" style="border-color:#dbeafe;"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><path d="M3 3v18h18"/><rect x="7" y="10" width="3" height="8" rx="1"/><rect x="12" y="6" width="3" height="12" rx="1"/><rect x="17" y="12" width="3" height="6" rx="1"/><polyline points="8 10 12.5 6 17 12"/></svg></div>
+          <div class="gaplist-body">
+            <div class="gaplist-name">GAP1 执行差距</div>
+            <div class="gaplist-sub">—— 实际 vs 上期预测</div>
+            <div class="gaplist-desc">对比实际与上期预测的偏差，识别执行偏差原因，明确改进方向。</div>
+          </div>
+        </div>
+        <div class="gaplist-card">
+          <div class="gaplist-icon" style="border-color:#dbeafe;"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="1" fill="#2563eb"/><line x1="12" y1="4" x2="12" y2="8"/><line x1="12" y1="16" x2="12" y2="20"/><line x1="4" y1="12" x2="8" y2="12"/><line x1="16" y1="12" x2="20" y2="12"/></svg></div>
+          <div class="gaplist-body">
+            <div class="gaplist-name">GAP2 预测变动</div>
+            <div class="gaplist-sub">—— 机会赢取/风险管控/把握能力</div>
+            <div class="gaplist-desc">分析预测较上期的变动，识别机会赢取与风险变化，提升把握能力。</div>
+          </div>
+        </div>
+        <div class="gaplist-card">
+          <div class="gaplist-icon" style="border-color:#dbeafe;"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><path d="M4 15l5-10 3 6 4-8 4 8"/><circle cx="4" cy="15" r="2" fill="#2563eb" opacity="0.2"/></svg></div>
+          <div class="gaplist-body">
+            <div class="gaplist-name">GAP3 目标差距</div>
+            <div class="gaplist-sub">—— 当前预测 vs 年度目标</div>
+            <div class="gaplist-desc">对比当前预测与年度目标，识别目标达成差距，明确攻坚重点。</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div style="font-size:14px;font-weight:700;color:#1e40af;margin-bottom:10px;">3LIST 机会清单</div>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <div class="gaplist-card">
+          <div class="gaplist-icon" style="border-color:#dbeafe;"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="M9 13l2 2 4-4"/></svg></div>
+          <div class="gaplist-body">
+            <div class="gaplist-name">LIST1 确定类机会</div>
+            <div class="gaplist-sub">—— 抓执行、重效率</div>
+            <div class="gaplist-desc">基于确定性差距，聚焦执行提升与效率改善，确保预测达成与目标进展。</div>
+          </div>
+        </div>
+        <div class="gaplist-card">
+          <div class="gaplist-icon" style="border-color:#fef3c7;"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><line x1="12" y1="8" x2="12" y2="12"/><circle cx="12" cy="16" r="0.8" fill="#d97706"/></svg></div>
+          <div class="gaplist-body">
+            <div class="gaplist-name">LIST2 风险类机会</div>
+            <div class="gaplist-sub">—— 看隐患、清风险</div>
+            <div class="gaplist-desc">基于风险与隐患，提前识别潜在影响，制定应对措施，降低不确定性损失。</div>
+          </div>
+        </div>
+        <div class="gaplist-card">
+          <div class="gaplist-icon" style="border-color:#dbeafe;"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+          <div class="gaplist-body">
+            <div class="gaplist-name">LIST3 线索类机会</div>
+            <div class="gaplist-sub">—— 找机会、赢机会</div>
+            <div class="gaplist-desc">基于市场与业务线索，挖掘增长机会，形成行动方案，推动机会转化落地。</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom flow -->
+  <div style="display:flex;align-items:center;gap:10px;justify-content:center;margin-top:12px;">
+    <div class="task-flow-item" style="background:#eff6ff;"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7z"/><path d="M9 10h6"/></svg><span>预测外，找机会</span></div>
+    <div style="color:#3b82f6;font-size:18px;">→</div>
+    <div class="task-flow-item" style="background:#f0fdf4;"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg><span>预测内，抓执行</span></div>
+    <div style="color:#3b82f6;font-size:18px;">→</div>
+    <div class="task-flow-item" style="background:#fffbeb;"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><path d="M3 3v18h18"/><rect x="7" y="14" width="3" height="4" rx="1"/><rect x="12" y="10" width="3" height="8" rx="1"/><rect x="17" y="6" width="3" height="12" rx="1"/></svg><span>形成前瞻管理</span></div>
+  </div>
+  <div style="font-size:11px;color:#64748b;text-align:center;margin-top:6px;">差距驱动机会，机会牵引行动，形成闭环，创造价值。</div>
+</div>
+    </div>
+    <div class="guide-section">
+      <div class="guide-header">
+        <div class="guide-title">学习引导</div>
+        <p class="guide-text">掌握本页核心知识点，结合实际工作场景思考如何应用。</p>
+      </div>
+      <div class="guide-grid">
+        <div class="guide-item">
+          <div class="guide-item-title">第一步：设定基准</div>
+          <div class="guide-item-desc">明确比较的基准是什么（预算目标、历史同期、行业标杆、内部最佳实践）。基准要清晰、可量化。</div>
+        </div>
+        <div class="guide-item">
+          <div class="guide-item-title">第二步：量化差距</div>
+          <div class="guide-item-desc">用数据说话，准确计算差距的绝对值和相对值。差距要分解到最小可管理单元。</div>
+        </div>
+        <div class="guide-item">
+          <div class="guide-item-title">第三步：分析根因</div>
+          <div class="guide-item-desc">运用5Why、鱼骨图等工具，从表面现象深入到根本原因。区分主观原因和客观原因。</div>
+        </div>
+        <div class="guide-item">
+          <div class="guide-item-title">第四步：识别机会</div>
+          <div class="guide-item-desc">差距背后往往隐藏着改进机会。要从差距分析中提炼出可执行的机会点。</div>
+        </div>
+        <div class="guide-item">
+          <div class="guide-item-title">第五步：制定行动</div>
+          <div class="guide-item-desc">针对根因和机会，制定具体、可衡量、可追踪的行动计划，明确责任人和时间节点。</div>
+        </div>
+        <div class="guide-item" style="background:linear-gradient(135deg,#fefce8 0%,#fef9c3 100%);border:1px solid #fde047;">
+          <div class="guide-item-title" style="color:#a16207;display:flex;align-items:center;gap:6px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ca8a04" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            自检思考
+          </div>
+          <div class="guide-item-desc" style="color:#854d0e;">差距分析是否停留在"数字差异"层面，还是深入到了"原因分析"？</div>
+        </div>
+        <div class="guide-item" style="background:linear-gradient(135deg,#fefce8 0%,#fef9c3 100%);border:1px solid #fde047;">
+          <div class="guide-item-title" style="color:#a16207;display:flex;align-items:center;gap:6px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ca8a04" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            自检思考
+          </div>
+          <div class="guide-item-desc" style="color:#854d0e;">每个差距是否都对应了明确的关闭行动和责任人？</div>
+        </div>
+      </div>
+    </div>
+    <div class="quote-box">
+      <div class="quote-icon">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
+      </div>
+      <div class="quote-text">发现差距是智慧，关闭差距是能力。—— 华为经营管理</div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== Slide 09 ========== -->
+<section class="slide" id="slide09">
+  <div class="slide-header">
+    <span class="slide-page" style="background:#059669;color:#fff;">09</span>
+    <div class="slide-meta">
+      <h2 class="slide-title">根因分析方法（5Why/鱼骨图）</h2>
+      <p class="slide-subtitle">穿透表象，定位真因</p>
+      <div class="slide-tags"><span class="slide-tag">5Why</span><span class="slide-tag">鱼骨图</span><span class="slide-tag">根因分析</span></div>
+    </div>
+  </div>
+  <div class="slide-body">
+    <div class="slide-ppt">
+<div class="ppt-container">
+  <div class="ppt-header">
+    <div class="ppt-header-left">
+      <div class="ppt-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="1.5"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7z"/><path d="M9 10h6"/></svg></div>
+      <div class="ppt-title">差距与根因分析：5步分析法</div>
+    </div>
+    <div class="ppt-page">09/16</div>
+  </div>
+  <div class="ppt-subtitle"><svg viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="1.5"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7z"/><path d="M9 10h6"/></svg>真正有效的差距分析，不是描述问题，而是把问题数字化、分层化、归因化，最终沉淀为组织能力。<span class="tag">打开分类</span><span class="tag">层层下钻</span><span class="tag">归因于内</span></div>
+
+  <!-- 5 steps + sidebar -->
+  <div style="display:flex;gap:12px;">
+    <div style="flex:1;">
+      <div class="flow-row" style="flex-wrap:nowrap;overflow-x:auto;">
+        <div class="flow-step">
+      <div class="flow-step-num">01</div>
+      <div class="flow-step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><rect x="8" y="2" width="8" height="5" rx="1"/><rect x="2" y="11" width="7" height="5" rx="1"/><rect x="15" y="11" width="7" height="5" rx="1"/><path d="M12 7v2"/><path d="M5.5 11v-2h13v2"/></svg></div>
+      <div class="flow-step-title">打开分类</div>
+      <div class="flow-step-desc">产品、客户、区域</div>
+    </div>
+        <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+        <div class="flow-step">
+      <div class="flow-step-num">02</div>
+      <div class="flow-step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><path d="M3 3v18h18"/><rect x="7" y="10" width="3" height="8" rx="1"/><rect x="12" y="6" width="3" height="12" rx="1"/><rect x="17" y="14" width="3" height="4" rx="1"/></svg></div>
+      <div class="flow-step-title">数据量化</div>
+      <div class="flow-step-desc">把语文题转化为数学题，差距数字化</div>
+    </div>
+        <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+        <div class="flow-step">
+      <div class="flow-step-num">03</div>
+      <div class="flow-step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><circle cx="11" cy="10" r="2"/><path d="M11 16c-2 0-3.5-1-3.5-1"/></svg></div>
+      <div class="flow-step-title">归因于内</div>
+      <div class="flow-step-desc">客户关系、产品技术、商务、交付、品牌等</div>
+    </div>
+        <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+        <div class="flow-step">
+      <div class="flow-step-num">04</div>
+      <div class="flow-step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><path d="M9 14l3-3 3 2"/><circle cx="11" cy="8" r="1.5" fill="#2563eb" opacity="0.3"/></svg></div>
+      <div class="flow-step-title">解剖麻雀</div>
+      <div class="flow-step-desc">找到代表性问题，层层下钻</div>
+    </div>
+        <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+        <div class="flow-step">
+      <div class="flow-step-num">05</div>
+      <div class="flow-step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="13" y2="17"/><circle cx="18" cy="16" r="2"/></svg></div>
+      <div class="flow-step-title">建流程机制</div>
+      <div class="flow-step-desc">沉淀为流程、规则、制度</div>
+    </div>
+      </div>
+    </div>
+    <div style="width:120px;flex-shrink:0;">
+      <div style="font-size:12px;font-weight:700;color:#1e293b;margin-bottom:8px;text-align:center;">常用方法</div>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <div style="background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:12px;text-align:center;">
+          <div style="width:36px;height:36px;margin:0 auto 6px;"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><circle cx="12" cy="17" r="0.8" fill="#2563eb"/></svg></div>
+          <div style="font-size:12px;font-weight:600;color:#1e293b;">5 Why</div>
+        </div>
+        <div style="background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:12px;text-align:center;">
+          <div style="width:36px;height:36px;margin:0 auto 6px;"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg></div>
+          <div style="font-size:12px;font-weight:600;color:#1e293b;">层层钻取</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ppt-banner">
+    <div class="ppt-banner-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2"/><path d="M18 6l-2 2"/><circle cx="18" cy="6" r="1.5" fill="#2563eb"/></svg></div>
+    <div class="ppt-banner-text">直面差距不是为了追责，而是为了形成可复制的组织改进。</div>
+  </div>
+</div>
+    </div>
+    <div class="guide-section">
+      <div class="guide-header">
+        <div class="guide-title">学习引导</div>
+        <p class="guide-text">掌握本页核心知识点，结合实际工作场景思考如何应用。</p>
+      </div>
+      <div class="guide-grid">
+        <div class="guide-item">
+          <div class="guide-item-title">5Why分析法</div>
+          <div class="guide-item-desc">通过连续追问"为什么"（通常5次左右），从表面症状追溯到根本原因。关键在于每个答案都要基于事实，而非猜测。</div>
+        </div>
+        <div class="guide-item">
+          <div class="guide-item-title">鱼骨图（石川图）</div>
+          <div class="guide-item-desc">从人、机、料、法、环、测六个维度系统性地分析问题原因，确保不遗漏重要因素。适合复杂问题的结构化分析。</div>
+        </div>
+        <div class="guide-item">
+          <div class="guide-item-title">根因验证</div>
+          <div class="guide-item-desc">找到的可能原因需要通过数据进行验证。真正的根因必须满足：可解释现象、可重复验证、解决后能消除问题。</div>
+        </div>
+        <div class="guide-item" style="background:linear-gradient(135deg,#fefce8 0%,#fef9c3 100%);border:1px solid #fde047;">
+          <div class="guide-item-title" style="color:#a16207;display:flex;align-items:center;gap:6px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ca8a04" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            自检思考
+          </div>
+          <div class="guide-item-desc" style="color:#854d0e;">使用5Why时，是否追到了"可采取行动"的那一层原因？</div>
+        </div>
+        <div class="guide-item" style="background:linear-gradient(135deg,#fefce8 0%,#fef9c3 100%);border:1px solid #fde047;">
+          <div class="guide-item-title" style="color:#a16207;display:flex;align-items:center;gap:6px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ca8a04" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            自检思考
+          </div>
+          <div class="guide-item-desc" style="color:#854d0e;">找到的根因是否经过了数据验证，而非主观判断？</div>
+        </div>
+      </div>
+    </div>
+    <div class="quote-box">
+      <div class="quote-icon">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
+      </div>
+      <div class="quote-text">问题的99%在于系统，只有1%在于个人。—— 爱德华兹·戴明</div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== Slide 10 ========== -->
+<section class="slide" id="slide10">
+  <div class="slide-header">
+    <span class="slide-page" style="background:#059669;color:#fff;">10</span>
+    <div class="slide-meta">
+      <h2 class="slide-title">滚动预测方法论</h2>
+      <p class="slide-subtitle">基于事实预测，动态调整资源</p>
+      <div class="slide-tags"><span class="slide-tag">滚动预测</span><span class="slide-tag">动态调整</span><span class="slide-tag">资源配置</span></div>
+    </div>
+  </div>
+  <div class="slide-body">
+    <div class="slide-ppt">
+<div class="ppt-container">
+  <div class="ppt-header">
+    <div class="ppt-header-left">
+      <div class="ppt-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="1.5"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7z"/><path d="M9 10h6"/></svg></div>
+      <div class="ppt-title">任务令与会议组织机制</div>
+    </div>
+    <div class="ppt-page">10/16</div>
+  </div>
+  <div class="ppt-subtitle"><svg viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="1.5"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7z"/><path d="M9 10h6"/></svg>经营分析会的价值，不在于讨论了多少问题，而在于是否形成清晰决议、下达任务令，并在后续持续检查与闭环。<span class="tag">会议组织</span><span class="tag">任务令</span><span class="tag">检查闭环</span></div>
+
+  <!-- 4 mechanism cards -->
+  <div class="info-grid" style="grid-template-columns:repeat(2,1fr);">
+    <div class="info-card">
+      <div class="info-card-icon" style="width:48px;height:48px;border-radius:50%;border:2px solid #dbeafe;background:#eff6ff;"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="M18 8a4 4 0 0 1 0 8"/><path d="M9 16v-2"/><path d="M12 16v-1"/></svg></div>
+      <div class="info-card-body">
+        <div class="info-card-title" style="font-size:14px;">高质量议题和会议通知</div>
+        <ul><li>围绕战略目标与阶段性重点设定议题</li><li>提前明确会议目标、议程与预期产出</li><li>议题背景、关键数据及问题说明清晰</li><li>提前发送通知与资料，确保有效参会</li></ul>
+      </div>
+    </div>
+    <div class="info-card">
+      <div class="info-card-icon" style="width:48px;height:48px;border-radius:50%;border:2px solid #dbeafe;background:#eff6ff;"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="M9 13l2 2 4-4"/></svg></div>
+      <div class="info-card-body">
+        <div class="info-card-title" style="font-size:14px;">提前准备与会前对齐</div>
+        <ul><li>责任部门提前分析问题，准备方案与数据</li><li>明确需要讨论的核心问题与决策点</li><li>与相关方会前沟通，收集意见与信息</li><li>形成初步建议，提升会议决策效率</li></ul>
+      </div>
+    </div>
+    <div class="info-card">
+      <div class="info-card-icon" style="width:48px;height:48px;border-radius:50%;border:2px solid #dbeafe;background:#eff6ff;"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+      <div class="info-card-body">
+        <div class="info-card-title" style="font-size:14px;">精选参会人员，不陪会</div>
+        <ul><li>围绕议题邀请决策者与关键责任人参会</li><li>避免无关人员参会，减少时间浪费</li><li>参会人员有发言、有责任、有决策权</li><li>严控会时与议程，确保高效聚焦</li></ul>
+      </div>
+    </div>
+    <div class="info-card">
+      <div class="info-card-icon" style="width:48px;height:48px;border-radius:50%;border:2px solid #dbeafe;background:#eff6ff;"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="M12 18l4-4"/><path d="M16 14v4h-4"/></svg></div>
+      <div class="info-card-body">
+        <div class="info-card-title" style="font-size:14px;">形成决议/下达任务令</div>
+        <ul><li>针对每个议题形成明确决议</li><li>对需要执行的事项下达任务令</li><li>明确目标、动作、时间、责任与验收标准</li><li>当场确认并记录，确保所有人理解一致</li></ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- 任务令关键要素 -->
+  <div style="font-size:13px;font-weight:700;color:#1e293b;margin:12px 0 8px;">任务令的关键要素</div>
+  <div class="action-grid" style="grid-template-columns:repeat(5,1fr);">
+    <div class="action-item">
+      <div class="action-num">1</div>
+      <div class="action-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2"/></svg></div>
+      <div class="action-label">目标</div>
+      <div class="action-hint">（要量化）</div>
+    </div>
+    <div class="action-item">
+      <div class="action-num">2</div>
+      <div class="action-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><circle cx="12" cy="5" r="2"/><path d="M10 8l-2 6h6l-2-6"/><path d="M7 14h10"/><path d="M8 18h8"/></svg></div>
+      <div class="action-label">动作</div>
+      <div class="action-hint">（要具体）</div>
+    </div>
+    <div class="action-item">
+      <div class="action-num">3</div>
+      <div class="action-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><circle cx="12" cy="15" r="4" fill="none"/><path d="M12 15v-2"/></svg></div>
+      <div class="action-label">时间点</div>
+      <div class="action-hint">（要明确）</div>
+    </div>
+    <div class="action-item">
+      <div class="action-num">4</div>
+      <div class="action-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+      <div class="action-label">责任人</div>
+      <div class="action-hint">（要到人）</div>
+    </div>
+    <div class="action-item">
+      <div class="action-num">5</div>
+      <div class="action-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 12 15 16 11"/></svg></div>
+      <div class="action-label">验收标准</div>
+      <div class="action-hint">（要可验证）</div>
+    </div>
+  </div>
+
+  <!-- 闭环流程 -->
+  <div style="display:flex;align-items:center;justify-content:center;gap:10px;margin-top:12px;background:#f8fafc;padding:12px;border-radius:10px;">
+    <div class="task-flow-item"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="M18 8a4 4 0 0 1 0 8"/><path d="M9 16v-2"/><path d="M12 16v-1"/></svg><span>发布纪要</span></div>
+    <div style="color:#3b82f6;">→</div>
+    <div style="font-size:11px;color:#64748b;text-align:center;">及时发布会议纪要<br/>与任务令清单</div>
+    <div style="color:#3b82f6;">→</div>
+    <div class="task-flow-item"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><span>跟踪检查</span></div>
+    <div style="color:#3b82f6;">→</div>
+    <div style="font-size:11px;color:#64748b;text-align:center;">按任务令要求<br/>跟踪进度与结果</div>
+    <div style="color:#3b82f6;">→</div>
+    <div class="task-flow-item"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><polyline points="3 17 8 12 13 15 21 7"/><polyline points="18 7 21 7 21 10"/></svg><span>下次会议复盘</span></div>
+  </div>
+
+  <div class="ppt-banner">
+    <div class="ppt-banner-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></div>
+    <div class="ppt-banner-text">任务令不是会议纪要，而是推动经营动作落地的执行抓手。</div>
+  </div>
+</div>
+    </div>
+    <div class="guide-section">
+      <div class="guide-header">
+        <div class="guide-title">学习引导</div>
+        <p class="guide-text">掌握本页核心知识点，结合实际工作场景思考如何应用。</p>
+      </div>
+      <div class="guide-grid">
+        <div class="guide-item">
+          <div class="guide-item-title">滚动预测的定义</div>
+          <div class="guide-item-desc">滚动预测是在固定周期（如每季度）对未来一定期间（如未来4个季度）的经营状况进行预测和更新。</div>
+        </div>
+        <div class="guide-item">
+          <div class="guide-item-title">与预算的区别</div>
+          <div class="guide-item-desc">预算是"承诺"（年度刚性目标），预测是"预判"（基于最新信息的动态估计）。预测可以超越预算，但不能替代预算。</div>
+        </div>
+        <div class="guide-item">
+          <div class="guide-item-title">预测驱动资源配置</div>
+          <div class="guide-item-desc">基于滚动预测的结果，动态调整资源投入（人员、费用、投资），确保资源投向最有价值的机会。</div>
+        </div>
+        <div class="guide-item" style="background:linear-gradient(135deg,#fefce8 0%,#fef9c3 100%);border:1px solid #fde047;">
+          <div class="guide-item-title" style="color:#a16207;display:flex;align-items:center;gap:6px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ca8a04" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            自检思考
+          </div>
+          <div class="guide-item-desc" style="color:#854d0e;">你的企业是"一套预算管全年"，还是会基于市场变化进行滚动预测？</div>
+        </div>
+        <div class="guide-item" style="background:linear-gradient(135deg,#fefce8 0%,#fef9c3 100%);border:1px solid #fde047;">
+          <div class="guide-item-title" style="color:#a16207;display:flex;align-items:center;gap:6px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ca8a04" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            自检思考
+          </div>
+          <div class="guide-item-desc" style="color:#854d0e;">预测结果是否真正影响了资源配置决策？</div>
+        </div>
+      </div>
+    </div>
+    <div class="quote-box">
+      <div class="quote-icon">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
+      </div>
+      <div class="quote-text">预测的目的是为了提前行动，而不是为了准确预测。—— 华为财经管理</div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== Slide 11 ========== -->
+<section class="slide" id="slide11">
+  <div class="slide-header">
+    <span class="slide-page" style="background:#d97706;color:#fff;">11</span>
+    <div class="slide-meta">
+      <h2 class="slide-title">全面预算管理体系</h2>
+      <p class="slide-subtitle">战略→预算→执行→考核的闭环</p>
+      <div class="slide-tags"><span class="slide-tag">全面预算</span><span class="slide-tag">战略解码</span><span class="slide-tag">预算闭环</span></div>
+    </div>
+  </div>
+  <div class="slide-body">
+    <div class="slide-ppt">
+<div class="ppt-container">
+  <div class="ppt-header">
+    <div class="ppt-header-left">
+      <div class="ppt-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="1.5"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7z"/><path d="M9 10h6"/></svg></div>
+      <div class="ppt-title">预算：下一年度经营分析会的基石</div>
+    </div>
+    <div class="ppt-page">11/16</div>
+  </div>
+  <div class="ppt-subtitle"><svg viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="1.5"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7z"/><path d="M9 10h6"/></svg>预算不是财务填表，而是把战略目标翻译成年度经营承诺与资源配置方案，是下一年度经营分析会的基石。<span class="tag">资源配置</span><span class="tag">年度承诺</span><span class="tag">经营起点</span></div>
+
+  <!-- 4 main steps -->
+  <div class="flow-row">
+    <div class="flow-step">
+      <div class="flow-step-num">01</div>
+      <div class="flow-step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2"/></svg></div>
+      <div class="flow-step-title">战略目标</div>
+      <div class="flow-step-desc">明确方向与年度重点</div>
+    </div>
+    <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+    <div class="flow-step">
+      <div class="flow-step-num">02</div>
+      <div class="flow-step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><text x="12" y="17" text-anchor="middle" fill="#2563eb" font-size="8" font-weight="700">¥</text></svg></div>
+      <div class="flow-step-title">年度预算</div>
+      <div class="flow-step-desc">形成经营承诺与资源安排</div>
+    </div>
+    <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+    <div class="flow-step">
+      <div class="flow-step-num">03</div>
+      <div class="flow-step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><circle cx="16" cy="3.13" r="4"/><path d="M6 15l4 4 4-4"/><path d="M14 13h6"/></svg></div>
+      <div class="flow-step-title">经营执行</div>
+      <div class="flow-step-desc">围绕预算组织经营动作</div>
+    </div>
+    <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+    <div class="flow-step">
+      <div class="flow-step-num">04</div>
+      <div class="flow-step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="M9 13l2 2 4-4"/></svg></div>
+      <div class="flow-step-title">经营分析</div>
+      <div class="flow-step-desc">对照预算复盘差距并持续纠偏</div>
+    </div>
+  </div>
+
+  <!-- 4比喻 cards -->
+  <div class="info-grid" style="grid-template-columns:repeat(4,1fr);">
+    <div class="info-card">
+      <div class="info-card-icon" style="background:#eff6ff;border:1px solid #dbeafe;border-radius:8px;"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><text x="12" y="16" text-anchor="middle" fill="#2563eb" font-size="8" font-weight="700">¥</text></svg></div>
+      <div class="info-card-body">
+        <div class="info-card-title">资源有限，预算要聚焦重点</div>
+        <div class="info-card-desc"></div>
+      </div>
+    </div>
+    <div class="info-card">
+      <div class="info-card-icon" style="background:#eff6ff;border:1px solid #dbeafe;border-radius:8px;"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><path d="M12 2a7 7 0 0 0-7 7c0 3 2 5 2 8a5 5 0 0 0 10 0c0-3 2-5 2-8a7 7 0 0 0-7-7z"/><path d="M12 14v4"/><circle cx="12" cy="9" r="2" fill="#eff6ff"/></svg></div>
+      <div class="info-card-body">
+        <div class="info-card-title">预算像浇水，要浇在最关键的作物上</div>
+        <div class="info-card-desc"></div>
+      </div>
+    </div>
+    <div class="info-card">
+      <div class="info-card-icon" style="background:#eff6ff;border:1px solid #dbeafe;border-radius:8px;"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><path d="M3 3v18"/><path d="M3 8h14l4-3-4-3H3z"/><path d="M7 13h10l4 3-4 3H7z"/></svg></div>
+      <div class="info-card-body">
+        <div class="info-card-title">预算回答做什么、不做什么</div>
+        <div class="info-card-desc"></div>
+      </div>
+    </div>
+    <div class="info-card">
+      <div class="info-card-icon" style="background:#eff6ff;border:1px solid #dbeafe;border-radius:8px;"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><path d="M3 3v18h18"/><rect x="7" y="10" width="3" height="8" rx="1"/><rect x="12" y="6" width="3" height="12" rx="1"/><circle cx="18" cy="6" r="2" fill="none"/><path d="M18 4v2"/></svg></div>
+      <div class="info-card-body">
+        <div class="info-card-title">预算为下一年度经营分析奠定起点</div>
+        <div class="info-card-desc"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom flow -->
+  <div class="task-flow" style="background:#f8fafc;border-radius:10px;padding:14px;margin-top:12px;">
+    <div class="task-flow-item"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg><span>战略规划</span></div>
+    <div class="task-flow-conn">→</div>
+    <div class="task-flow-item"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><text x="12" y="17" text-anchor="middle" fill="#2563eb" font-size="8" font-weight="700">¥</text></svg><span>年度预算</span></div>
+    <div class="task-flow-conn">→</div>
+    <div class="task-flow-item"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="3" fill="#eff6ff"/><circle cx="10" cy="10" r="4" stroke="#2563eb"/><line x1="16" y1="16" x2="13" y2="13"/><path d="M6 16h8"/></svg><span>经营分析</span></div>
+    <div class="task-flow-conn">→</div>
+    <div class="task-flow-item"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1 2.12-9.36L23 10"/></svg><span>执行闭环</span></div>
+  </div>
+
+  <div class="ppt-banner">
+    <div class="ppt-banner-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2"/><path d="M18 6l-2 2"/><circle cx="18" cy="6" r="1.5" fill="#2563eb"/></svg></div>
+    <div class="ppt-banner-text">预算是年度经营的起点，也是经营分析持续运转的基石。</div>
+  </div>
+</div>
+    </div>
+    <div class="guide-section">
+      <div class="guide-header">
+        <div class="guide-title">学习引导</div>
+        <p class="guide-text">掌握本页核心知识点，结合实际工作场景思考如何应用。</p>
+      </div>
+      <div class="guide-grid">
+        <div class="guide-item">
+          <div class="guide-item-title">预算的本质</div>
+          <div class="guide-item-desc">预算是战略的量化表达，是资源配置的工具，是绩效评价的标准。预算必须承接战略，否则就是数字游戏。</div>
+        </div>
+        <div class="guide-item">
+          <div class="guide-item-title">预算编制流程</div>
+          <div class="guide-item-desc">战略解码→确定关键任务→编制业务预算→编制财务预算→预算评审→预算下达。自上而下与自下而上相结合。</div>
+        </div>
+        <div class="guide-item">
+          <div class="guide-item-title">预算与执行的闭环</div>
+          <div class="guide-item-desc">预算编制→执行监控→偏差分析→调整优化→绩效考核→下年预算。形成完整的PDCA闭环。</div>
+        </div>
+        <div class="guide-item" style="background:linear-gradient(135deg,#fefce8 0%,#fef9c3 100%);border:1px solid #fde047;">
+          <div class="guide-item-title" style="color:#a16207;display:flex;align-items:center;gap:6px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ca8a04" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            自检思考
+          </div>
+          <div class="guide-item-desc" style="color:#854d0e;">你的预算编制是否真正承接了战略目标，还是"上年数据+增长率"的简单推演？</div>
+        </div>
+        <div class="guide-item" style="background:linear-gradient(135deg,#fefce8 0%,#fef9c3 100%);border:1px solid #fde047;">
+          <div class="guide-item-title" style="color:#a16207;display:flex;align-items:center;gap:6px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ca8a04" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            自检思考
+          </div>
+          <div class="guide-item-desc" style="color:#854d0e;">预算执行过程中是否有及时的偏差分析和调整机制？</div>
+        </div>
+      </div>
+    </div>
+    <div class="quote-box">
+      <div class="quote-icon">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
+      </div>
+      <div class="quote-text">预算是企业战略落地的货币化语言。—— 华为财经体系</div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== Slide 12 ========== -->
+<section class="slide" id="slide12">
+  <div class="slide-header">
+    <span class="slide-page" style="background:#d97706;color:#fff;">12</span>
+    <div class="slide-meta">
+      <h2 class="slide-title">预算执行监控机制</h2>
+      <p class="slide-subtitle">预实对比、预警分析、动态调整</p>
+      <div class="slide-tags"><span class="slide-tag">预算监控</span><span class="slide-tag">预实对比</span><span class="slide-tag">预警机制</span></div>
+    </div>
+  </div>
+  <div class="slide-body">
+    <div class="slide-ppt">
+<div class="ppt-container">
+  <div class="ppt-header">
+    <div class="ppt-header-left">
+      <div class="ppt-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="1.5"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7z"/><path d="M9 10h6"/></svg></div>
+      <div class="ppt-title">全面预算管理：责任与流程</div>
+    </div>
+    <div class="ppt-page">12/16</div>
+  </div>
+  <div class="ppt-subtitle"><svg viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="1.5"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7z"/><path d="M9 10h6"/></svg>预算管理的第一责任人是一把手，财务负责组织与校准，业务部门是预算主体，绩效评价贯穿全过程。<span class="tag">责任到位</span><span class="tag">流程闭环</span><span class="tag">绩效牵引</span></div>
+
+  <!-- 4 responsibility cards -->
+  <div class="info-grid" style="grid-template-columns:repeat(2,1fr);">
+    <div class="info-card">
+      <div class="info-card-icon" style="width:48px;height:48px;border-radius:50%;border:2px solid #dbeafe;background:#eff6ff;"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/><path d="M12 11v3"/><path d="M10 14l2 3 2-3"/></svg></div>
+      <div class="info-card-body">
+        <div class="info-card-title" style="font-size:14px;">责任主体</div>
+        <ul><li>一把手负责目标承诺与资源决策</li><li>经营班子共同审视预算合理性</li></ul>
+      </div>
+    </div>
+    <div class="info-card">
+      <div class="info-card-icon" style="width:48px;height:48px;border-radius:50%;border:2px solid #dbeafe;background:#eff6ff;"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+      <div class="info-card-body">
+        <div class="info-card-title" style="font-size:14px;">业务部门</div>
+        <ul><li>围绕客户、产品、区域编制预算</li><li>基于项目与业务计划提出资源需求</li></ul>
+      </div>
+    </div>
+    <div class="info-card">
+      <div class="info-card-icon" style="width:48px;height:48px;border-radius:50%;border:2px solid #dbeafe;background:#eff6ff;"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="10" y2="10"/><line x1="14" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="10" y2="14"/><line x1="14" y1="14" x2="16" y2="14"/><line x1="8" y1="18" x2="16" y2="18"/></svg></div>
+      <div class="info-card-body">
+        <div class="info-card-title" style="font-size:14px;">财务与职能</div>
+        <ul><li>组织编制、校验口径、汇总平衡</li><li>形成预算规则、模板与过程管控</li></ul>
+      </div>
+    </div>
+    <div class="info-card">
+      <div class="info-card-icon" style="width:48px;height:48px;border-radius:50%;border:2px solid #dbeafe;background:#eff6ff;"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1 2.12-9.36L23 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1-2.12 9.36L1 14"/></svg></div>
+      <div class="info-card-body">
+        <div class="info-card-title" style="font-size:14px;">预算流程</div>
+        <ul><li>编制预算 → 评审预算 → 执行预算 → 绩效评价</li></ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5 key principles -->
+  <div style="font-size:13px;font-weight:700;color:#1e40af;margin:12px 0 8px;text-align:center;">预算管理关键原则</div>
+  <div class="info-grid" style="grid-template-columns:repeat(5,1fr);gap:8px;">
+    <div class="info-card" style="flex-direction:column;align-items:center;text-align:center;padding:12px 8px;">
+      <div class="info-card-icon" style="width:36px;height:36px;background:#eff6ff;border-radius:8px;"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2"/></svg></div>
+      <div class="info-card-title" style="font-size:12px;margin-top:6px;">目标清晰</div>
+    </div>
+    <div class="info-card" style="flex-direction:column;align-items:center;text-align:center;padding:12px 8px;">
+      <div class="info-card-icon" style="width:36px;height:36px;background:#eff6ff;border-radius:8px;"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+      <div class="info-card-title" style="font-size:12px;margin-top:6px;">责任到人</div>
+    </div>
+    <div class="info-card" style="flex-direction:column;align-items:center;text-align:center;padding:12px 8px;">
+      <div class="info-card-icon" style="width:36px;height:36px;background:#eff6ff;border-radius:8px;"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg></div>
+      <div class="info-card-title" style="font-size:12px;margin-top:6px;">口径一致</div>
+    </div>
+    <div class="info-card" style="flex-direction:column;align-items:center;text-align:center;padding:12px 8px;">
+      <div class="info-card-icon" style="width:36px;height:36px;background:#eff6ff;border-radius:8px;"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
+      <div class="info-card-title" style="font-size:12px;margin-top:6px;">过程跟踪</div>
+    </div>
+    <div class="info-card" style="flex-direction:column;align-items:center;text-align:center;padding:12px 8px;">
+      <div class="info-card-icon" style="width:36px;height:36px;background:#eff6ff;border-radius:8px;"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+      <div class="info-card-title" style="font-size:12px;margin-top:6px;">结果评价</div>
+    </div>
+  </div>
+
+  <div class="ppt-banner">
+    <div class="ppt-banner-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2"/><path d="M18 6l-2 2"/><circle cx="18" cy="6" r="1.5" fill="#2563eb"/></svg></div>
+    <div class="ppt-banner-text">预算管理不是财务独角戏，而是经营责任、资源配置与绩效评价的一体化管理。</div>
+  </div>
+</div>
+    </div>
+    <div class="guide-section">
+      <div class="guide-header">
+        <div class="guide-title">学习引导</div>
+        <p class="guide-text">掌握本页核心知识点，结合实际工作场景思考如何应用。</p>
+      </div>
+      <div class="guide-grid">
+        <div class="guide-item">
+          <div class="guide-item-title">预实对比分析</div>
+          <div class="guide-item-desc">定期（至少每月）对比预算与实际执行数据，分析差异原因。关注重大偏差和趋势性偏差。</div>
+        </div>
+        <div class="guide-item">
+          <div class="guide-item-title">预警机制</div>
+          <div class="guide-item-desc">建立红黄绿灯预警机制：绿灯（正常偏差范围内）、黄灯（需关注）、红灯（重大偏差需立即干预）。</div>
+        </div>
+        <div class="guide-item">
+          <div class="guide-item-title">动态调整原则</div>
+          <div class="guide-item-desc">预算不是一成不变的。在重大市场变化或战略调整时，应启动预算调整程序，确保预算的指引作用。</div>
+        </div>
+        <div class="guide-item" style="background:linear-gradient(135deg,#fefce8 0%,#fef9c3 100%);border:1px solid #fde047;">
+          <div class="guide-item-title" style="color:#a16207;display:flex;align-items:center;gap:6px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ca8a04" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            自检思考
+          </div>
+          <div class="guide-item-desc" style="color:#854d0e;">是否建立了定期的预实对比分析机制？</div>
+        </div>
+        <div class="guide-item" style="background:linear-gradient(135deg,#fefce8 0%,#fef9c3 100%);border:1px solid #fde047;">
+          <div class="guide-item-title" style="color:#a16207;display:flex;align-items:center;gap:6px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ca8a04" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            自检思考
+          </div>
+          <div class="guide-item-desc" style="color:#854d0e;">预算预警机制是否能及时发现和干预重大偏差？</div>
+        </div>
+      </div>
+    </div>
+    <div class="quote-box">
+      <div class="quote-icon">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
+      </div>
+      <div class="quote-text">没有监控的预算，只是一纸空文；没有调整的预算，只会束缚手脚。—— 华为预算管理</div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== Slide 13 ========== -->
+<section class="slide" id="slide13">
+  <div class="slide-header">
+    <span class="slide-page" style="background:#d97706;color:#fff;">13</span>
+    <div class="slide-meta">
+      <h2 class="slide-title">资源配置效率分析</h2>
+      <p class="slide-subtitle">人效、费效、投效三维评估</p>
+      <div class="slide-tags"><span class="slide-tag">资源配置</span><span class="slide-tag">人效分析</span><span class="slide-tag">费效分析</span></div>
+    </div>
+  </div>
+  <div class="slide-body">
+    <div class="slide-ppt">
+<div class="ppt-container">
+  <div class="ppt-header">
+    <div class="ppt-header-left">
+      <div class="ppt-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="1.5"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7z"/><path d="M9 10h6"/></svg></div>
+      <div class="ppt-title">战略—预算—执行闭环</div>
+    </div>
+    <div class="ppt-page">13/16</div>
+  </div>
+  <div class="ppt-subtitle"><svg viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="1.5"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7z"/><path d="M9 10h6"/></svg>预算不是单独存在，而是连接战略规划、年度经营计划、预算执行和绩效评价的经营闭环。<span class="tag">战略衔接</span><span class="tag">预算执行</span><span class="tag">绩效评价</span></div>
+
+  <!-- 5 main steps -->
+  <div class="flow-row">
+    <div class="flow-step">
+      <div class="flow-step-num">01</div>
+      <div class="flow-step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2"/></svg></div>
+      <div class="flow-step-title">战略规划 SP</div>
+      <div class="flow-step-desc">明确方向与目标，确定战略重点</div>
+    </div>
+    <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+    <div class="flow-step">
+      <div class="flow-step-num">02</div>
+      <div class="flow-step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="M8 13v4m4-6v6m4-8v8"/><circle cx="17" cy="17" r="3"/></svg></div>
+      <div class="flow-step-title">年度经营计划 BP</div>
+      <div class="flow-step-desc">分解目标与举措，形成经营计划</div>
+    </div>
+    <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+    <div class="flow-step">
+      <div class="flow-step-num">03</div>
+      <div class="flow-step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><text x="12" y="17" text-anchor="middle" fill="#2563eb" font-size="8" font-weight="700">¥</text></svg></div>
+      <div class="flow-step-title">预算编制</div>
+      <div class="flow-step-desc">整合资源与目标，编制预算方案</div>
+    </div>
+    <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+    <div class="flow-step">
+      <div class="flow-step-num">04</div>
+      <div class="flow-step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><polyline points="6 12 10 8 14 11 18 6"/><circle cx="12" cy="17" r="1" fill="#2563eb"/><path d="M12 17v4"/></svg></div>
+      <div class="flow-step-title">预算执行</div>
+      <div class="flow-step-desc">落实预算方案，监控执行进度</div>
+    </div>
+    <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+    <div class="flow-step">
+      <div class="flow-step-num">05</div>
+      <div class="flow-step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="M9 13l2 2 4-4"/></svg></div>
+      <div class="flow-step-title">绩效评价</div>
+      <div class="flow-step-desc">评估执行结果，反馈改进提升</div>
+    </div>
+  </div>
+
+  <!-- 5 budget categories -->
+  <div class="info-grid" style="grid-template-columns:repeat(5,1fr);gap:8px;">
+    <div class="info-card" style="flex-direction:column;padding:12px;">
+      <div class="info-card-icon" style="width:36px;height:36px;background:#eff6ff;border-radius:8px;"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg></div>
+      <div class="info-card-title" style="font-size:12px;margin-top:6px;">销售预算</div>
+      <ul style="padding-left:12px;margin-top:4px;"><li>收入与订单预测</li><li>产品与区域预算</li><li>客户与渠道预算</li><li>价格与折扣预算</li></ul>
+    </div>
+    <div class="info-card" style="flex-direction:column;padding:12px;">
+      <div class="info-card-icon" style="width:36px;height:36px;background:#eff6ff;border-radius:8px;"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><text x="12" y="16" text-anchor="middle" fill="#2563eb" font-size="8" font-weight="700">¥</text><path d="M8 10h8M8 14h8"/></svg></div>
+      <div class="info-card-title" style="font-size:12px;margin-top:6px;">费用预算</div>
+      <ul style="padding-left:12px;margin-top:4px;"><li>管理费用预算</li><li>销售费用预算</li><li>研发费用预算</li><li>财务费用预算</li></ul>
+    </div>
+    <div class="info-card" style="flex-direction:column;padding:12px;">
+      <div class="info-card-icon" style="width:36px;height:36px;background:#eff6ff;border-radius:8px;"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><path d="M3 3v18h18"/><polyline points="7 14 11 10 15 13 20 7"/><circle cx="20" cy="7" r="1.5" fill="#2563eb"/></svg></div>
+      <div class="info-card-title" style="font-size:12px;margin-top:6px;">投资预算</div>
+      <ul style="padding-left:12px;margin-top:4px;"><li>项目投资计划</li><li>资本支出预算</li><li>投资回报分析</li><li>投资风险评估</li></ul>
+    </div>
+    <div class="info-card" style="flex-direction:column;padding:12px;">
+      <div class="info-card-icon" style="width:36px;height:36px;background:#eff6ff;border-radius:8px;"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><circle cx="19" cy="11" r="2"/><path d="M19 8v2"/></svg></div>
+      <div class="info-card-title" style="font-size:12px;margin-top:6px;">资源配置</div>
+      <ul style="padding-left:12px;margin-top:4px;"><li>人力资源配置</li><li>资金资源配置</li><li>产能资源配置</li><li>数字化资源配置</li></ul>
+    </div>
+    <div class="info-card" style="flex-direction:column;padding:12px;background:linear-gradient(135deg,#eff6ff,#dbeafe);">
+      <div class="info-card-icon" style="width:36px;height:36px;background:#fff;border-radius:8px;"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M16 16h5v5"/></svg></div>
+      <div class="info-card-title" style="font-size:12px;margin-top:6px;">闭环管理</div>
+      <ul style="padding-left:12px;margin-top:4px;"><li>从战略到预算</li><li>从预算到执行</li><li>从执行到评价</li></ul>
+    </div>
+  </div>
+
+  <div class="ppt-banner">
+    <div class="ppt-banner-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2"/><path d="M18 6l-2 2"/><circle cx="18" cy="6" r="1.5" fill="#2563eb"/></svg></div>
+    <div class="ppt-banner-text">战略决定方向，预算配置资源，执行创造结果，评价驱动改进。</div>
+  </div>
+</div>
+    </div>
+    <div class="guide-section">
+      <div class="guide-header">
+        <div class="guide-title">学习引导</div>
+        <p class="guide-text">掌握本页核心知识点，结合实际工作场景思考如何应用。</p>
+      </div>
+      <div class="guide-grid">
+        <div class="guide-item">
+          <div class="guide-item-title">人效分析</div>
+          <div class="guide-item-desc">人均销售收入、人均利润、人均成本等指标的分析。识别人员配置的冗余或不足，优化组织结构和人员编制。</div>
+        </div>
+        <div class="guide-item">
+          <div class="guide-item-title">费效分析</div>
+          <div class="guide-item-desc">费用投入与产出效益的对比分析。区分战略性投入和运营性支出，确保每一分钱都花在刀刃上。</div>
+        </div>
+        <div class="guide-item">
+          <div class="guide-item-title">投效分析</div>
+          <div class="guide-item-desc">投资项目（研发、市场、IT等）的投入产出分析。评估投资回报率，优化投资决策。</div>
+        </div>
+        <div class="guide-item" style="background:linear-gradient(135deg,#fefce8 0%,#fef9c3 100%);border:1px solid #fde047;">
+          <div class="guide-item-title" style="color:#a16207;display:flex;align-items:center;gap:6px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ca8a04" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            自检思考
+          </div>
+          <div class="guide-item-desc" style="color:#854d0e;">是否定期分析人效、费效、投效三维指标？</div>
+        </div>
+        <div class="guide-item" style="background:linear-gradient(135deg,#fefce8 0%,#fef9c3 100%);border:1px solid #fde047;">
+          <div class="guide-item-title" style="color:#a16207;display:flex;align-items:center;gap:6px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ca8a04" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            自检思考
+          </div>
+          <div class="guide-item-desc" style="color:#854d0e;">资源配置是否向高价值领域倾斜？</div>
+        </div>
+      </div>
+    </div>
+    <div class="quote-box">
+      <div class="quote-icon">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
+      </div>
+      <div class="quote-text">资源永远稀缺，配置决定成败。—— 华为资源配置原则</div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== Slide 14 ========== -->
+<section class="slide" id="slide14">
+  <div class="slide-header">
+    <span class="slide-page" style="background:#d97706;color:#fff;">14</span>
+    <div class="slide-meta">
+      <h2 class="slide-title">预算调整与追加规则</h2>
+      <p class="slide-subtitle">弹性预算与刚性约束的平衡</p>
+      <div class="slide-tags"><span class="slide-tag">预算调整</span><span class="slide-tag">弹性预算</span><span class="slide-tag">追加规则</span></div>
+    </div>
+  </div>
+  <div class="slide-body">
+    <div class="slide-ppt">
+<div class="ppt-container">
+  <div class="ppt-header">
+    <div class="ppt-header-left">
+      <div class="ppt-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="1.5"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7z"/><path d="M9 10h6"/></svg></div>
+      <div class="ppt-title">预算差距管理：预算 vs 预测</div>
+    </div>
+    <div class="ppt-page">14/16</div>
+  </div>
+  <div class="ppt-subtitle"><svg viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="1.5"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7z"/><path d="M9 10h6"/></svg>经营分析要用当前预测对照年初预算，识别规模、盈利、现金与效率等差距，并形成针对性的纠偏动作。<span class="tag">差距识别</span><span class="tag">动态纠偏</span><span class="tag">目标达成</span></div>
+
+  <!-- Two column layout -->
+  <div class="two-col">
+    <div class="section-box">
+      <div style="font-size:13px;font-weight:700;color:#1e40af;margin-bottom:10px;text-align:center;">差距公式</div>
+      <div style="background:linear-gradient(135deg,#eff6ff,#dbeafe);border-radius:10px;padding:16px;text-align:center;margin-bottom:12px;">
+        <div style="font-size:16px;font-weight:800;color:#1e40af;">差距 = 当前预测 - 年初预算</div>
+      </div>
+      <div class="info-grid" style="grid-template-columns:1fr 1fr;gap:8px;">
+        <div class="info-card" style="flex-direction:column;align-items:center;text-align:center;padding:10px;">
+          <div class="info-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><path d="M3 3v18h18"/><rect x="5" y="10" width="3" height="8" rx="1"/><rect x="10" y="6" width="3" height="12" rx="1"/><rect x="15" y="14" width="3" height="4" rx="1"/></svg></div>
+          <div class="info-card-title" style="font-size:12px;">规模差距</div>
+          <div class="info-card-desc">衡量收入、销量、订单等规模变化。</div>
+        </div>
+        <div class="info-card" style="flex-direction:column;align-items:center;text-align:center;padding:10px;">
+          <div class="info-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><path d="M3 3v18h18"/><polyline points="7 14 11 10 15 12 20 7"/><circle cx="20" cy="7" r="2" fill="none"/><text x="20" y="7" text-anchor="middle" fill="#2563eb" font-size="5">¥</text></svg></div>
+          <div class="info-card-title" style="font-size:12px;">盈利差距</div>
+          <div class="info-card-desc">衡量毛利、净利、利润率等差异。</div>
+        </div>
+        <div class="info-card" style="flex-direction:column;align-items:center;text-align:center;padding:10px;">
+          <div class="info-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v4c0 1.66 4 3 9 3s9-1.34 9-3V5"/><path d="M3 9v4c0 1.66 4 3 9 3s9-1.34 9-3V9"/></svg></div>
+          <div class="info-card-title" style="font-size:12px;">现金流差距</div>
+          <div class="info-card-desc">衡量经营现金流、自由现金流差异。</div>
+        </div>
+        <div class="info-card" style="flex-direction:column;align-items:center;text-align:center;padding:10px;">
+          <div class="info-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><path d="M12 22a10 10 0 0 0 10-10c0-5.523-4.477-10-10-10S2 6.477 2 12a10 10 0 0 0 10 10z"/><path d="M12 14v-4"/><circle cx="12" cy="14" r="2" fill="#eff6ff"/></svg></div>
+          <div class="info-card-title" style="font-size:12px;">费用效率差距</div>
+          <div class="info-card-desc">衡量费用率、人效、周转效率等差异。</div>
+        </div>
+      </div>
+    </div>
+    <div class="section-box">
+      <div style="font-size:13px;font-weight:700;color:#1e40af;margin-bottom:10px;text-align:center;">管理动作</div>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <div style="display:flex;align-items:center;gap:10px;background:#f8fafc;border-radius:8px;padding:10px;">
+          <div style="width:28px;height:28px;background:#2563eb;color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;">01</div>
+          <div style="font-size:12px;color:#475569;"><strong>打开分类</strong><br/>按业务、产品、区域、客户、渠道、费用等维度展开分析。</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;background:#f8fafc;border-radius:8px;padding:10px;">
+          <div style="width:28px;height:28px;background:#2563eb;color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;">02</div>
+          <div style="font-size:12px;color:#475569;"><strong>定位原因</strong><br/>识别差距来源，判断是外部变化、策略偏差还是执行问题。</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;background:#f8fafc;border-radius:8px;padding:10px;">
+          <div style="width:28px;height:28px;background:#2563eb;color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;">03</div>
+          <div style="font-size:12px;color:#475569;"><strong>形成决议</strong><br/>制定纠偏策略与资源调整方案，明确优先级与实施路径。</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;background:#f8fafc;border-radius:8px;padding:10px;">
+          <div style="width:28px;height:28px;background:#2563eb;color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;">04</div>
+          <div style="font-size:12px;color:#475569;"><strong>下达任务令</strong><br/>发布任务令，明确目标、动作、责任人与完成时限。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom 3 concepts -->
+  <div class="info-grid" style="grid-template-columns:repeat(3,1fr);margin-top:8px;">
+    <div class="info-card">
+      <div class="info-card-icon" style="background:#eff6ff;border:1px solid #dbeafe;border-radius:8px;"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><path d="M11.5 15.5l-4-4L2 17l4 4 5.5-5.5z"/><path d="M12.5 14.5l4 4L22 13l-4-4-5.5 5.5z"/><path d="M8.5 11.5l4 4"/><path d="M15.5 11.5l-4 4"/></svg></div>
+      <div class="info-card-body">
+        <div class="info-card-title">预算是承诺</div>
+        <div class="info-card-desc">年初预算是组织的承诺与目标，是资源配置与绩效考核的依据。</div>
+      </div>
+    </div>
+    <div class="info-card">
+      <div class="info-card-icon" style="background:#eff6ff;border:1px solid #dbeafe;border-radius:8px;"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 2v20"/><path d="M2 12h20"/></svg></div>
+      <div class="info-card-body">
+        <div class="info-card-title">预测是资源配置基础</div>
+        <div class="info-card-desc">当前预测反映最新经营预期，是动态配置资源与决策的基础。</div>
+      </div>
+    </div>
+    <div class="info-card">
+      <div class="info-card-icon" style="background:#eff6ff;border:1px solid #dbeafe;border-radius:8px;"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2"/><path d="M18 6l-2 2"/><circle cx="18" cy="6" r="1.5" fill="#2563eb"/></svg></div>
+      <div class="info-card-body">
+        <div class="info-card-title">差距分析驱动纠偏</div>
+        <div class="info-card-desc">通过差距识别与管理动作闭环，实现目标达成与经营持续改进。</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ppt-banner">
+    <div class="ppt-banner-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2"/><path d="M18 6l-2 2"/><circle cx="18" cy="6" r="1.5" fill="#2563eb"/></svg></div>
+    <div class="ppt-banner-text">真正有效的经营分析，不只是看数字变化，而是把预算差距转化为经营动作。</div>
+  </div>
+</div>
+    </div>
+    <div class="guide-section">
+      <div class="guide-header">
+        <div class="guide-title">学习引导</div>
+        <p class="guide-text">掌握本页核心知识点，结合实际工作场景思考如何应用。</p>
+      </div>
+      <div class="guide-grid">
+        <div class="guide-item">
+          <div class="guide-item-title">调整触发条件</div>
+          <div class="guide-item-desc">市场环境重大变化、战略方向调整、不可抗力因素、重大机会/风险出现等。调整必须有充分理由。</div>
+        </div>
+        <div class="guide-item">
+          <div class="guide-item-title">调整审批流程</div>
+          <div class="guide-item-desc">明确不同金额/类型的调整由哪一级审批。小额调整可授权一线，大额调整需高层决策。</div>
+        </div>
+        <div class="guide-item">
+          <div class="guide-item-title">追加预算规则</div>
+          <div class="guide-item-desc">追加预算必须与增量机会挂钩，遵循"机会驱动"原则。无机会不追加，有机会可特批。</div>
+        </div>
+        <div class="guide-item" style="background:linear-gradient(135deg,#fefce8 0%,#fef9c3 100%);border:1px solid #fde047;">
+          <div class="guide-item-title" style="color:#a16207;display:flex;align-items:center;gap:6px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ca8a04" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            自检思考
+          </div>
+          <div class="guide-item-desc" style="color:#854d0e;">预算调整是否过于随意，还是过于僵化？</div>
+        </div>
+        <div class="guide-item" style="background:linear-gradient(135deg,#fefce8 0%,#fef9c3 100%);border:1px solid #fde047;">
+          <div class="guide-item-title" style="color:#a16207;display:flex;align-items:center;gap:6px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ca8a04" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            自检思考
+          </div>
+          <div class="guide-item-desc" style="color:#854d0e;">追加预算是否真正与增量机会挂钩？</div>
+        </div>
+      </div>
+    </div>
+    <div class="quote-box">
+      <div class="quote-icon">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
+      </div>
+      <div class="quote-text">预算要有刚性，但不能僵化；要有弹性，但不能随意。—— 华为预算管理哲学</div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== Slide 15 ========== -->
+<section class="slide" id="slide15">
+  <div class="slide-header">
+    <span class="slide-page" style="background:#dc2626;color:#fff;">15</span>
+    <div class="slide-meta">
+      <h2 class="slide-title">策略制定与解码</h2>
+      <p class="slide-subtitle">从战略意图到战术行动的转化</p>
+      <div class="slide-tags"><span class="slide-tag">策略制定</span><span class="slide-tag">战略解码</span><span class="slide-tag">战术行动</span></div>
+    </div>
+  </div>
+  <div class="slide-body">
+    <div class="slide-ppt">
+<div class="ppt-container">
+  <div class="ppt-header">
+    <div class="ppt-header-left">
+      <div class="ppt-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="1.5"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7z"/><path d="M9 10h6"/></svg></div>
+      <div class="ppt-title">战略规划与机会选择</div>
+    </div>
+    <div class="ppt-page">15/16</div>
+  </div>
+  <div class="ppt-subtitle"><svg viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="1.5"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7z"/><path d="M9 10h6"/></svg>经营分析不仅复盘结果，更要借助市场洞察与差距分析识别机会，为下一轮战略与预算提供输入。<span class="tag">市场洞察</span><span class="tag">机会选择</span><span class="tag">战略解码</span></div>
+
+  <!-- 4 main steps -->
+  <div class="flow-row">
+    <div class="flow-step">
+      <div class="flow-step-num">01</div>
+      <div class="flow-step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><rect x="8" y="9" width="6" height="4" rx="1" fill="none"/><path d="M9 11h4"/></svg></div>
+      <div class="flow-step-title">市场洞察</div>
+      <div class="flow-step-desc">看行业趋势、客户变化、竞争格局</div>
+    </div>
+    <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+    <div class="flow-step">
+      <div class="flow-step-num">02</div>
+      <div class="flow-step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="M8 13v4m4-6v6m4-8v8"/><circle cx="17" cy="17" r="3"/></svg></div>
+      <div class="flow-step-title">差距分析</div>
+      <div class="flow-step-desc">识别业绩差距与机会差距</div>
+    </div>
+    <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+    <div class="flow-step">
+      <div class="flow-step-num">03</div>
+      <div class="flow-step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><path d="M3 3h18v4H3zM12 7v14"/><path d="M8 21h8"/><circle cx="12" cy="10" r="2" fill="#eff6ff" stroke="#2563eb"/></svg></div>
+      <div class="flow-step-title">机会评估</div>
+      <div class="flow-step-desc">判断哪些机会值得投入资源</div>
+    </div>
+    <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+    <div class="flow-step">
+      <div class="flow-step-num">04</div>
+      <div class="flow-step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2"/><path d="M18 6l-2 2"/><circle cx="18" cy="6" r="1.5" fill="#2563eb"/></svg></div>
+      <div class="flow-step-title">形成策略</div>
+      <div class="flow-step-desc">固化为重点任务与资源配置</div>
+    </div>
+  </div>
+
+  <!-- 3 analysis modules -->
+  <div class="info-grid" style="grid-template-columns:repeat(3,1fr);">
+    <div class="info-card">
+      <div class="info-card-icon" style="width:44px;height:44px;border-radius:50%;border:2px solid #dbeafe;background:#eff6ff;"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><path d="M3 3v18h18"/><polyline points="7 14 11 8 15 12 21 6"/><circle cx="21" cy="6" r="1.5" fill="#2563eb"/></svg></div>
+      <div class="info-card-body">
+        <div class="info-card-title">业绩差距</div>
+        <ul><li>目标 vs 实际的结果差距</li><li>驱动因素拆解定位根因</li><li>明确短板与改进方向</li></ul>
+      </div>
+    </div>
+    <div class="info-card">
+      <div class="info-card-icon" style="width:44px;height:44px;border-radius:50%;border:2px solid #dbeafe;background:#eff6ff;"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><path d="M3 3v18"/><path d="M3 8h14l4-3-4-3H3z"/><path d="M7 13h10l4 3-4 3H7z"/></svg></div>
+      <div class="info-card-body">
+        <div class="info-card-title">机会差距</div>
+        <ul><li>行业趋势与增长机会</li><li>客户需求与价值空白</li><li>竞争对手未满足领域</li></ul>
+      </div>
+    </div>
+    <div class="info-card">
+      <div class="info-card-icon" style="width:44px;height:44px;border-radius:50%;border:2px solid #dbeafe;background:#eff6ff;"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="M9 13l2 2 4-4"/></svg></div>
+      <div class="info-card-body">
+        <div class="info-card-title">关键举措</div>
+        <ul><li>聚焦高价值机会</li><li>明确优先级与资源需求</li><li>设定衡量指标与预期收益</li></ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="ppt-banner">
+    <div class="ppt-banner-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2"/><path d="M18 6l-2 2"/><circle cx="18" cy="6" r="1.5" fill="#2563eb"/></svg></div>
+    <div class="ppt-banner-text">战略是找长板，管理是补短板；机会选择的关键，是把洞察转化为可执行策略。</div>
+  </div>
+</div>
+    </div>
+    <div class="guide-section">
+      <div class="guide-header">
+        <div class="guide-title">学习引导</div>
+        <p class="guide-text">掌握本页核心知识点，结合实际工作场景思考如何应用。</p>
+      </div>
+      <div class="guide-grid">
+        <div class="guide-item">
+          <div class="guide-item-title">策略制定的输入</div>
+          <div class="guide-item-desc">差距分析结果、市场机会评估、竞争对手动态、内部能力评估。策略必须基于事实和数据。</div>
+        </div>
+        <div class="guide-item">
+          <div class="guide-item-title">BSC战略解码</div>
+          <div class="guide-item-desc">运用平衡计分卡（BSC）将战略目标解码为财务、客户、内部流程、学习成长四个维度的关键指标和行动计划。</div>
+        </div>
+        <div class="guide-item">
+          <div class="guide-item-title">策略的SMART原则</div>
+          <div class="guide-item-desc">好的策略必须是具体的(Specific)、可衡量的(Measurable)、可实现的(Achievable)、相关的(Relevant)、有时限的(Time-bound)。</div>
+        </div>
+        <div class="guide-item" style="background:linear-gradient(135deg,#fefce8 0%,#fef9c3 100%);border:1px solid #fde047;">
+          <div class="guide-item-title" style="color:#a16207;display:flex;align-items:center;gap:6px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ca8a04" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            自检思考
+          </div>
+          <div class="guide-item-desc" style="color:#854d0e;">策略是否基于差距分析和市场机会制定？</div>
+        </div>
+        <div class="guide-item" style="background:linear-gradient(135deg,#fefce8 0%,#fef9c3 100%);border:1px solid #fde047;">
+          <div class="guide-item-title" style="color:#a16207;display:flex;align-items:center;gap:6px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ca8a04" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            自检思考
+          </div>
+          <div class="guide-item-desc" style="color:#854d0e;">策略是否解码为可执行的行动计划和明确的KPI？</div>
+        </div>
+      </div>
+    </div>
+    <div class="quote-box">
+      <div class="quote-icon">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
+      </div>
+      <div class="quote-text">战略不是选择做什么，而是选择不做什么。—— 华为战略管理</div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== Slide 16 ========== -->
+<section class="slide" id="slide16">
+  <div class="slide-header">
+    <span class="slide-page" style="background:#dc2626;color:#fff;">16</span>
+    <div class="slide-meta">
+      <h2 class="slide-title">行动计划与PDCA闭环</h2>
+      <p class="slide-subtitle">计划→执行→检查→改进</p>
+      <div class="slide-tags"><span class="slide-tag">PDCA</span><span class="slide-tag">行动计划</span><span class="slide-tag">闭环管理</span></div>
+    </div>
+  </div>
+  <div class="slide-body">
+    <div class="slide-ppt">
+<div class="ppt-container">
+  <div class="ppt-header">
+    <div class="ppt-header-left">
+      <div class="ppt-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="1.5"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7z"/><path d="M9 10h6"/></svg></div>
+      <div class="ppt-title">核心结论：把经营分析会开成作战系统</div>
+    </div>
+    <div class="ppt-page">16/16</div>
+  </div>
+  <div class="ppt-subtitle"><svg viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="1.5"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7z"/><path d="M9 10h6"/></svg>真正有效的经营分析会，不是汇报会，而是统一思想、暴露问题、形成任务令、驱动增长的作战指挥系统。<span class="tag">统一思想</span><span class="tag">形成动作</span><span class="tag">持续改进</span></div>
+
+  <!-- 8 conclusion cards -->
+  <div class="conclusion-grid" style="grid-template-columns:repeat(4,1fr);">
+    <div class="conclusion-card">
+      <div class="conclusion-num">01</div>
+      <div class="conclusion-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><rect x="3" y="8" width="18" height="10" rx="2"/><path d="M7 8V5a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v3"/><path d="M12 13v5"/><path d="M8 18h8"/></svg></div>
+      <div class="conclusion-text">CFO搭台，业务唱戏</div>
+    </div>
+    <div class="conclusion-card">
+      <div class="conclusion-num">02</div>
+      <div class="conclusion-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+      <div class="conclusion-text">一把手全程参加</div>
+    </div>
+    <div class="conclusion-card">
+      <div class="conclusion-num">03</div>
+      <div class="conclusion-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2"/><rect x="18" y="6" width="4" height="8" rx="1" fill="none"/><path d="M20 6v8"/></svg></div>
+      <div class="conclusion-text">围绕目标、差距、机会展开</div>
+    </div>
+    <div class="conclusion-card">
+      <div class="conclusion-num">04</div>
+      <div class="conclusion-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+      <div class="conclusion-text">不要开成邀功会、诉苦会或鞭尸会</div>
+    </div>
+    <div class="conclusion-card">
+      <div class="conclusion-num">05</div>
+      <div class="conclusion-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="M8 13v4m3-6v6m3-4v4"/><path d="M16 15l2 2 3-3"/></svg></div>
+      <div class="conclusion-text">高质量报告决定会议成败</div>
+    </div>
+    <div class="conclusion-card">
+      <div class="conclusion-num">06</div>
+      <div class="conclusion-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><path d="M3 3v18h18"/><polyline points="5 15 9 11 13 14 19 8"/><circle cx="19" cy="8" r="1.5" fill="#2563eb"/><circle cx="13" cy="14" r="1.5" fill="#2563eb"/><circle cx="9" cy="11" r="1.5" fill="#2563eb"/></svg></div>
+      <div class="conclusion-text">预测是经营之魂</div>
+    </div>
+    <div class="conclusion-card">
+      <div class="conclusion-num">07</div>
+      <div class="conclusion-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="1.5"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><circle cx="12" cy="17" r="0.8" fill="#d97706"/><path d="M22 12a10 10 0 0 1-10 10" stroke="#3b82f6"/></svg></div>
+      <div class="conclusion-text">刀刃向内，直面问题形成闭环</div>
+    </div>
+    <div class="conclusion-card">
+      <div class="conclusion-num">08</div>
+      <div class="conclusion-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/><path d="M22 12a10 10 0 0 1-2 6"/><path d="M2 12a10 10 0 0 1 2-6"/></svg></div>
+      <div class="conclusion-text">持续改进，形成统一方法与动作</div>
+    </div>
+  </div>
+
+  <!-- Bottom formula -->
+  <div class="formula-box" style="margin-top:12px;">
+    <div class="formula-part"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="M8 13v4m4-6v6m4-8v8"/><circle cx="17" cy="17" r="3"/></svg><span class="formula-part-text">高质量经营报告</span></div>
+    <div class="formula-op">+</div>
+    <div class="formula-part"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><circle cx="16" cy="3.13" r="4"/><path d="M6 15l4 4 4-4"/><path d="M14 13h6"/></svg><span class="formula-part-text">高质量经营会议</span></div>
+    <div class="formula-op">+</div>
+    <div class="formula-part"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="M9 13l2 2 4-4"/></svg><span class="formula-part-text">高质量任务令</span></div>
+    <div class="formula-op">=</div>
+    <div class="formula-part"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M16 16h5v5"/></svg><span class="formula-part-text">高质量经营闭环</span></div>
+  </div>
+
+  <div class="ppt-banner">
+    <div class="ppt-banner-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2"/><path d="M18 6l-2 2"/><circle cx="18" cy="6" r="1.5" fill="#2563eb"/></svg></div>
+    <div class="ppt-banner-text">经营分析会的价值，不在于开了多少会，而在于能否把目标、差距和行动真正连接起来。</div>
+  </div>
+</div>
+    </div>
+    <div class="guide-section">
+      <div class="guide-header">
+        <div class="guide-title">学习引导</div>
+        <p class="guide-text">掌握本页核心知识点，结合实际工作场景思考如何应用。</p>
+      </div>
+      <div class="guide-grid">
+        <div class="guide-item">
+          <div class="guide-item-title">PDCA循环</div>
+          <div class="guide-item-desc">Plan（计划）→Do（执行）→Check（检查）→Act（改进）。持续循环，不断螺旋上升。</div>
+        </div>
+        <div class="guide-item">
+          <div class="guide-item-title">行动计划要素</div>
+          <div class="guide-item-desc">每个行动项必须包含：做什么、为什么做、谁来做、什么时候完成、做到什么标准、需要什么资源。</div>
+        </div>
+        <div class="guide-item">
+          <div class="guide-item-title">闭环管理的关键</div>
+          <div class="guide-item-desc">闭环的关键在于"跟踪"和"复盘"。没有跟踪的计划会落空，没有复盘的执行不会进步。</div>
+        </div>
+        <div class="guide-item" style="background:linear-gradient(135deg,#fefce8 0%,#fef9c3 100%);border:1px solid #fde047;">
+          <div class="guide-item-title" style="color:#a16207;display:flex;align-items:center;gap:6px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ca8a04" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            自检思考
+          </div>
+          <div class="guide-item-desc" style="color:#854d0e;">行动计划是否包含了完整的5W2H要素？</div>
+        </div>
+        <div class="guide-item" style="background:linear-gradient(135deg,#fefce8 0%,#fef9c3 100%);border:1px solid #fde047;">
+          <div class="guide-item-title" style="color:#a16207;display:flex;align-items:center;gap:6px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ca8a04" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            自检思考
+          </div>
+          <div class="guide-item-desc" style="color:#854d0e;">是否建立了行动项的定期跟踪和复盘机制？</div>
+        </div>
+      </div>
+    </div>
+    <div class="quote-box">
+      <div class="quote-icon">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
+      </div>
+      <div class="quote-text">伟大的战略需要伟大的执行，伟大的执行需要闭环管理。—— 华为执行文化</div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 述职报告模块 ========== -->
+<section class="reports-page" id="reportsPage" style="display:none;">
+  <div class="reports-header">
+    <div class="reports-tag">备注模块</div>
+    <h2 class="reports-title">述职报告模板</h2>
+    <p class="reports-desc">以下述职报告来自历史述职内记录。</p>
+  </div>
+  <div class="reports-list">
+    <div class="report-card">
+      <div class="report-card-icon" style="background:linear-gradient(135deg,#dbeafe 0%,#bfdbfe 100%);color:#2563eb;">9</div>
+      <div class="report-card-title">述职报告 - 2024年9月</div>
+      <div class="report-card-desc">Q3季度经营回顾与Q4规划</div>
+      <div class="report-card-meta">
+        <span class="report-card-tag tag-quarter">季度报告</span>
+        <span class="report-card-tag tag-type">经营分析</span>
+      </div>
+      <button class="report-card-btn" onclick="showPDF('述职报告-2024年9月.pdf', '述职报告 - 2024年9月')">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+        预览报告
+      </button>
+    </div>
+    <div class="report-card">
+      <div class="report-card-icon" style="background:linear-gradient(135deg,#dcfce7 0%,#bbf7d0 100%);color:#059669;">7</div>
+      <div class="report-card-title">述职报告 - 2025年7月</div>
+      <div class="report-card-desc">半年度经营复盘与策略调整</div>
+      <div class="report-card-meta">
+        <span class="report-card-tag tag-half">半年度</span>
+        <span class="report-card-tag tag-type">经营分析</span>
+      </div>
+      <button class="report-card-btn" onclick="showPDF('述职报告-2025年7月.pdf', '述职报告 - 2025年7月')">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+        预览报告
+      </button>
+    </div>
+    <div class="report-card">
+      <div class="report-card-icon" style="background:linear-gradient(135deg,#fef3c7 0%,#fde68a 100%);color:#d97706;">1</div>
+      <div class="report-card-title">述职报告 - 2026年1月</div>
+      <div class="report-card-desc">年度经营总结与新年度规划</div>
+      <div class="report-card-meta">
+        <span class="report-card-tag tag-year">年度报告</span>
+        <span class="report-card-tag tag-type">经营分析</span>
+      </div>
+      <button class="report-card-btn" onclick="showPDF('述职报告-2026年1月.pdf', '述职报告 - 2026年1月')">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+        预览报告
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ========== PDF 预览页面 ========== -->
+<section class="pdf-page" id="pdfPage" style="display:none;">
+  <div class="pdf-toolbar">
+    <button class="pdf-back" onclick="backToReports()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      返回报告列表
+    </button>
+    <div class="pdf-title" id="pdfTitle">述职报告</div>
+  </div>
+  <div class="pdf-viewer">
+    <iframe class="pdf-frame" id="pdfFrame" src="" title="PDF预览"></iframe>
+  </div>
+</section>
+
+<!-- 底部导航 -->
+<nav class="bottom-nav">
+  <button class="nav-btn" id="prevBtn" disabled>
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+    上一页
+  </button>
+  <div class="nav-info">
+    <div style="font-size:11px;color:#9ca3af;">学习进度</div>
+    <div id="pageInfo" style="font-size:13px;font-weight:700;color:#4b5563;">01 / 16</div>
+  </div>
+  <button class="nav-btn primary" id="nextBtn">
+    下一页
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+  </button>
+</nav>
+
+<!-- 回到顶部 -->
+<button class="backtop" id="backtop" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="回到顶部">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 15l-6-6-6 6"/></svg>
+</button>
+
+</main>
+</div>
+<script src="script.js"></script>
 </body>
 </html>
