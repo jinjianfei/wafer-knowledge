@@ -1,0 +1,1591 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>海外销售学习之路</title>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans SC","PingFang SC","Microsoft YaHei",sans-serif;font-size:14px;line-height:1.7;color:#1a1d23;background:#fff;overflow-x:hidden}
+a{text-decoration:none;color:inherit}
+button{cursor:pointer;font-family:inherit;border:none;background:none}
+.header{position:fixed;top:0;left:0;right:0;height:52px;background:#fff;border-bottom:1px solid #e8eaed;display:flex;align-items:center;padding:0 20px;z-index:100}
+.header-inner{display:flex;align-items:center;gap:10px}
+.header-icon{width:32px;height:32px;background:#4f6ef7;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:16px;font-weight:700}
+.header-title{font-size:15px;font-weight:600}
+.header-sub{font-size:12px;color:#8b919d;margin-left:8px}
+.sidebar{position:fixed;top:52px;left:0;bottom:0;width:260px;background:#f8f9fa;border-right:1px solid #e8eaed;overflow-y:auto;z-index:90}
+.sidebar-section{padding:16px 16px 8px;font-size:11px;font-weight:600;color:#8b919d;text-transform:uppercase;letter-spacing:.5px}
+.mod-header{display:flex;align-items:center;gap:6px;width:100%;padding:8px 16px;text-align:left;transition:background .15s;border-left:3px solid transparent}
+.mod-header:hover{background:#f0f1f3}
+.mod-header.active{background:#eef2ff;border-left-color:#4f6ef7}
+.mod-header.active .mod-title{color:#2d3a8c;font-weight:600}
+.mod-toggle{width:18px;height:18px;display:flex;align-items:center;justify-content:center;color:#8b919d;font-size:11px;transition:transform .2s;flex-shrink:0}
+.mod-toggle.open{transform:rotate(90deg)}
+.mod-icon{width:18px;height:18px;display:flex;align-items:center;justify-content:center;border-radius:5px;font-size:11px;font-weight:700;color:#fff;flex-shrink:0}
+.mod-title{font-size:13px;color:#4a4f59;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lesson-list{padding:2px 0 6px 43px;display:none}
+.lesson-list.open{display:block}
+.lesson-item{display:flex;align-items:center;gap:8px;width:100%;padding:5px 12px 5px 8px;text-align:left;font-size:12px;color:#8b919d;border-radius:6px;transition:all .15s;margin:1px 0;border-left:2px solid transparent}
+.lesson-item:hover{background:#f0f1f3;color:#4a4f59}
+.lesson-item.active{background:#eef2ff;color:#2d3a8c;font-weight:600;border-left-color:var(--c,#4f6ef7)}
+.lesson-num{font-family:"Courier New",monospace;font-size:10px;opacity:.5;width:16px;text-align:center;flex-shrink:0}
+.content{margin-left:260px;margin-top:52px;min-height:calc(100vh - 52px);padding:32px 40px}
+.page{display:none}
+.page.active{display:block;animation:fadeIn .25s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+h1{font-size:26px;font-weight:700;margin-bottom:12px;line-height:1.3}
+h2{font-size:20px;font-weight:600;margin:36px 0 14px;padding-bottom:8px;border-bottom:1px solid #e8eaed}
+h3{font-size:16px;font-weight:600;margin:24px 0 10px}
+h4{font-size:14px;font-weight:600;margin:16px 0 8px}
+p{margin-bottom:12px;color:#4a4f59}
+ul,ol{margin-bottom:12px;padding-left:22px}
+li{margin-bottom:5px;color:#4a4f59}
+strong{color:#1a1d23;font-weight:600}
+.desc{color:#5c6370;margin-bottom:24px;font-size:14px}
+.cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-bottom:24px}
+.card{border:1px solid #e8eaed;border-radius:10px;padding:16px;background:#fff;transition:all .15s;cursor:pointer;text-align:left}
+.card:hover{border-color:#c5c9d0;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.card-header{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.card-badge{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:800;color:#fff;flex-shrink:0}
+.card-title{font-size:13px;font-weight:600}
+.card-type{font-size:11px;color:#8b919d;margin-top:2px}
+.country-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;margin-bottom:24px}
+.country-card{border:1px solid #e8eaed;border-radius:10px;padding:16px;background:#fff}
+.country-header{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.country-name{font-size:14px;font-weight:700}
+.country-sites{font-size:11px;color:#8b919d;margin-bottom:10px}
+.country-desc{font-size:12px;color:#5c6370;line-height:1.6;margin-bottom:10px}
+.tags{display:flex;flex-wrap:wrap;gap:5px}
+.tag{font-size:10px;padding:2px 8px;background:#f4f5f7;border-radius:10px;color:#6b7280}
+.map-container{position:relative;width:100%;height:340px;border:1px solid #e8eaed;border-radius:10px;overflow:hidden;margin-bottom:16px;background:#dcebf5}
+.map-container img{width:100%;height:100%;object-fit:cover;object-position:center 40%}
+.map-marker{position:absolute;width:28px;height:28px;border-radius:50%;border:2.5px solid #fff;box-shadow:0 1px 5px rgba(0,0,0,.25);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:800;color:#fff;cursor:pointer;transition:transform .15s;font-family:"Courier New",monospace}
+.map-marker:hover{transform:scale(1.2);z-index:10}
+.map-marker .marker-label{position:absolute;top:30px;left:50%;transform:translateX(-50%);font-size:10px;font-weight:600;color:#1a1d23;white-space:nowrap;text-shadow:0 1px 3px rgba(255,255,255,.9),0 0 5px rgba(255,255,255,.9);pointer-events:none}
+.table-wrap{border:1px solid #e8eaed;border-radius:10px;overflow:hidden;margin-bottom:24px}
+.table-header{padding:10px 16px;font-size:13px;font-weight:600;background:#fafbfc;border-bottom:1px solid #e8eaed}
+table{width:100%;border-collapse:collapse;font-size:12px}
+th{background:#fafbfc;font-weight:600;text-align:left;padding:8px 12px;border-bottom:2px solid #e8eaed;color:#1a1d23}
+td{padding:8px 12px;border-bottom:1px solid #e8eaed;color:#4a4f59}
+tr:hover td{background:#fafbfc}
+.lesson-grid{display:flex;flex-direction:column;gap:8px;margin-top:16px}
+.lesson-btn{display:flex;align-items:center;gap:12px;padding:14px 18px;border:1px solid #e8eaed;border-radius:10px;background:#fff;text-align:left;transition:all .15s;cursor:pointer}
+.lesson-btn:hover{border-color:#c5c9d0;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.lesson-btn-num{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;flex-shrink:0}
+.lesson-btn-title{font-size:14px;font-weight:500;color:#1a1d23;flex:1}
+.tip-box{background:#fff8e6;border-left:3px solid #f5a623;border-radius:0 8px 8px 0;padding:14px 18px;margin:16px 0;font-size:13px}
+.tip-box-title{font-weight:600;color:#b8810a;margin-bottom:6px;display:flex;align-items:center;gap:6px;font-size:13px}
+.warn-box{background:#fff0f0;border-left:3px solid #e8453c;border-radius:0 8px 8px 0;padding:14px 18px;margin:16px 0;font-size:13px}
+.warn-box-title{font-weight:600;color:#c0392b;margin-bottom:6px;display:flex;align-items:center;gap:6px;font-size:13px}
+.checklist{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.check-item{display:inline-flex;align-items:center;gap:4px;padding:4px 12px;background:#eef2ff;border-radius:20px;font-size:12px;color:#3b4db5}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.4);display:none;align-items:center;justify-content:center;z-index:200;padding:20px}
+.modal.show{display:flex}
+.modal-card{background:#fff;border-radius:12px;box-shadow:0 20px 60px rgba(0,0,0,.2);max-width:520px;width:100%;max-height:80vh;overflow-y:auto;padding:24px;position:relative}
+.modal-close{position:absolute;top:16px;right:16px;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#8b919d;font-size:18px;cursor:pointer;transition:all .15s}
+.modal-close:hover{background:#f4f5f7}
+.modal-header{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.modal-badge{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#fff}
+.modal-title{font-size:18px;font-weight:700}
+.modal-subtitle{font-size:12px;color:#8b919d;margin-bottom:4px}
+.modal-type{font-size:13px;font-weight:600;margin-bottom:16px}
+.modal-section-title{font-size:11px;font-weight:600;color:#8b919d;text-transform:uppercase;letter-spacing:.5px;margin:16px 0 8px}
+.modal-list{font-size:13px;color:#4a4f59;line-height:1.7}
+.modal-list li{margin-bottom:4px}
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:#d1d5db;border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:#9ca3af}
+@media(max-width:768px){.sidebar{display:none}.content{margin-left:0}}
+</style>
+</head>
+<body>
+
+<!-- ===== Header ===== -->
+<header class="header">
+  <div class="header-inner">
+    <div class="header-icon">海</div>
+    <div class="header-title">海外销售学习手册</div>
+    <div class="header-sub">半导体硅片 &middot; ST客户专项</div>
+  </div>
+</header>
+
+<!-- ===== Sidebar ===== -->
+<aside class="sidebar">
+  <div class="sidebar-section">六大知识模块</div>
+
+  <!-- ST Module -->
+  <div>
+    <button class="mod-header active" data-mod="st" style="--c:#3b6cf6" onclick="toggleMod(this,'st')">
+      <span class="mod-toggle open">&#9656;</span>
+      <span class="mod-icon" style="background:#3b6cf6">ST</span>
+      <span class="mod-title">ST意法半导体深度解析</span>
+    </button>
+    <div class="lesson-list open" id="list-st">
+      <button class="lesson-item active" style="--c:#3b6cf6" onclick="showPage('st-overview',this)">
+        <span class="lesson-num">&#9679;</span><span>全球Fab地图</span>
+      </button>
+      <button class="lesson-item" style="--c:#3b6cf6" onclick="showPage('st1',this)">
+        <span class="lesson-num">1</span><span>ST公司概况与组织架构</span>
+      </button>
+      <button class="lesson-item" style="--c:#3b6cf6" onclick="showPage('st2',this)">
+        <span class="lesson-num">2</span><span>ST全球Fab分布与技术路线</span>
+      </button>
+      <button class="lesson-item" style="--c:#3b6cf6" onclick="showPage('st3',this)">
+        <span class="lesson-num">3</span><span>ST的供应商管理体系</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Cross-culture -->
+  <div>
+    <button class="mod-header" data-mod="culture" style="--c:#e8453c" onclick="toggleMod(this,'culture')">
+      <span class="mod-toggle">&#9656;</span>
+      <span class="mod-icon" style="background:#e8453c">文</span>
+      <span class="mod-title">跨文化商务沟通</span>
+    </button>
+    <div class="lesson-list" id="list-culture">
+      <button class="lesson-item" style="--c:#e8453c" onclick="showPage('culture-overview',this)">
+        <span class="lesson-num">&#9679;</span><span>三国文化概览</span>
+      </button>
+      <button class="lesson-item" style="--c:#e8453c" onclick="showPage('c1',this)">
+        <span class="lesson-num">1</span><span>法国商务文化与沟通策略</span>
+      </button>
+      <button class="lesson-item" style="--c:#e8453c" onclick="showPage('c2',this)">
+        <span class="lesson-num">2</span><span>意大利商务文化与西西里岛特别指南</span>
+      </button>
+      <button class="lesson-item" style="--c:#e8453c" onclick="showPage('c3',this)">
+        <span class="lesson-num">3</span><span>新加坡商务文化与AMK工厂对接</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Trade -->
+  <div>
+    <button class="mod-header" data-mod="trade" style="--c:#f5a623" onclick="toggleMod(this,'trade')">
+      <span class="mod-toggle">&#9656;</span>
+      <span class="mod-icon" style="background:#f5a623">贸</span>
+      <span class="mod-title">国际贸易实务</span>
+    </button>
+    <div class="lesson-list" id="list-trade">
+      <button class="lesson-item" style="--c:#f5a623" onclick="showPage('t1',this)">
+        <span class="lesson-num">1</span><span>国际贸易术语（Incoterms 2020）</span>
+      </button>
+      <button class="lesson-item" style="--c:#f5a623" onclick="showPage('t2',this)">
+        <span class="lesson-num">2</span><span>出口管制与合规</span>
+      </button>
+      <button class="lesson-item" style="--c:#f5a623" onclick="showPage('t3',this)">
+        <span class="lesson-num">3</span><span>报价、合同与跨境支付</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- English -->
+  <div>
+    <button class="mod-header" data-mod="english" style="--c:#00b894" onclick="toggleMod(this,'english')">
+      <span class="mod-toggle">&#9656;</span>
+      <span class="mod-icon" style="background:#00b894">英</span>
+      <span class="mod-title">商务英语与技术沟通</span>
+    </button>
+    <div class="lesson-list" id="list-english">
+      <button class="lesson-item" style="--c:#00b894" onclick="showPage('e1',this)">
+        <span class="lesson-num">1</span><span>商务邮件写作模板与技巧</span>
+      </button>
+      <button class="lesson-item" style="--c:#00b894" onclick="showPage('e2',this)">
+        <span class="lesson-num">2</span><span>半导体行业技术英语</span>
+      </button>
+      <button class="lesson-item" style="--c:#00b894" onclick="showPage('e3',this)">
+        <span class="lesson-num">3</span><span>商务谈判英语与话术</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- CRM -->
+  <div>
+    <button class="mod-header" data-mod="crm" style="--c:#6c5ce7" onclick="toggleMod(this,'crm')">
+      <span class="mod-toggle">&#9656;</span>
+      <span class="mod-icon" style="background:#6c5ce7">客</span>
+      <span class="mod-title">客户关系管理</span>
+    </button>
+    <div class="lesson-list" id="list-crm">
+      <button class="lesson-item" style="--c:#6c5ce7" onclick="showPage('crm1',this)">
+        <span class="lesson-num">1</span><span>客户分级与资源分配策略</span>
+      </button>
+      <button class="lesson-item" style="--c:#6c5ce7" onclick="showPage('crm2',this)">
+        <span class="lesson-num">2</span><span>定期Review机制与关系维护</span>
+      </button>
+      <button class="lesson-item" style="--c:#6c5ce7" onclick="showPage('crm3',this)">
+        <span class="lesson-num">3</span><span>客诉处理与危机管理</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Market -->
+  <div>
+    <button class="mod-header" data-mod="market" style="--c:#0984e3" onclick="toggleMod(this,'market')">
+      <span class="mod-toggle">&#9656;</span>
+      <span class="mod-icon" style="background:#0984e3">市</span>
+      <span class="mod-title">海外市场开拓</span>
+    </button>
+    <div class="lesson-list" id="list-market">
+      <button class="lesson-item" style="--c:#0984e3" onclick="showPage('m1',this)">
+        <span class="lesson-num">1</span><span>欧洲半导体市场分析与机会识别</span>
+      </button>
+      <button class="lesson-item" style="--c:#0984e3" onclick="showPage('m2',this)">
+        <span class="lesson-num">2</span><span>展会与行业活动实战指南</span>
+      </button>
+      <button class="lesson-item" style="--c:#0984e3" onclick="showPage('m3',this)">
+        <span class="lesson-num">3</span><span>海外商务拜访全流程</span>
+      </button>
+    </div>
+  </div>
+</aside>
+
+<!-- ===== Content ===== -->
+<main class="content">
+
+<!-- ========== ST Overview ========== -->
+<div class="page active" id="st-overview">
+  <h1>ST意法半导体深度解析</h1>
+  <p class="desc">ST是你在欧洲最重要的客户。深入了解ST的组织架构、技术战略、6个全球制造基地的布局和采购决策流程，是开展一切销售活动的基础。</p>
+
+  <!-- Map -->
+  <div class="table-wrap" style="margin-bottom:20px">
+    <div class="table-header" style="display:flex;justify-content:space-between;align-items:center">
+      <span style="display:flex;align-items:center;gap:6px">&#128205; ST 全球制造基地分布</span>
+      <span style="font-size:11px;font-weight:400;color:#8b919d">
+        <span style="display:inline-flex;align-items:center;gap:4px"><span style="width:8px;height:8px;border-radius:50%;background:#3b6cf6;display:inline-block"></span>法国</span>
+        <span style="display:inline-flex;align-items:center;gap:4px;margin-left:8px"><span style="width:8px;height:8px;border-radius:50%;background:#e8453c;display:inline-block"></span>意大利</span>
+        <span style="display:inline-flex;align-items:center;gap:4px;margin-left:8px"><span style="width:8px;height:8px;border-radius:50%;background:#f5a623;display:inline-block"></span>新加坡</span>
+      </span>
+    </div>
+    <div class="map-container">
+      <img src="images/world-map.jpg" alt="ST全球工厂分布">
+      <!-- Crolles: 法国东南部 -->
+      <div class="map-marker" style="background:#3b6cf6;left:47.5%;top:34%" onclick="openSite('crolles')">FR<div class="marker-label">Crolles</div></div>
+      <!-- Rousset: 法国南部 -->
+      <div class="map-marker" style="background:#3b6cf6;left:46%;top:38%" onclick="openSite('rousset')">FR<div class="marker-label">Rousset</div></div>
+      <!-- Tours: 法国中西部 -->
+      <div class="map-marker" style="background:#3b6cf6;left:44.5%;top:31%" onclick="openSite('tours')">FR<div class="marker-label">Tours</div></div>
+      <!-- Agrate: 意大利北部 -->
+      <div class="map-marker" style="background:#e8453c;left:49.5%;top:34%" onclick="openSite('agrate')">IT<div class="marker-label">Agrate</div></div>
+      <!-- Catania: 意大利西西里 -->
+      <div class="map-marker" style="background:#e8453c;left:50.5%;top:43%" onclick="openSite('catania')">IT<div class="marker-label">Catania</div></div>
+      <!-- AMK: 新加坡 -->
+      <div class="map-marker" style="background:#f5a623;left:78%;top:62%" onclick="openSite('amk')">SG<div class="marker-label">AMK</div></div>
+    </div>
+  </div>
+
+  <!-- Site cards -->
+  <div class="cards-grid">
+    <div class="card" onclick="openSite('crolles')">
+      <div class="card-header"><span class="card-badge" style="background:#3b6cf6">FR</span><span class="card-title">Crolles</span></div>
+      <div class="card-type">300mm 先进逻辑</div>
+    </div>
+    <div class="card" onclick="openSite('rousset')">
+      <div class="card-header"><span class="card-badge" style="background:#3b6cf6">FR</span><span class="card-title">Rousset</span></div>
+      <div class="card-type">200mm 模拟/功率IC</div>
+    </div>
+    <div class="card" onclick="openSite('tours')">
+      <div class="card-header"><span class="card-badge" style="background:#3b6cf6">FR</span><span class="card-title">Tours</span></div>
+      <div class="card-type">封装测试/功率器件</div>
+    </div>
+    <div class="card" onclick="openSite('agrate')">
+      <div class="card-header"><span class="card-badge" style="background:#e8453c">IT</span><span class="card-title">Agrate Brianza</span></div>
+      <div class="card-type">200mm 混合信号/MEMS</div>
+    </div>
+    <div class="card" onclick="openSite('catania')">
+      <div class="card-header"><span class="card-badge" style="background:#e8453c">IT</span><span class="card-title">Catania</span></div>
+      <div class="card-type">150mm/200mm SiC/GaN</div>
+    </div>
+    <div class="card" onclick="openSite('amk')">
+      <div class="card-header"><span class="card-badge" style="background:#f5a623">SG</span><span class="card-title">AMK</span></div>
+      <div class="card-type">200mm 存储器/模拟IC</div>
+    </div>
+  </div>
+
+  <h2>课程目录</h2>
+  <div class="lesson-grid">
+    <div class="lesson-btn" onclick="showPage('st1',document.querySelector('[onclick\*=\'st1\']'))">
+      <span class="lesson-btn-num" style="background:#3b6cf6">01</span><span class="lesson-btn-title">ST公司概况与组织架构</span>
+    </div>
+    <div class="lesson-btn" onclick="showPage('st2',document.querySelector('[onclick\*=\'st2\']'))">
+      <span class="lesson-btn-num" style="background:#3b6cf6">02</span><span class="lesson-btn-title">ST全球Fab分布与技术路线</span>
+    </div>
+    <div class="lesson-btn" onclick="showPage('st3',document.querySelector('[onclick\*=\'st3\']'))">
+      <span class="lesson-btn-num" style="background:#3b6cf6">03</span><span class="lesson-btn-title">ST的供应商管理体系</span>
+    </div>
+  </div>
+</div>
+
+<!-- ========== ST Lesson 1 ========== -->
+<div class="page" id="st1">
+  <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+    <span style="font-size:11px;font-weight:600;padding:2px 8px;background:#eef2ff;color:#3b6cf6;border-radius:4px">ST意法半导体深度解析</span>
+  </div>
+  <h1>ST公司概况与组织架构</h1>
+
+  <p>STMicroelectronics（NYSE: STM）是全球领先的半导体IDM公司，总部位于瑞士日内瓦（Geneva），2024年营收约161亿美元，全球员工约50,000人，拥有18,000+项专利。</p>
+
+  <h2>你需要对接的部门</h2>
+
+  <h3>1. Front-End Manufacturing（前道制造）</h3>
+  <ul>
+    <li>各Site的Manufacturing/Operations部门</li>
+    <li>负责晶圆投片决策和生产排程</li>
+    <li>你的硅片直接使用者</li>
+  </ul>
+
+  <h3>2. Strategic Procurement（战略采购）</h3>
+  <ul>
+    <li>位于Geneva的中央采购团队</li>
+    <li>负责供应商审核、合同谈判、价格决策</li>
+    <li>通常按Category划分（Raw Materials, Equipment等）</li>
+  </ul>
+
+  <h3>3. Quality Assurance（质量保证）</h3>
+  <ul>
+    <li>Incoming Quality Control (IQC)</li>
+    <li>Supplier Quality Engineering (SQE)</li>
+    <li>负责供应商On-site Audit</li>
+  </ul>
+
+  <h3>4. R&D / Technology Development</h3>
+  <ul>
+    <li>位于Crolles的Central R&D</li>
+    <li>负责先进工艺开发和新材料导入</li>
+    <li>对硅片Spec有关键话语权</li>
+  </ul>
+
+  <h3>5. Finance</h3>
+  <ul>
+    <li>Payment Terms negotiation</li>
+    <li>Annual Price Review</li>
+  </ul>
+
+  <h2>关键决策链</h2>
+  <p>Site-level RFQ &rarr; Central Procurement RFP &rarr; Technical Review (R&D+Quality) &rarr; Supplier Selection Committee &rarr; Contract Award</p>
+
+  <div class="tip-box">
+    <div class="tip-box-title">&#128161; 实战经验</div>
+    <p>ST的采购体系非常decentralized，各Site有一定自主权，但Strategic Contract由Geneva统一谈。记住这一点，不要在Site承诺Geneva才能决定的事情。</p>
+  </div>
+
+  <div class="checklist">
+    <span class="check-item">记住ST总部位置</span>
+    <span class="check-item">了解前道制造部门的角色</span>
+    <span class="check-item">掌握采购决策流程</span>
+    <span class="check-item">熟悉SQE审核要求</span>
+  </div>
+</div>
+
+<!-- ========== ST Lesson 2 ========== -->
+<div class="page" id="st2">
+  <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+    <span style="font-size:11px;font-weight:600;padding:2px 8px;background:#eef2ff;color:#3b6cf6;border-radius:4px">ST意法半导体深度解析</span>
+  </div>
+  <h1>ST全球Fab分布与技术路线</h1>
+
+  <p>ST拥有全球布局的制造基地，你需服务的6个Site分布在法国、意大利和新加坡。每个Site有不同的产品侧重和技术路线。</p>
+
+  <h2>法国（France）</h2>
+
+  <h3>Rousset（普罗旺斯）</h3>
+  <ul>
+    <li><strong>主要产品：</strong>模拟/功率IC、MCU</li>
+    <li><strong>工艺节点：</strong>0.35&mu;m - 130nm BCD</li>
+    <li><strong>特色：</strong>BCD（Bipolar-CMOS-DMOS）工艺先驱</li>
+    <li><strong>硅片需求：</strong>200mm P型硅片，BCD工艺专用</li>
+  </ul>
+
+  <h3>Crolles（格勒诺布尔附近）</h3>
+  <ul>
+    <li><strong>主要产品：</strong>先进逻辑、FD-SOI</li>
+    <li><strong>工艺节点：</strong>28nm, 18nm FD-SOI</li>
+    <li><strong>核心地位：</strong>ST最先进逻辑工艺研发中心</li>
+    <li><strong>合作伙伴：</strong>与GlobalFoundries共享部分产能</li>
+    <li><strong>硅片需求：</strong>300mm EPI硅片，需求量最大</li>
+  </ul>
+
+  <h3>Tours（图尔）</h3>
+  <ul>
+    <li><strong>主要产品：</strong>功率MOSFET、IGBT</li>
+    <li><strong>特色：</strong>封装测试为主，也有前道</li>
+    <li><strong>硅片需求：</strong>相对较小</li>
+  </ul>
+
+  <h2>意大利（Italy）</h2>
+
+  <h3>Agrate（米兰附近）</h3>
+  <ul>
+    <li><strong>主要产品：</strong>MEMS传感器、功率IC、MCU</li>
+    <li><strong>工艺节点：</strong>0.35&mu;m - 90nm</li>
+    <li><strong>特色：</strong>ST在意大利最大的综合性基地</li>
+    <li><strong>硅片需求：</strong>SOI硅片（MEMS用）</li>
+  </ul>
+
+  <h3>Catania（西西里岛）</h3>
+  <ul>
+    <li><strong>主要产品：</strong>SiC MOSFET、SiC二极管</li>
+    <li><strong>核心地位：</strong>全球SiC/GaN功率器件的标杆工厂</li>
+    <li><strong>增长：</strong>SiC业务年增速50%+</li>
+    <li><strong>合作伙伴：</strong>与Cree/Wolfspeed合作紧密</li>
+    <li><strong>硅片需求：</strong>SiC衬底（Substrate），需求爆发式增长</li>
+  </ul>
+
+  <h2>新加坡（Singapore）</h2>
+
+  <h3>AMK（Ang Mo Kio）</h3>
+  <ul>
+    <li><strong>主要产品：</strong>NOR Flash、模拟IC</li>
+    <li><strong>工艺节点：</strong>90nm - 40nm</li>
+    <li><strong>定位：</strong>面向亚太市场的制造枢纽</li>
+  </ul>
+
+  <div class="tip-box">
+    <div class="tip-box-title">&#128161; 实战经验</div>
+    <p>Catania工厂目前是ST增长最快的Site，SiC业务年增速50%+，是你最有机会的突破口。Crolles的300mm EPI需求也很大，但日系供应商根基深。</p>
+  </div>
+
+  <div class="checklist">
+    <span class="check-item">掌握每个Site的主要产品</span>
+    <span class="check-item">了解各Site的工艺节点</span>
+    <span class="check-item">识别硅片需求最大的Site</span>
+    <span class="check-item">关注Crolles和Catania的机会</span>
+  </div>
+</div>
+
+<!-- ========== ST Lesson 3 ========== -->
+<div class="page" id="st3">
+  <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+    <span style="font-size:11px;font-weight:600;padding:2px 8px;background:#eef2ff;color:#3b6cf6;border-radius:4px">ST意法半导体深度解析</span>
+  </div>
+  <h1>ST的供应商管理体系</h1>
+
+  <p>进入ST供应商名单需要经过严格流程。了解这个流程，提前准备，能大幅缩短准入时间。</p>
+
+  <h2>供应商审核流程</h2>
+
+  <h3>1. Pre-qualification Survey</h3>
+  <ul>
+    <li>公司背景、产能、质量体系问卷</li>
+    <li>通常由Procurement发起</li>
+  </ul>
+
+  <h3>2. On-site Audit</h3>
+  <ul>
+    <li>ST SQE团队到工厂实地考察</li>
+    <li>审核内容：质量体系（ISO/TS 16949）、制程能力、设备状态、ESD防护、洁净室等级</li>
+    <li>审核周期：1-2天</li>
+  </ul>
+
+  <h3>3. Sample Qualification</h3>
+  <ul>
+    <li>提供A Sample（工程样品）</li>
+    <li>ST IQC进行incoming inspection</li>
+    <li>Fab进行试投片（Pilot Run）</li>
+    <li>良率验证（Yield Verification）</li>
+  </ul>
+
+  <h3>4. PSW（Part Submission Warrant）</h3>
+  <ul>
+    <li>类似汽车行业的PPAP</li>
+    <li>提交完整文件包</li>
+  </ul>
+
+  <h3>5. 小批量试产 &rarr; 大批量量产</h3>
+
+  <h2>供应商分级体系</h2>
+  <ul>
+    <li><strong>Preferred Supplier：</strong>优先供应商，最高配额</li>
+    <li><strong>Approved Supplier：</strong>合格供应商</li>
+    <li><strong>Conditional Supplier：</strong>有条件使用</li>
+    <li><strong>Disqualified：</strong>淘汰</li>
+  </ul>
+
+  <h2>年度审核机制</h2>
+  <ul>
+    <li>Annual Business Review (ABR)</li>
+    <li>Score Card评分（Quality/Delivery/Price/Service）</li>
+    <li>Corrective Action Request (CAR) 处理时效</li>
+  </ul>
+
+  <div class="tip-box">
+    <div class="tip-box-title">&#128161; 实战经验</div>
+    <p>第一次Audit至关重要，建议提前做内部模拟审核，确保ESD和洁净室管理达标。准备充分可以通过一次Audit拿到Approved Supplier级别。</p>
+  </div>
+
+  <div class="checklist">
+    <span class="check-item">了解完整的Qualification流程</span>
+    <span class="check-item">准备Audit所需文件</span>
+    <span class="check-item">理解Sample Qualification要求</span>
+    <span class="check-item">掌握供应商分级体系</span>
+  </div>
+</div>
+
+<!-- ========== Cross-culture Overview ========== -->
+<div class="page" id="culture-overview">
+  <h1>跨文化商务沟通</h1>
+  <p class="desc">从国内销售到海外销售，最大的挑战不是产品知识，而是文化差异。了解每个国家的商务文化、沟通风格和社交禁忌，是建立信任的第一步。</p>
+
+  <div class="country-cards">
+    <div class="country-card" style="border-top:3px solid #3b6cf6">
+      <div class="country-header">
+        <span style="width:26px;height:26px;border-radius:50%;background:#3b6cf6;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:#fff">FR</span>
+        <span class="country-name">法国</span>
+      </div>
+      <div class="country-sites">Rousset &middot; Crolles &middot; Tours</div>
+      <div class="country-desc">文化极度自豪，等级分明。午餐时间神圣不可侵犯，8月全法度假。欣赏思辨和深度讨论。</div>
+      <div class="tags">
+        <span class="tag">等级制</span><span class="tag">午餐禁忌</span><span class="tag">8月度假</span><span class="tag">思辨文化</span>
+      </div>
+    </div>
+    <div class="country-card" style="border-top:3px solid #e8453c">
+      <div class="country-header">
+        <span style="width:26px;height:26px;border-radius:50%;background:#e8453c;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:#fff">IT</span>
+        <span class="country-name">意大利</span>
+      </div>
+      <div class="country-sites">Agrate &middot; Catania</div>
+      <div class="country-desc">关系（Relazioni）至上。北部节奏快较国际化，南部热情好客但节奏慢。西西里岛黑手党话题是绝对红线。</div>
+      <div class="tags">
+        <span class="tag">关系优先</span><span class="tag">黑手党禁区</span><span class="tag">手势正常</span><span class="tag">Domani&ne;明天</span>
+      </div>
+    </div>
+    <div class="country-card" style="border-top:3px solid #f5a623">
+      <div class="country-header">
+        <span style="width:26px;height:26px;border-radius:50%;background:#f5a623;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:#fff">SG</span>
+        <span class="country-name">新加坡</span>
+      </div>
+      <div class="country-sites">AMK</div>
+      <div class="country-desc">多元文化融合。极度高效、准时、数据驱动。种族和宗教话题需绝对避免。24小时邮件回复。</div>
+      <div class="tags">
+        <span class="tag">极度准时</span><span class="tag">24h回复</span><span class="tag">种族禁区</span><span class="tag">Singlish</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="table-wrap">
+    <div class="table-header">&#9878; 三国商务文化对比</div>
+    <table>
+      <thead><tr><th style="width:100px">维度</th><th style="color:#3b6cf6">法国</th><th style="color:#e8453c">意大利</th><th style="color:#f5a623">新加坡</th></tr></thead>
+      <tbody>
+        <tr><td style="color:#8b919d;font-weight:500">决策速度</td><td>慢（层级审批）</td><td>慢（关系优先）</td><td>快（数据驱动）</td></tr>
+        <tr><td style="color:#8b919d;font-weight:500">时间管理</td><td>灵活（午餐神圣）</td><td>很灵活</td><td>严格（准时）</td></tr>
+        <tr><td style="color:#8b919d;font-weight:500">沟通风格</td><td>直接但外交</td><td>间接、关系导向</td><td>间接/直接</td></tr>
+        <tr><td style="color:#8b919d;font-weight:500">关系建立</td><td>中等（需尊重）</td><td>极度重要</td><td>效率优先</td></tr>
+        <tr><td style="color:#8b919d;font-weight:500">禁忌话题</td><td>与德国比较</td><td>黑手党/南北比较</td><td>种族/宗教/政治</td></tr>
+        <tr><td style="color:#8b919d;font-weight:500">晚餐文化</td><td>不聊工作</td><td>关系黄金时间</td><td>高效随意</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>课程目录</h2>
+  <div class="lesson-grid">
+    <div class="lesson-btn" onclick="showPage('c1',document.querySelector('[onclick*=\'c1\']'))">
+      <span class="lesson-btn-num" style="background:#e8453c">01</span><span class="lesson-btn-title">法国商务文化与沟通策略</span>
+    </div>
+    <div class="lesson-btn" onclick="showPage('c2',document.querySelector('[onclick*=\'c2\']'))">
+      <span class="lesson-btn-num" style="background:#e8453c">02</span><span class="lesson-btn-title">意大利商务文化与西西里岛特别指南</span>
+    </div>
+    <div class="lesson-btn" onclick="showPage('c3',document.querySelector('[onclick*=\'c3\']'))">
+      <span class="lesson-btn-num" style="background:#e8453c">03</span><span class="lesson-btn-title">新加坡商务文化与AMK工厂对接</span>
+    </div>
+  </div>
+</div>
+
+<!-- ========== Culture Lesson 1 ========== -->
+<div class="page" id="c1">
+  <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+    <span style="font-size:11px;font-weight:600;padding:2px 8px;background:#fce8e8;color:#e8453c;border-radius:4px">跨文化商务沟通</span>
+  </div>
+  <h1>法国商务文化与沟通策略</h1>
+
+  <p>法国是ST总部所在国，也是你在欧洲最重要的商务目的地。法国企业等级分明，决策需要层层上报，不要期望一线工程师能快速拍板。</p>
+
+  <h2>核心文化特征</h2>
+  <ul>
+    <li><strong>La France Profonde（深层法国）：</strong>法国人对自己的文化极度自豪，商务交流中尊重法国文化能快速拉近距离</li>
+    <li><strong>Hierarchie（等级制）：</strong>决策通常需要层层上报，一线工程师没有拍板权</li>
+    <li><strong>Intellectualism：</strong>重视理论、逻辑和辩论，展现深度思考比单纯推销更受尊重</li>
+  </ul>
+
+  <h2>见面礼仪</h2>
+  <ul>
+    <li>初次见面：握手（Poignee de main），眼神接触，说"Bonjour/Enchant&eacute;"</li>
+    <li>熟悉后：La Bise（贴面礼），但职场初期建议等对方主动</li>
+    <li>称呼：用"Monsieur/Madame + 姓氏"，切勿直接用名字（除非对方要求）</li>
+    <li>英语：年轻工程师英语不错，管理层可能偏好法语，重要会议可带翻译</li>
+  </ul>
+
+  <h2>会议文化</h2>
+  <ul>
+    <li><strong>午餐时间（12:00-14:00）神圣不可侵犯</strong>，绝不要安排会议</li>
+    <li><strong>8月是全法国度假月</strong>，基本无法推进商务</li>
+    <li>会议开始通常会闲聊（la parole en l'air），不要着急进入正题</li>
+    <li>法国人欣赏"Contrarian thinking"，适度提出不同意见反而加分</li>
+  </ul>
+
+  <h2>沟通风格</h2>
+  <ul>
+    <li>Direct but diplomatic：直接但有外交辞令，不会明说"No"</li>
+    <li>"Ce n'est pas evident"（这不简单）&rarr; 实际上是委婉的拒绝</li>
+    <li>邮件正式且详尽，开头要有礼貌问候语，结尾要有完整签名</li>
+  </ul>
+
+  <h2>三个法国Site的特别注意事项</h2>
+  <ul>
+    <li><strong>Rousset：</strong>普罗旺斯氛围，午餐文化浓厚，周五下午轻松</li>
+    <li><strong>Crolles：</strong>R&D氛围浓，阿尔卑斯山区，工程师偏好技术讨论</li>
+    <li><strong>Tours：</strong>规模较小，卢瓦尔河谷地区，节奏较慢</li>
+  </ul>
+
+  <div class="warn-box">
+    <div class="warn-box-title">&#9888; 禁忌清单</div>
+    <p>不要拿法国与德国比较（尤其不要说德国效率更高）</p>
+    <p>不要在晚餐时聊工作</p>
+    <p>不要忽视Dress Code（Business Casual起步，高级别会议穿西装）</p>
+    <p>不要打断别人说话</p>
+  </div>
+
+  <div class="tip-box">
+    <div class="tip-box-title">&#128161; 实战经验</div>
+    <p>学会几句法语问候（Bonjour, Merci, Au revoir）能极大加分，哪怕你英语说得很好。去法国前了解一下当地的美食和葡萄酒，是很好的破冰话题。</p>
+  </div>
+
+  <div class="checklist">
+    <span class="check-item">了解法国等级制文化</span>
+    <span class="check-item">掌握见面礼仪和称呼方式</span>
+    <span class="check-item">记住午餐和8月禁忌</span>
+    <span class="check-item">学习基本法语问候</span>
+  </div>
+</div>
+
+<!-- ========== Culture Lesson 2 ========== -->
+<div class="page" id="c2">
+  <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+    <span style="font-size:11px;font-weight:600;padding:2px 8px;background:#fce8e8;color:#e8453c;border-radius:4px">跨文化商务沟通</span>
+  </div>
+  <h1>意大利商务文化与西西里岛特别指南</h1>
+
+  <p>意大利是ST第二大制造基地所在国，Catania工厂的战略地位日益重要。意大利文化以关系（Relazioni）至上，没有信任基础很难推进业务。</p>
+
+  <h2>核心文化特征</h2>
+  <ul>
+    <li><strong>Relazioni（关系）至上：</strong>意大利人做生意极度依赖个人关系，没有信任基础很难推进</li>
+    <li><strong>La Bella Figura（好形象）：</strong>外在形象（穿着、车子、手表）在社交中很重要</li>
+    <li><strong>Flessibilita（灵活性）：</strong>意大利人对时间、规则的态度比德国法国灵活很多，计划经常变</li>
+  </ul>
+
+  <h2>意大利北部（Agrate/Milan地区）</h2>
+  <ul>
+    <li>米兰是意大利商务中心，节奏较快，国际化程度高</li>
+    <li>英语普及率较高，但学几句意大利语会很受欢迎</li>
+    <li>见面：握手+轻微拍肩（熟悉后），称呼"Signore/Signora"</li>
+    <li>午餐是建立关系的好时机，意大利人热衷美食</li>
+  </ul>
+
+  <h2>西西里岛（Catania）—— 特别特别特别注意</h2>
+
+  <div class="warn-box">
+    <div class="warn-box-title">&#9888; 绝对禁忌（违反任何一条都可能毁掉关系）</div>
+    <p><strong>永远不要提及"Mafia"、"Cosa Nostra"、"黑手党"</strong>，即使是玩笑也不行</p>
+    <p>不要问"这里安全吗？"</p>
+    <p>不要说"西西里看起来和电影教父里一样"</p>
+    <p>不要做任何与黑手党相关的手势或暗示</p>
+    <p>Catania乃至整个西西里岛都在努力摆脱黑手党的历史标签，提到这个话题是极度冒犯</p>
+    <p style="margin-top:8px"><strong>不要比较南北意大利</strong>：不要说"北方比南方发达"之类的话</p>
+    <p><strong>不要谈论政治和宗教</strong></p>
+  </div>
+
+  <h2>Catania 实地指南</h2>
+  <ul>
+    <li>Etna火山就在附近，可以聊火山和地质（正面话题）</li>
+    <li>西西里人极其热情好客，接受他们的 hospitality</li>
+    <li>食物是通用语言：Arancini（炸饭团）、Pasta alla Norma、Cannoli</li>
+    <li>英语普及率低于米兰，但工厂工程师基本OK</li>
+    <li>机场（CTA）到工厂约20分钟</li>
+    <li>时间安排更flexible，会议可能延迟开始</li>
+  </ul>
+
+  <h2>沟通风格</h2>
+  <ul>
+    <li>手势丰富，声音较大，表情夸张——这是正常表达，不是生气</li>
+    <li>关系建立比合同更重要，先做朋友再做生意</li>
+    <li>"Domani"（明天）不一定指明天，可能是"以后再说"</li>
+    <li>他们喜欢反复讨论细节，耐心是关键</li>
+  </ul>
+
+  <div class="tip-box">
+    <div class="tip-box-title">&#128161; 实战经验</div>
+    <p>带上中国茶叶作为小礼物（'piccolo regalo'），配合包装精美，效果极佳。如果对方提起Etna火山，表现出兴趣和惊叹——西西里人为自己的火山骄傲。</p>
+  </div>
+
+  <div class="checklist">
+    <span class="check-item">牢记黑手党绝对禁忌</span>
+    <span class="check-item">了解关系至上的文化</span>
+    <span class="check-item">掌握西西里的正面话题</span>
+    <span class="check-item">准备小礼物</span>
+  </div>
+</div>
+
+<!-- ========== Culture Lesson 3 ========== -->
+<div class="page" id="c3">
+  <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+    <span style="font-size:11px;font-weight:600;padding:2px 8px;background:#fce8e8;color:#e8453c;border-radius:4px">跨文化商务沟通</span>
+  </div>
+  <h1>新加坡商务文化与AMK工厂对接</h1>
+
+  <p>新加坡是ST亚太制造枢纽，AMK工厂虽然比欧洲小，但商务文化截然不同。多元文化融合，极度高效，准时是基本礼仪。</p>
+
+  <h2>核心文化特征</h2>
+  <ul>
+    <li><strong>Multiculturalism（多元文化）：</strong>华人（74%）、马来（13%）、印度（9%）、西方（4%）融合</li>
+    <li><strong>Efficiency（效率至上）：</strong>比欧洲高效得多，会议准时开始准时结束</li>
+    <li><strong>Meritocracy（精英制）：</strong>靠能力和结果说话，相对扁平</li>
+    <li><strong>Kiasu（怕输精神）：</strong>新加坡人骨子里的竞争意识，凡事追求完美</li>
+  </ul>
+
+  <h2>见面礼仪</h2>
+  <ul>
+    <li>握手为主，简短有力</li>
+    <li>华人同事可能接受微微点头</li>
+    <li>名片用双手递接，看一眼再收好（尤其对华人和日本同事）</li>
+    <li>英语是工作语言，Singlish（新加坡英语）可能有点难懂</li>
+  </ul>
+
+  <h2>会议文化</h2>
+  <ul>
+    <li>极度准时，迟到5分钟就要道歉</li>
+    <li>Agenda-driven，会前发议程，会后要Summary</li>
+    <li>决策速度快，但需要有数据支撑</li>
+    <li>喜欢PPT简洁、数据驱动（Data-driven）</li>
+  </ul>
+
+  <h2>沟通风格</h2>
+  <ul>
+    <li>比欧洲人更间接（尤其华人员工），负面反馈可能委婉表达</li>
+    <li>邮件：简洁、要点化、Action Item要明确</li>
+    <li>微信/WhatsApp在商务沟通中常用（比欧洲随意）</li>
+    <li>回复速度期望：24小时内</li>
+  </ul>
+
+  <h2>特殊注意事项</h2>
+  <ul>
+    <li>种族敏感话题绝对避免</li>
+    <li>宗教节日期间不要安排重要会议：Hari Raya Puasa、Deepavali、Chinese New Year</li>
+    <li>新加坡法律极其严格，不要有任何违规暗示（如"打点关系"）</li>
+    <li>不要嚼口香糖（新加坡禁止）</li>
+    <li>不要乱扔垃圾（罚款极重）</li>
+  </ul>
+
+  <h2>餐饮文化</h2>
+  <ul>
+    <li>Hawker Centre（小贩中心）是当地特色，可以带客户体验</li>
+    <li>推荐：海南鸡饭、辣椒螃蟹、Laksa（叻沙）</li>
+    <li>注意马来同事不吃猪肉，印度同事可能素食</li>
+  </ul>
+
+  <div class="tip-box">
+    <div class="tip-box-title">&#128161; 实战经验</div>
+    <p>新加坡客户期待24小时内邮件回复，即使只是回一个"Received, will revert by XX"。带客户去Hawker Centre体验本地美食是很好的关系建立方式。</p>
+  </div>
+
+  <div class="checklist">
+    <span class="check-item">了解多元文化背景</span>
+    <span class="check-item">掌握高效会议风格</span>
+    <span class="check-item">注意准时和邮件回复速度</span>
+    <span class="check-item">了解宗教节日时间</span>
+  </div>
+</div>
+
+<!-- ========== Trade Lesson 1 ========== -->
+<div class="page" id="t1">
+  <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+    <span style="font-size:11px;font-weight:600;padding:2px 8px;background:#fff3d6;color:#b8810a;border-radius:4px">国际贸易实务</span>
+  </div>
+  <h1>国际贸易术语（Incoterms 2020）</h1>
+
+  <p>硅片出口常用的Incoterms，必须烂熟于心。这些术语定义了买卖双方在运输过程中的责任划分。</p>
+
+  <h2>EXW（Ex Works）工厂交货</h2>
+  <ul>
+    <li>卖方责任最小：工厂交货，买方负责一切运输和出口清关</li>
+    <li>适用：买方有自己的国际物流团队</li>
+    <li>注意：出口许可证由买方办理，如果涉及敏感物项可能有问题</li>
+  </ul>
+
+  <h2>FCA（Free Carrier）货交承运人</h2>
+  <ul>
+    <li>卖方将货物交给买方指定的承运人即完成交货</li>
+    <li>适合：空运/海运集装箱，卖方负责出口清关</li>
+    <li>风险转移点：交给承运人时</li>
+  </ul>
+
+  <h2>CPT（Carriage Paid To）运费付至</h2>
+  <ul>
+    <li>卖方支付运费至目的港/机场</li>
+    <li>风险转移：货交第一承运人时（注意：风险和费用转移点不同）</li>
+  </ul>
+
+  <h2>CIP（Carriage and Insurance Paid To）</h2>
+  <ul>
+    <li>CPT + 卖方购买保险</li>
+    <li>保险最低要求：ICC(C)条款，建议升级为ICC(A)</li>
+    <li>硅片属于高价值精密货物，强烈建议全险</li>
+  </ul>
+
+  <h2>DAP（Delivered at Place）目的地交货</h2>
+  <ul>
+    <li>卖方承担所有费用和风险直到货物到达买方指定地点</li>
+    <li>注意：进口清关由买方负责</li>
+  </ul>
+
+  <h2>DDP（Delivered Duty Paid）完税后交货</h2>
+  <ul>
+    <li>卖方责任最大：包含进口清关和关税</li>
+    <li>欧洲客户经常要求DDP</li>
+  </ul>
+
+  <div class="warn-box">
+    <div class="warn-box-title">&#9888; 硅片出口特别注意</div>
+    <p>硅片属于精密易碎品，运输中的温湿度控制至关重要</p>
+    <p>包装要求：真空包装+防静电袋+泡沫缓冲+木箱</p>
+    <p>运输方式：通常是空运（urgent）或海运（大批量）</p>
+    <p>保险金额：按CIF价值的110%投保</p>
+  </div>
+
+  <div class="tip-box">
+    <div class="tip-box-title">&#128161; 实战经验</div>
+    <p>欧洲客户最喜欢DDP，因为省心。但做DDP前必须确认你有能力处理进口国的VAT和关税。</p>
+  </div>
+
+  <div class="checklist">
+    <span class="check-item">掌握6个核心Incoterms</span>
+    <span class="check-item">理解风险转移点</span>
+    <span class="check-item">了解硅片包装要求</span>
+    <span class="check-item">熟悉保险条款</span>
+  </div>
+</div>
+
+<!-- ========== Trade Lesson 2 ========== -->
+<div class="page" id="t2">
+  <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+    <span style="font-size:11px;font-weight:600;padding:2px 8px;background:#fff3d6;color:#b8810a;border-radius:4px">国际贸易实务</span>
+  </div>
+  <h1>出口管制与合规（Export Control）</h1>
+
+  <p>半导体是中国重点管控的出口商品，合规是生命线。宁可丢单，不可踩线。</p>
+
+  <h2>中国出口管制法规</h2>
+  <ul>
+    <li>《出口管制法》（2020年12月生效）</li>
+    <li>《两用物项和技术出口许可证管理目录》</li>
+    <li>硅片本身不敏感，但达到一定规格可能需要许可证</li>
+  </ul>
+
+  <h2>美国出口管制（EAR）的外溢效应</h2>
+  <ul>
+    <li>ST虽然是欧洲公司，但如果其产品最终用于军事或特定实体，可能触发美国长臂管辖</li>
+    <li>了解"最终用户"（End User）和"最终用途"（End Use）</li>
+    <li>如果客户提到"我们帮XX代工"，要问清楚XX是谁</li>
+  </ul>
+
+  <h2>欧盟出口管制</h2>
+  <ul>
+    <li>EU Dual-Use Regulation (Regulation 2021/821)</li>
+    <li>ST通常已经处理了欧盟内部的合规</li>
+    <li>但作为供应商，你需要确保你的出口不违反任何管制</li>
+  </ul>
+
+  <h2>合规检查清单（必须做）</h2>
+  <ol>
+    <li>客户是否在制裁名单（SDN, EU Consolidated List, UN名单）</li>
+    <li>最终用户和最终用途声明</li>
+    <li>是否有转出口（Re-export）风险</li>
+    <li>技术转让是否涉及受限内容</li>
+  </ol>
+
+  <div class="tip-box">
+    <div class="tip-box-title">&#128161; 实战经验</div>
+    <p>合规问题没有灰色地带。宁可丢单，不可踩线。一次违规可能导致整个公司被制裁。与公司法务/合规团队密切合作，保留所有合规文件至少5年。</p>
+  </div>
+
+  <div class="checklist">
+    <span class="check-item">了解中国出口管制法</span>
+    <span class="check-item">熟悉美国EAR外溢效应</span>
+    <span class="check-item">掌握客户筛查流程</span>
+    <span class="check-item">建立合规文件管理</span>
+  </div>
+</div>
+
+<!-- ========== Trade Lesson 3 ========== -->
+<div class="page" id="t3">
+  <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+    <span style="font-size:11px;font-weight:600;padding:2px 8px;background:#fff3d6;color:#b8810a;border-radius:4px">国际贸易实务</span>
+  </div>
+  <h1>报价、合同与跨境支付</h1>
+
+  <p>从Quotation到Payment的全流程。每个环节都有坑，需要仔细把控。</p>
+
+  <h2>报价（Quotation）</h2>
+  <ul>
+    <li>币种：通常是USD或EUR，ST偏好EUR</li>
+    <li>有效期：30天或60天</li>
+    <li>汇率锁定：如果报的是USD，要考虑汇率波动风险</li>
+  </ul>
+
+  <h2>合同关键条款</h2>
+  <ul>
+    <li>ST通常发Purchase Order (PO)，你回签即可</li>
+    <li>关键条款：Incoterms、Delivery Schedule（ST对OTD要求极严）</li>
+    <li>Quality Requirements、Warranty（通常12个月）</li>
+    <li>Force Majeure、Governing Law（通常是瑞士法或法国法）</li>
+  </ul>
+
+  <h2>支付方式</h2>
+
+  <h3>T/T（电汇）</h3>
+  <ul>
+    <li>最常见但风险大</li>
+    <li>折中方案：30%预付 + 70%见提单副本</li>
+  </ul>
+
+  <h3>L/C（信用证）</h3>
+  <ul>
+    <li>银行信用，安全性高</li>
+    <li>费用高（开证费1-3&permil;），手续繁琐</li>
+    <li>注意"软条款"可能是陷阱</li>
+  </ul>
+
+  <h3>Open Account（赊销）</h3>
+  <ul>
+    <li>大客户最常用，发货后30/60/90天付款</li>
+    <li>ST通常要求Net 60或Net 90</li>
+    <li>风险最高，建议购买出口信用保险（中信保Sinosure）</li>
+  </ul>
+
+  <div class="tip-box">
+    <div class="tip-box-title">&#128161; 实战经验</div>
+    <p>与ST这样的大客户，争取Net 30而不是Net 90——现金流比利润更重要。新客户先做Credit Check（D&B, Euler Hermes），设定Credit Limit。</p>
+  </div>
+
+  <div class="checklist">
+    <span class="check-item">掌握三种支付方式</span>
+    <span class="check-item">理解合同关键条款</span>
+    <span class="check-item">建立Credit Check流程</span>
+    <span class="check-item">了解出口信用保险</span>
+  </div>
+</div>
+
+<!-- ========== English Lesson 1 ========== -->
+<div class="page" id="e1">
+  <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+    <span style="font-size:11px;font-weight:600;padding:2px 8px;background:#e6f9f2;color:#00b894;border-radius:4px">商务英语与技术沟通</span>
+  </div>
+  <h1>商务邮件写作模板与技巧</h1>
+
+  <p>海外销售的80%沟通通过邮件完成，写一封好邮件是基本功。</p>
+
+  <h2>Subject Line</h2>
+  <p>清晰的Subject能让客户3秒内理解邮件内容。</p>
+  <ul>
+    <li>&#9989; "Quotation for 300mm P&lt;100&gt; Prime Wafer - RFQ-2024-0567"</li>
+    <li>&#10060; "About the order"</li>
+  </ul>
+
+  <h2>Opening</h2>
+  <ul>
+    <li>Formal: "Dear Mr./Ms. [Last Name],"</li>
+    <li>After first meeting: "Dear [First Name],"</li>
+    <li>Follow-up: "Following up on our meeting in Catania on [Date]..."</li>
+  </ul>
+
+  <h2>Body - 核心原则</h2>
+  <ul>
+    <li><strong>BLUF</strong>（Bottom Line Up Front）：结论先行</li>
+    <li>Bullet points &gt; 长段落</li>
+    <li>一段一个主题，控制在5个段落以内</li>
+  </ul>
+
+  <h2>常用句式模板</h2>
+
+  <h3>报价</h3>
+  <p style="background:#f6f7f9;padding:10px 14px;border-radius:6px;font-size:13px">"Please find attached our quotation based on [Incoterms] terms, valid until [Date]. Unit price: EUR [XXX]/wafer for volume of [YYY] wafers/quarter."</p>
+
+  <h3>跟进</h3>
+  <p style="background:#f6f7f9;padding:10px 14px;border-radius:6px;font-size:13px">"I wanted to follow up on the quotation sent on [Date]. Please let me know if you need any additional information."</p>
+
+  <h3>催促</h3>
+  <p style="background:#f6f7f9;padding:10px 14px;border-radius:6px;font-size:13px">"I am writing to kindly inquire about the status of the PO for [Product]. Our production schedule requires confirmation by [Date]."</p>
+
+  <h3>延期</h3>
+  <p style="background:#f6f7f9;padding:10px 14px;border-radius:6px;font-size:13px">"Due to [Reason], we regret to inform you that the delivery for PO#[Number] will be delayed by [X] weeks. We sincerely apologize."</p>
+
+  <div class="warn-box">
+    <div class="warn-box-title">&#9888; 不要用的表达</div>
+    <p>"Please reply me as soon as possible"（太pushy）</p>
+    <p>"I think..."（不专业，用"We recommend..."）</p>
+    <p>全大写（像在SHOUTING）</p>
+  </div>
+
+  <div class="tip-box">
+    <div class="tip-box-title">&#128161; 实战经验</div>
+    <p>每封邮件发送前用Grammarly检查语法，哪怕你觉得自己英语很好。重要邮件写完后放2小时再发，重新审视。</p>
+  </div>
+
+  <div class="checklist">
+    <span class="check-item">掌握BLUF写作法</span>
+    <span class="check-item">记住报价/跟进/催促模板</span>
+    <span class="check-item">避免不专业的表达</span>
+  </div>
+</div>
+
+<!-- ========== English Lesson 2 ========== -->
+<div class="page" id="e2">
+  <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+    <span style="font-size:11px;font-weight:600;padding:2px 8px;background:#e6f9f2;color:#00b894;border-radius:4px">商务英语与技术沟通</span>
+  </div>
+  <h1>半导体行业技术英语</h1>
+
+  <p>与ST的技术对接中，必须使用精准的行业术语。以下是核心术语表：</p>
+
+  <h2>硅片相关术语</h2>
+  <div class="table-wrap"><table>
+    <thead><tr><th>英文</th><th>含义</th></tr></thead>
+    <tbody>
+      <tr><td>CZ Crystal Growth</td><td>Czochralski晶体生长</td></tr>
+      <tr><td>Resistivity</td><td>电阻率</td></tr>
+      <tr><td>Epi Layer / Epitaxial Layer</td><td>外延层</td></tr>
+      <tr><td>CMP</td><td>化学机械抛光</td></tr>
+      <tr><td>TTV</td><td>总厚度偏差</td></tr>
+      <tr><td>LPD</td><td>光点缺陷</td></tr>
+      <tr><td>Notch</td><td>定位槽（300mm）</td></tr>
+      <tr><td>Crystal Orientation</td><td>晶向 &lt;100&gt; / &lt;111&gt;</td></tr>
+    </tbody>
+  </table></div>
+
+  <h2>制程相关术语</h2>
+  <ul>
+    <li>Lithography / Photolithography &rarr; 光刻</li>
+    <li>Etching &rarr; 蚀刻</li>
+    <li>Ion Implantation &rarr; 离子注入</li>
+    <li>CVD &rarr; 化学气相沉积</li>
+    <li>PVD &rarr; 物理气相沉积</li>
+    <li>Cleanroom &rarr; 洁净室</li>
+    <li>Yield &rarr; 良率</li>
+  </ul>
+
+  <h2>技术讨论场景</h2>
+  <p style="background:#f6f7f9;padding:10px 14px;border-radius:6px;font-size:13px">"What is your target EPI thickness for the 28nm FD-SOI process?"</p>
+  <p style="background:#f6f7f9;padding:10px 14px;border-radius:6px;font-size:13px">"We can provide different resistivity ranges: 1-10 ohm-cm for your CMOS logic."</p>
+  <p style="background:#f6f7f9;padding:10px 14px;border-radius:6px;font-size:13px">"Would you like us to provide a test lot for your qualification process?"</p>
+
+  <div class="tip-box">
+    <div class="tip-box-title">&#128161; 实战经验</div>
+    <p>准备一个行业术语的Glossary文档，随时查阅。技术讨论前先复习客户Spec中的关键参数英文表达。</p>
+  </div>
+
+  <div class="checklist">
+    <span class="check-item">掌握硅片核心术语英文</span>
+    <span class="check-item">熟悉制程流程英文</span>
+    <span class="check-item">练习技术对话场景</span>
+  </div>
+</div>
+
+<!-- ========== English Lesson 3 ========== -->
+<div class="page" id="e3">
+  <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+    <span style="font-size:11px;font-weight:600;padding:2px 8px;background:#e6f9f2;color:#00b894;border-radius:4px">商务英语与技术沟通</span>
+  </div>
+  <h1>商务谈判英语与话术</h1>
+
+  <h2>开场白</h2>
+  <p style="background:#f6f7f9;padding:10px 14px;border-radius:6px;font-size:13px">"Thank you for taking the time to meet with us today. We're excited to discuss how we can support ST's silicon wafer requirements."</p>
+
+  <h2>探询需求</h2>
+  <p style="background:#f6f7f9;padding:10px 14px;border-radius:6px;font-size:13px">"What volumes are you currently consuming per quarter for [Product]?"</p>
+  <p style="background:#f6f7f9;padding:10px 14px;border-radius:6px;font-size:13px">"What are the key criteria for your supplier selection—price, quality, delivery, or local support?"</p>
+
+  <h2>价值陈述</h2>
+  <p style="background:#f6f7f9;padding:10px 14px;border-radius:6px;font-size:13px">"Our advantage is not just price—it's supply chain resilience. With our dual-site manufacturing capability, we can ensure business continuity."</p>
+
+  <h2>价格谈判</h2>
+  <p style="background:#f6f7f9;padding:10px 14px;border-radius:6px;font-size:13px">"Based on a volume commitment of [X] wafers per year, we can offer a price of EUR [Y]/wafer on DDP [Destination] terms."</p>
+
+  <h2>应对压价</h2>
+  <p style="background:#f6f7f9;padding:10px 14px;border-radius:6px;font-size:13px">"I appreciate your price expectations. To help me justify a better price, could you share the volume ramp-up plan over the next 3 years?"</p>
+
+  <h2>Close / Next Steps</h2>
+  <p style="background:#f6f7f9;padding:10px 14px;border-radius:6px;font-size:13px">"To summarize, we agreed on [X]. Next steps: I'll prepare the formal quotation by [Date]. Does that work for you?"</p>
+
+  <h2>非语言沟通</h2>
+  <ul>
+    <li><strong>法国人：</strong>眼神接触表示自信，手势表示热情</li>
+    <li><strong>意大利人：</strong>靠近说话表示信任，拍肩表示友好</li>
+    <li><strong>新加坡人：</strong>保持适当距离，点头表示理解（不一定是同意）</li>
+  </ul>
+
+  <div class="tip-box">
+    <div class="tip-box-title">&#128161; 实战经验</div>
+    <p>谈判前准备好3个数字：Best Price, Target Price, Walk-away Price。永远不要当场答应任何条件，说"Let me check with my team and revert by tomorrow"。</p>
+  </div>
+
+  <div class="checklist">
+    <span class="check-item">掌握开场和需求探询话术</span>
+    <span class="check-item">练习价值陈述</span>
+    <span class="check-item">准备价格谈判策略</span>
+  </div>
+</div>
+
+<!-- ========== CRM Lesson 1 ========== -->
+<div class="page" id="crm1">
+  <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+    <span style="font-size:11px;font-weight:600;padding:2px 8px;background:#ede9fc;color:#6c5ce7;border-radius:4px">客户关系管理</span>
+  </div>
+  <h1>客户分级与资源分配策略</h1>
+
+  <p>不是所有客户都值得同等投入，学会分级管理才能最大化你的时间和精力回报。</p>
+
+  <h2>S级 - 战略客户（如ST整体）</h2>
+  <ul>
+    <li>年采购额 &gt; 500万美元</li>
+    <li>行业标杆，有示范效应</li>
+    <li>投入：CEO/VP级别互动，Dedicated FAE，季度Business Review</li>
+    <li>目标：成为"Strategic Partner"而不仅是"Vendor"</li>
+  </ul>
+
+  <h2>A级 - 核心客户（如ST单个Site）</h2>
+  <ul>
+    <li>年采购额 100-500万美元</li>
+    <li>稳定的订单流</li>
+    <li>投入：销售经理级别，月度Review</li>
+    <li>目标：提升Share of Wallet（钱包份额）</li>
+  </ul>
+
+  <h2>B级 - 成长客户</h2>
+  <ul>
+    <li>年采购额 20-100万美元</li>
+    <li>有增长潜力</li>
+    <li>投入：标准服务，季度Review</li>
+  </ul>
+
+  <h2>C级 - 普通客户</h2>
+  <ul>
+    <li>年采购额 &lt; 20万美元</li>
+    <li>维持性业务</li>
+    <li>投入：最小化</li>
+  </ul>
+
+  <h2>ST内部的Site分级</h2>
+  <ul>
+    <li><strong>Crolles：</strong>S+级（最先进工艺，最大EPI需求）</li>
+    <li><strong>Catania：</strong>S级（SiC增长最快）</li>
+    <li><strong>Rousset / Agrate / AMK：</strong>A级</li>
+    <li><strong>Tours：</strong>B级（量相对小）</li>
+  </ul>
+
+  <div class="tip-box">
+    <div class="tip-box-title">&#128161; 实战经验</div>
+    <p>每年做一次"Account Portfolio Review"，评估每个客户的增长潜力和战略价值。70%时间给S和A级客户。</p>
+  </div>
+
+  <div class="checklist">
+    <span class="check-item">建立客户分级体系</span>
+    <span class="check-item">制定不同级别的服务标准</span>
+    <span class="check-item">学会计算Wallet Share</span>
+  </div>
+</div>
+
+<!-- ========== CRM Lesson 2 ========== -->
+<div class="page" id="crm2">
+  <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+    <span style="font-size:11px;font-weight:600;padding:2px 8px;background:#ede9fc;color:#6c5ce7;border-radius:4px">客户关系管理</span>
+  </div>
+  <h1>定期Review机制与关系维护</h1>
+
+  <p>系统化的客户Review机制是维持关系的核心。QBR（Quarterly Business Review）是最有效的工具。</p>
+
+  <h2>QBR的4个模块</h2>
+
+  <h3>1. Performance Review（前季度表现回顾）</h3>
+  <ul>
+    <li>Quality Metrics：DPPM（百万分之缺陷率）、RMA数量</li>
+    <li>Delivery Performance：OTD（On Time Delivery）百分比</li>
+    <li>Issue Log：未关闭问题清单</li>
+  </ul>
+
+  <h3>2. Market &amp; Industry Update（市场动态）</h3>
+  <ul>
+    <li>硅片市场供需趋势</li>
+    <li>原材料价格变动（Polysilicon价格）</li>
+    <li>地缘政治影响分析</li>
+  </ul>
+
+  <h3>3. Joint Business Planning（联合业务规划）</h3>
+  <ul>
+    <li>下季度Forecast确认</li>
+    <li>新产品/新工艺导入计划</li>
+    <li>降本路线图（Cost Roadmap）</li>
+  </ul>
+
+  <h3>4. Relationship Health Check（关系健康度）</h3>
+  <ul>
+    <li>各Contact的满意度</li>
+    <li>是否有新决策者加入</li>
+    <li>竞争对手动向</li>
+  </ul>
+
+  <h2>非正式关系维护</h2>
+  <ul>
+    <li>行业展会：SEMICON Europa（慕尼黑）、SEMICON China（上海）</li>
+    <li>工厂参观：邀请客户到你的工厂参观（熟悉后）</li>
+    <li>节日问候：圣诞节、中国春节的个性化问候</li>
+    <li>记住关键Decision Maker的生日</li>
+  </ul>
+
+  <div class="tip-box">
+    <div class="tip-box-title">&#128161; 实战经验</div>
+    <p>准备一个Excel表格，记录每个Contact的生日、爱好、家庭情况、上次见面日期——这是你的私人CRM。 dinners不要总在酒店，找当地特色餐厅。</p>
+  </div>
+
+  <div class="checklist">
+    <span class="check-item">建立QBR模板</span>
+    <span class="check-item">规划非正式关系维护活动</span>
+    <span class="check-item">记录客户个人信息</span>
+  </div>
+</div>
+
+<!-- ========== CRM Lesson 3 ========== -->
+<div class="page" id="crm3">
+  <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+    <span style="font-size:11px;font-weight:600;padding:2px 8px;background:#ede9fc;color:#6c5ce7;border-radius:4px">客户关系管理</span>
+  </div>
+  <h1>客诉处理与危机管理</h1>
+
+  <p>客诉处理是检验供应商能力的关键时刻。用8D方法处理，处理好了反而能加深关系。</p>
+
+  <h2>8D方法</h2>
+
+  <h3>D1 - 组建团队</h3>
+  <p>24小时内指定Team Leader，通知客户团队已成立。</p>
+
+  <h3>D2 - 问题描述</h3>
+  <p>用5W2H描述问题：What/Where/When/Who/Why/How/How much。获取不良样品。</p>
+
+  <h3>D3 - 遏制措施</h3>
+  <p>立即停止出货（Hold Shipment），隔离在途和在库产品，24小时内给出临时对策。</p>
+
+  <h3>D4 - 根本原因分析</h3>
+  <p>用5 Whys或鱼骨图（Ishikawa Diagram）。区分Root Cause和Contributing Factors。</p>
+
+  <h3>D5 - 纠正措施</h3>
+  <p>针对根本原因制定永久对策，需要可执行、可验证。</p>
+
+  <h3>D6 - 验证</h3>
+  <p>跟踪至少3个Lot的数据，确认问题不再发生。</p>
+
+  <h3>D7 - 预防措施</h3>
+  <p>更新SOP、FMEA，横向展开到同类产品。</p>
+
+  <h3>D8 - 结案</h3>
+  <p>客户确认Closure，内部Team总结Learning。</p>
+
+  <h2>危机升级路径</h2>
+  <ul>
+    <li><strong>Level 1（一般问题）：</strong>销售处理</li>
+    <li><strong>Level 2（重复/批量问题）：</strong>销售+质量+技术</li>
+    <li><strong>Level 3（停线/重大事故）：</strong>VP级别介入</li>
+  </ul>
+
+  <div class="tip-box">
+    <div class="tip-box-title">&#128161; 实战经验</div>
+    <p>客诉的第一反应速度比完美解决方案更重要。先回复"我们已收到，正在处理"，争取时间。SiC衬底的客诉标准更严（关系到汽车安全）。</p>
+  </div>
+
+  <div class="checklist">
+    <span class="check-item">掌握8D方法</span>
+    <span class="check-item">建立分级响应机制</span>
+    <span class="check-item">练习快速响应</span>
+  </div>
+</div>
+
+<!-- ========== Market Lesson 1 ========== -->
+<div class="page" id="m1">
+  <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+    <span style="font-size:11px;font-weight:600;padding:2px 8px;background:#d6eefc;color:#0984e3;border-radius:4px">海外市场开拓</span>
+  </div>
+  <h1>欧洲半导体市场分析与机会识别</h1>
+
+  <p>了解欧洲半导体版图，才能找到你的目标客户。以下是欧洲主要半导体企业分布。</p>
+
+  <h2>IDM（Integrated Device Manufacturer）</h2>
+  <ul>
+    <li><strong>STMicroelectronics</strong>（意大利/法国）- 你的主攻客户</li>
+    <li><strong>Infineon Technologies</strong>（德国慕尼黑）- 功率/汽车半导体龙头</li>
+    <li><strong>NXP Semiconductors</strong>（荷兰埃因霍温）- 汽车/IoT</li>
+    <li><strong>Bosch Semiconductor</strong>（德国罗伊特林根）- 汽车传感器</li>
+  </ul>
+
+  <h2>Foundry（晶圆代工厂）</h2>
+  <ul>
+    <li><strong>GlobalFoundries</strong>（德国德累斯顿）- 22FDX</li>
+    <li><strong>TSMC</strong>（德国在建）- 2027年投产</li>
+  </ul>
+
+  <h2>市场机会</h2>
+  <ul>
+    <li><strong>SiC/GaN功率器件：</strong>欧洲Green Deal推动，Catania/Infineon/NXP都在扩产</li>
+    <li><strong>FD-SOI生态：</strong>GlobalFoundries + ST Crolles，对EPI硅片需求巨大</li>
+    <li><strong>MCU短缺后补库存：</strong>2024-2025年欧洲MCU厂扩产潮</li>
+    <li><strong>中国硅片替代日本：</strong>地缘政治推动供应链重组</li>
+  </ul>
+
+  <div class="tip-box">
+    <div class="tip-box-title">&#128161; 实战经验</div>
+    <p>除了ST，Infineon和NXP也是欧洲Tier-1 IDM，值得同时开拓。信息来源：SEMI Europe报告、European Chips Act、各公司Annual Report。</p>
+  </div>
+
+  <div class="checklist">
+    <span class="check-item">绘制欧洲半导体产业地图</span>
+    <span class="check-item">识别目标客户清单</span>
+    <span class="check-item">分析市场机会</span>
+  </div>
+</div>
+
+<!-- ========== Market Lesson 2 ========== -->
+<div class="page" id="m2">
+  <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+    <span style="font-size:11px;font-weight:600;padding:2px 8px;background:#d6eefc;color:#0984e3;border-radius:4px">海外市场开拓</span>
+  </div>
+  <h1>展会与行业活动实战指南</h1>
+
+  <p>展会是海外销售最高效的客户接触渠道。做好展前、展中、展后的全流程管理。</p>
+
+  <h2>必参加的展会</h2>
+  <ul>
+    <li><strong>SEMICON Europa</strong>（每年11月，慕尼黑）- 欧洲最大半导体展，ST/Infineon/NXP都会参展</li>
+    <li><strong>PCIM Europe</strong>（每年6月，纽伦堡）- 功率电子展，ST Catania的功率团队必去</li>
+    <li><strong>European Microwave Week</strong>（每年9-10月）- RF/Microwave，ST Agrate团队会去</li>
+  </ul>
+
+  <h2>展前准备</h2>
+  <ol>
+    <li>约Meeting：提前2-3周邮件/LinkedIn约客户见面</li>
+    <li>准备Pitch：30秒Elevator Pitch + 10分钟Detailed Pitch</li>
+    <li>带实物样品（硅片）和Technical Brochure</li>
+    <li>名片：中英文双面，印刷精美</li>
+    <li>预约dinners：展会期间的dinner slots要提前抢</li>
+  </ol>
+
+  <h2>展中</h2>
+  <ul>
+    <li>穿舒适的鞋（一天走2万步）</li>
+    <li>随身带Notebook记录客户反馈</li>
+    <li>每晚整理当天收集的名片和notes</li>
+    <li>展会第二天发Follow-up邮件</li>
+  </ul>
+
+  <h2>展后</h2>
+  <ul>
+    <li>48小时内发Follow-up邮件给所有新联系人</li>
+    <li>按优先级排序，S级客户先跟进</li>
+    <li>更新CRM系统</li>
+  </ul>
+
+  <div class="tip-box">
+    <div class="tip-box-title">&#128161; 实战经验</div>
+    <p>展会晚宴不要只顾着聊生意，聊当地文化、美食、旅行经历更能拉近距离。</p>
+  </div>
+
+  <div class="checklist">
+    <span class="check-item">制定年度展会计划</span>
+    <span class="check-item">掌握展会前中后SOP</span>
+    <span class="check-item">准备Pitch</span>
+  </div>
+</div>
+
+<!-- ========== Market Lesson 3 ========== -->
+<div class="page" id="m3">
+  <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+    <span style="font-size:11px;font-weight:600;padding:2px 8px;background:#d6eefc;color:#0984e3;border-radius:4px">海外市场开拓</span>
+  </div>
+  <h1>海外商务拜访全流程</h1>
+
+  <p>从准备到回国的完整SOP。每次trip回来写一份Trip Report，记录关键信息和心得。</p>
+
+  <h2>拜访前（Pre-trip）</h2>
+
+  <h3>设定目标</h3>
+  <ul>
+    <li>主目标：是什么？（如：推进Catania SiC样品认证）</li>
+    <li>副目标：2-3个backup目标</li>
+    <li>成功标准：如何定义这次trip成功？</li>
+  </ul>
+
+  <h3>行程规划</h3>
+  <ul>
+    <li>优先安排S级客户，再插A级</li>
+    <li>同一Region的Site集中拜访（法国三个Site可以一趟跑完）</li>
+    <li>每个Site之间预留交通时间+缓冲</li>
+  </ul>
+
+  <h3>材料准备</h3>
+  <ul>
+    <li>Company Profile（中英文，精美装订）</li>
+    <li>Product Catalog、Spec Sheets</li>
+    <li>样品（如有需要）</li>
+    <li>小礼物（中国特色，精美包装）</li>
+  </ul>
+
+  <h2>拜访中（On-site）</h2>
+
+  <h3>Meeting Structure</h3>
+  <ol>
+    <li><strong>Opening（5min）：</strong>寒暄+确认Agenda</li>
+    <li><strong>Recap（5min）：</strong>回顾上次沟通/当前合作状态</li>
+    <li><strong>Main Discussion（30-40min）：</strong>核心议题</li>
+    <li><strong>Next Steps（10min）：</strong>明确下一步+时间表</li>
+    <li><strong>Closing（5min）：</strong>感谢+确认后续联系</li>
+  </ol>
+
+  <h2>拜访后（Post-trip）</h2>
+  <ul>
+    <li>24小时内发Thank you邮件</li>
+    <li>Summary of discussion + Next steps</li>
+    <li>1周内更新CRM、内部汇报Trip结果</li>
+  </ul>
+
+  <div class="tip-box">
+    <div class="tip-box-title">&#128161; 实战经验</div>
+    <p>每次trip回来写一份Trip Report，记录关键信息和心得，这是你个人知识库的核心资产。提前5-10分钟到达，带Notebook记录（不要只用手机）。</p>
+  </div>
+
+  <div class="checklist">
+    <span class="check-item">制定拜访前SOP</span>
+    <span class="check-item">掌握Meeting Structure</span>
+    <span class="check-item">建立Trip Report模板</span>
+  </div>
+</div>
+
+</main>
+
+<!-- ===== Factory Detail Modal ===== -->
+<div class="modal" id="site-modal" onclick="closeModal(event)">
+  <div class="modal-card">
+    <div class="modal-close" onclick="document.getElementById('site-modal').classList.remove('show')">&times;</div>
+    <div class="modal-header">
+      <div class="modal-badge" id="modal-badge">FR</div>
+      <div>
+        <div class="modal-title" id="modal-title">Crolles</div>
+        <div class="modal-subtitle" id="modal-subtitle">Crolles, France</div>
+      </div>
+    </div>
+    <div class="modal-type" id="modal-type">300mm 先进逻辑</div>
+
+    <div class="modal-section-title">文化指南</div>
+    <ul class="modal-list" id="modal-culture"></ul>
+
+    <div class="modal-section-title" style="color:#e8453c">注意事项</div>
+    <div class="warn-box" style="margin:8px 0 16px" id="modal-taboos"></div>
+
+    <div class="modal-section-title" style="color:#3b6cf6">实战 Tips</div>
+    <ul class="modal-list" id="modal-tips"></ul>
+  </div>
+</div>
+
+<script>
+// ===== Factory Data =====
+const factories = {
+  crolles: {
+    code:'FR', color:'#3b6cf6', name:'Crolles', city:'Crolles, France',
+    type:'300mm 先进逻辑 · 28nm/18nm FD-SOI',
+    culture:['位于格勒诺布尔附近，阿尔卑斯山脚下，风景优美','法国高科技走廊的核心','R&D氛围浓厚，工程师偏好技术讨论','许多员工会说英语，但法语仍是工作语言','午餐时间较长，通常是1.5小时'],
+    taboos:['不要比较法国与德国的工作效率','不要忽视Dress Code（Business Casual起步）','不要在8月尝试安排会议','12:00-14:00不要安排会议'],
+    tips:['Crolles 2是全球最先进的FD-SOI产线之一','与GlobalFoundries共享部分产能，注意保密边界','Engineers appreciate technical depth','周边住宿推荐Grenoble市中心，到工厂约30分钟','机场：Lyon-Saint Exupery (LYS)，开车约1小时']
+  },
+  rousset: {
+    code:'FR', color:'#3b6cf6', name:'Rousset', city:'Rousset, France',
+    type:'200mm 模拟/功率IC · BCD工艺',
+    culture:['位于普罗旺斯，地中海气候，阳光充足','工厂历史较长，员工忠诚度高','氛围相对传统和保守','午餐文化浓厚，当地餐厅以地中海菜为主','周五下午通常比较轻松'],
+    taboos:['不要催促决策，审批流程相对较长','不要忽视Dress Code'],
+    tips:['Rousset是ST BCD工艺的发源地','200mm硅片需求稳定，适合作为入门突破口','附近的Aix-en-Provence适合宴请客户','机场为Marseille Provence (MRS)，到工厂约40分钟']
+  },
+  tours: {
+    code:'FR', color:'#3b6cf6', name:'Tours', city:'Tours, France',
+    type:'封装测试/功率器件',
+    culture:['位于卢瓦尔河谷，法国历史文化名城','规模相对较小，氛围亲切','城堡之乡，周边有众多世界文化遗产'],
+    taboos:['不要忽视工厂规模较小的现实，资源有限'],
+    tips:['Tours规模较小，硅片需求相对有限','适合作为关系维护型拜访，不必每次都去','可以结合卢瓦尔河谷酒庄体验做客户活动','TGV从巴黎到Tours约1小时']
+  },
+  agrate: {
+    code:'IT', color:'#e8453c', name:'Agrate Brianza', city:'Agrate, Italy',
+    type:'200mm 混合信号/MEMS',
+    culture:['位于米兰东北部，意大利工业核心地带','Lombardy大区节奏快，商务文化比南部更国际化','许多员工英语流利','午餐时间1小时，晚餐social很重要'],
+    taboos:['不要比较南北意大利','不要在午餐时聊太多工作'],
+    tips:['Agrate是ST在意大利最大的综合性基地','MEMS传感器需求特殊硅片（SOI），是差异化机会','米兰的机场是MXP（Malpensa），到工厂约40分钟']
+  },
+  catania: {
+    code:'IT', color:'#e8453c', name:'Catania', city:'Catania, Italy',
+    type:'150mm/200mm SiC/GaN',
+    culture:['位于西西里岛东海岸，Etna火山脚下','地中海气候，冬季温和，夏季炎热','西西里人以热情好客闻名','食物文化极其丰富','节奏较慢，"La Dolce Vita"的态度'],
+    taboos:['绝对不要提及Mafia/Cosa Nostra/黑手党','不要问"这里安全吗"','不要说"这里和教父电影里一样"','不要比较南北意大利','不要谈论政治和宗教'],
+    tips:['Catania是ST SiC业务的核心基地，全球SiC器件制造的标杆','SiC衬底需求爆发式增长，是你最大的机会窗口','准备小礼物（中国茶叶，精美包装），西西里人重视人情','机场代码CTA，到工厂约20分钟','如果对方提起Etna火山，表现出兴趣——西西里人为之骄傲']
+  },
+  amk: {
+    code:'SG', color:'#f5a623', name:'AMK', city:'Singapore',
+    type:'200mm 存储器/模拟IC',
+    culture:['多元文化融合：华人、马来、印度、西方','极度高效，会议准时','Meritocracy文化，靠结果说话','英语是工作语言，Singlish有时候难懂','Kiasu（怕输）精神，追求卓越'],
+    taboos:['种族敏感话题绝对避免','宗教节日期间不要安排重要会议','不要说"打点关系"之类的话','不要迟到——新加坡比欧洲严格得多'],
+    tips:['AMK是ST亚太制造枢纽，面向亚太市场的出货中心','Flash存储器对硅片质量要求高（缺陷敏感）','Singapore客户期待24小时邮件回复','机场SIN，出租车/Grab到工厂约30分钟','Clarke Quay和Marina Bay是商务dinner的热门区域']
+  }
+};
+
+function openSite(id) {
+  const f = factories[id]; if(!f) return;
+  document.getElementById('modal-badge').textContent = f.code;
+  document.getElementById('modal-badge').style.background = f.color;
+  document.getElementById('modal-title').textContent = f.name;
+  document.getElementById('modal-subtitle').textContent = f.city;
+  document.getElementById('modal-type').textContent = f.type;
+  document.getElementById('modal-type').style.color = f.color;
+  document.getElementById('modal-culture').innerHTML = f.culture.map(c => '<li><span style="color:#ccc;margin-right:6px">&bull;</span>'+c+'</li>').join('');
+  document.getElementById('modal-taboos').innerHTML = '<div class="warn-box-title">&#9888; 注意事项</div>' + f.taboos.map(t => '<p>'+t+'</p>').join('');
+  document.getElementById('modal-tips').innerHTML = f.tips.map(t => '<li><span style="color:#3b6cf6;margin-right:6px">&rarr;</span>'+t+'</li>').join('');
+  document.getElementById('site-modal').classList.add('show');
+}
+function closeModal(e){ if(e.target===e.currentTarget) e.target.classList.remove('show'); }
+
+// ===== Navigation =====
+function showPage(pageId, btn) {
+  // Hide all pages
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  // Show target
+  const target = document.getElementById(pageId);
+  if(target) target.classList.add('active');
+  // Update sidebar active states
+  document.querySelectorAll('.lesson-item').forEach(l => l.classList.remove('active'));
+  document.querySelectorAll('.mod-header').forEach(m => m.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  // Scroll to top
+  document.querySelector('.content').scrollTop = 0;
+}
+
+function toggleMod(btn, modId) {
+  const list = document.getElementById('list-' + modId);
+  const toggle = btn.querySelector('.mod-toggle');
+  if(list.classList.contains('open')) {
+    list.classList.remove('open');
+    toggle.classList.remove('open');
+  } else {
+    list.classList.add('open');
+    toggle.classList.add('open');
+  }
+  // Also activate this module
+  document.querySelectorAll('.mod-header').forEach(m => m.classList.remove('active'));
+  btn.classList.add('active');
+}
+</script>
+</body>
+</html>
