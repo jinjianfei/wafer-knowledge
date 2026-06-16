@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>海外销售学习之路</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
@@ -81,7 +83,7 @@ tr:hover td{background:#fafbfc}
 .warn-box-title{font-weight:600;color:#c0392b;margin-bottom:6px;display:flex;align-items:center;gap:6px;font-size:13px}
 .checklist{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
 .check-item{display:inline-flex;align-items:center;gap:4px;padding:4px 12px;background:#eef2ff;border-radius:20px;font-size:12px;color:#3b4db5}
-.modal{position:fixed;inset:0;background:rgba(0,0,0,.4);display:none;align-items:center;justify-content:center;z-index:200;padding:20px}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.4);display:none;align-items:center;justify-content:center;z-index:5000;padding:20px}
 .modal.show{display:flex}
 .modal-card{background:#fff;border-radius:12px;box-shadow:0 20px 60px rgba(0,0,0,.2);max-width:520px;width:100%;max-height:80vh;overflow-y:auto;padding:24px;position:relative}
 .modal-close{position:absolute;top:16px;right:16px;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#8b919d;font-size:18px;cursor:pointer;transition:all .15s}
@@ -261,21 +263,7 @@ tr:hover td{background:#fafbfc}
         <span style="display:inline-flex;align-items:center;gap:4px;margin-left:8px"><span style="width:8px;height:8px;border-radius:50%;background:#f5a623;display:inline-block"></span>新加坡</span>
       </span>
     </div>
-    <div class="map-container">
-      <img src="images/world-map.jpg" alt="ST全球工厂分布">
-      <!-- Crolles: 法国东南部 -->
-      <div class="map-marker" style="background:#3b6cf6;left:47.5%;top:34%" onclick="openSite('crolles')">FR<div class="marker-label">Crolles</div></div>
-      <!-- Rousset: 法国南部 -->
-      <div class="map-marker" style="background:#3b6cf6;left:46%;top:38%" onclick="openSite('rousset')">FR<div class="marker-label">Rousset</div></div>
-      <!-- Tours: 法国中西部 -->
-      <div class="map-marker" style="background:#3b6cf6;left:44.5%;top:31%" onclick="openSite('tours')">FR<div class="marker-label">Tours</div></div>
-      <!-- Agrate: 意大利北部 -->
-      <div class="map-marker" style="background:#e8453c;left:49.5%;top:34%" onclick="openSite('agrate')">IT<div class="marker-label">Agrate</div></div>
-      <!-- Catania: 意大利西西里 -->
-      <div class="map-marker" style="background:#e8453c;left:50.5%;top:43%" onclick="openSite('catania')">IT<div class="marker-label">Catania</div></div>
-      <!-- AMK: 新加坡 -->
-      <div class="map-marker" style="background:#f5a623;left:78%;top:62%" onclick="openSite('amk')">SG<div class="marker-label">AMK</div></div>
-    </div>
+    <div id="leaflet-map" style="width:100%;height:380px;border-radius:10px;overflow:hidden"></div>
   </div>
 
   <!-- Site cards -->
@@ -1586,6 +1574,110 @@ function toggleMod(btn, modId) {
   document.querySelectorAll('.mod-header').forEach(m => m.classList.remove('active'));
   btn.classList.add('active');
 }
+
+// ===== Leaflet Interactive Map =====
+(function(){
+  // 主瓦片源：CARTO Voyager（清晰简洁）
+  var PRIMARY_TILES = 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png';
+  // 备用瓦片源：OpenStreetMap（全球覆盖，加载快）
+  var FALLBACK_TILES = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+
+  var map = L.map('leaflet-map', {
+    scrollWheelZoom: true,   // 启用滚轮缩放
+    wheelDebounceTime: 80,   // 滚轮防抖，减少卡顿
+    wheelPxPerZoomLevel: 100 // 更平滑的滚轮缩放步进
+  }).setView([30,10], 3);
+
+  // 加载状态提示
+  var mapWrap = document.getElementById('leaflet-map');
+  var loadingTip = document.createElement('div');
+  loadingTip.style.cssText = 'position:absolute;top:8px;left:50%;transform:translateX(-50%);z-index:400;background:rgba(0,0,0,.6);color:#fff;padding:3px 12px;border-radius:10px;font-size:11px;pointer-events:none;transition:opacity .3s';
+  loadingTip.textContent = '地图加载中...';
+  mapWrap.style.position = 'relative';
+  mapWrap.appendChild(loadingTip);
+
+  // 主瓦片层
+  var mainLayer = L.tileLayer(PRIMARY_TILES, {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> &copy; <a href="https://carto.com/">CARTO</a>',
+    subdomains: 'abcd',
+    maxZoom: 18,
+    minZoom: 2,
+    updateWhenIdle: false,   // 拖动时实时更新，不停顿
+    updateWhenZooming: true, // 缩放时实时更新瓦片
+    keepBuffer: 4,           // 预加载周围瓦片，减少空白
+    crossOrigin: true
+  }).addTo(map);
+
+  // 瓦片加载完成检测
+  var tilesLoaded = 0;
+  mainLayer.on('tileerror', function(){
+    // 主瓦片失败时自动切换到备用
+    if(!map.hasLayer(fallbackLayer)){
+      map.addLayer(fallbackLayer);
+    }
+  });
+  mainLayer.on('load', function(){
+    loadingTip.style.opacity = '0';
+    setTimeout(function(){ loadingTip.remove(); }, 300);
+  });
+  // 3秒后自动隐藏loading（兜底）
+  setTimeout(function(){ loadingTip.style.opacity = '0'; setTimeout(function(){ loadingTip.remove(); }, 300); }, 3000);
+
+  // 备用瓦片层（默认不显示，主瓦片出错时自动启用）
+  var fallbackLayer = L.tileLayer(FALLBACK_TILES, {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a>',
+    subdomains: 'abc',
+    maxZoom: 18,
+    minZoom: 2,
+    updateWhenIdle: false,
+    updateWhenZooming: true,
+    keepBuffer: 4
+  });
+
+  // 6个工厂站点数据
+  var sites = [
+    {id:'crolles', lat:45.285, lng:5.886,   c:'#3b6cf6', co:'FR', n:'Crolles', t:'300mm 先进逻辑 · FD-SOI'},
+    {id:'rousset', lat:43.483, lng:5.472,   c:'#3b6cf6', co:'FR', n:'Rousset', t:'200mm 模拟/功率IC · BCD'},
+    {id:'tours',   lat:47.394, lng:0.689,   c:'#3b6cf6', co:'FR', n:'Tours',   t:'封装测试/功率器件'},
+    {id:'agrate',  lat:45.574, lng:9.357,   c:'#e8453c', co:'IT', n:'Agrate',  t:'200mm 混合信号/MEMS'},
+    {id:'catania', lat:37.503, lng:15.087,  c:'#e8453c', co:'IT', n:'Catania', t:'150mm/200mm SiC/GaN'},
+    {id:'amk',     lat:1.370,  lng:103.848, c:'#f5a623', co:'SG', n:'AMK',     t:'200mm 存储器/模拟IC'}
+  ];
+  var fg = L.featureGroup().addTo(map);
+  sites.forEach(function(s){
+    var icon = L.divIcon({
+      className: '',
+      html: '<div style="width:28px;height:28px;border-radius:50%;background:'+s.c+';border:2.5px solid #fff;box-shadow:0 1px 5px rgba(0,0,0,.25);display:flex;align-items:center;justify-content:center;color:#fff;font-size:9px;font-weight:800;font-family:Courier New,monospace;cursor:pointer">'+s.co+'</div>',
+      iconSize: [28,28],
+      iconAnchor: [14,14]
+    });
+    var marker = L.marker([s.lat, s.lng], {icon: icon}).addTo(fg);
+    var popupHtml = '<div style="min-width:160px"><strong style="color:'+s.c+'">'+s.n+'</strong><br/><span style="font-size:11px;color:#666">'+s.t+'</span><br/><button onclick="openSite(\''+s.id+'\')" style="margin-top:6px;padding:3px 10px;background:'+s.c+';color:#fff;border:none;border-radius:4px;font-size:11px;cursor:pointer">查看详情</button></div>';
+    marker.bindPopup(popupHtml, {offset:[0,-8]});
+  });
+
+  // 初始适配：以所有工厂为边界
+  map.fitBounds(fg.getBounds(), {padding:[40,40]});
+
+  // 重置视图按钮（滚轮放大迷路后一键恢复）
+  var resetControl = L.Control.extend({
+    options: { position: 'topleft' },
+    onAdd: function(map){
+      var btn = L.DomUtil.create('button', 'leaflet-bar leaflet-control');
+      btn.innerHTML = '&#128205;';
+      btn.title = '重置视图';
+      btn.style.cssText = 'width:30px;height:30px;line-height:28px;font-size:14px;background:#fff;border:2px solid rgba(0,0,0,.2);border-radius:4px;cursor:pointer;color:#333;padding:0';
+      btn.onclick = function(){
+        map.fitBounds(fg.getBounds(), {padding:[40,40]});
+      };
+      return btn;
+    }
+  });
+  map.addControl(new resetControl());
+
+  // 限制地图范围：用户只能在工厂所在区域附近拖动，不会滚到空白区迷路
+  map.setMaxBounds([[-20, -30], [65, 140]]);
+})();
 </script>
 </body>
 </html>
