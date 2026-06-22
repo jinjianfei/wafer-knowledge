@@ -117,6 +117,20 @@ tr:hover td{background:#fafbfc}
 ::-webkit-scrollbar-thumb{background:#d1d5db;border-radius:3px}
 ::-webkit-scrollbar-thumb:hover{background:#9ca3af}
 @media(max-width:768px){.sidebar{display:none}.content{margin-left:0}}
+.editable-cell{min-width:60px;padding:10px 8px;cursor:text;transition:background .15s;border-radius:3px;outline:none}
+.editable-cell:hover{background:#f0f4ff}
+.editable-cell:focus{background:#e6eeff;box-shadow:inset 0 0 0 1.5px #3b6cf6}
+.editable-cell:empty::before{content:attr(placeholder);color:#c4c8d0;font-style:italic}
+#capacity-table td{border:1px solid #e8eaed;padding:0}
+#capacity-table td:first-child{border-left:none}
+#capacity-table td:last-child{border-right:none}
+#capacity-table tbody tr:hover{background:#fafbff}
+#capacity-table tbody tr:nth-child(even){background:#fafbfc}
+#capacity-table tbody tr:nth-child(even):hover{background:#f5f7ff}
+#capacity-table th{text-align:center}
+#capacity-table td{text-align:center}
+#capacity-table td[data-field="note"]{text-align:left}
+#capacity-table td[data-field="sum-note"]{text-align:left}
 </style>
 </head>
 <body>
@@ -308,6 +322,140 @@ tr:hover td{background:#fafbfc}
       <div class="card-header"><span class="card-badge" style="background:#f5a623">SG</span><span class="card-title">AMK</span></div>
       <div class="card-type">200mm 存储器/模拟IC</div>
     </div>
+  </div>
+
+  <!-- 各工厂产能投片数据（可编辑） -->
+  <h2>各工厂产能投片与中环数据</h2>
+  <p style="font-size:13px;color:#6b7280;margin-bottom:4px">直接点击表格单元格即可编辑数据。数据自动保存在浏览器本地。</p>
+  <p style="font-size:11px;color:#a0a4ad;margin-bottom:12px">单位：千片/月（默认按照一月4周计算）</p>
+
+  <div class="table-wrap" style="margin-bottom:16px">
+    <table id="capacity-table" style="font-size:13px">
+      <thead>
+        <tr>
+          <th style="width:12%">Site</th>
+          <th style="width:7%">尺寸</th>
+          <th style="width:15%">产能</th>
+          <th style="width:15%">投片</th>
+          <th style="width:15%">中环销量</th>
+          <th style="width:12%">中环市占(%)</th>
+          <th style="width:24%">备注</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Crolles -->
+        <tr data-site="crolles" data-size="12" data-factor="2.25">
+          <td><strong style="color:#3b6cf6">Crolles</strong></td>
+          <td>12</td>
+          <td contenteditable="true" data-field="capacity" class="editable-cell" placeholder="-"></td>
+          <td contenteditable="true" data-field="input" class="editable-cell" placeholder="-"></td>
+          <td contenteditable="true" data-field="zl-sales" class="editable-cell" placeholder="-"></td>
+          <td contenteditable="false" data-field="zl-share" class="editable-cell" style="font-weight:600;color:#00b894;background:#f0fdf4">-</td>
+          <td contenteditable="true" data-field="note" class="editable-cell" placeholder="-"></td>
+        </tr>
+        <!-- Tours -->
+        <tr data-site="tours" data-size="6" data-factor="0.5625">
+          <td><strong style="color:#3b6cf6">Tours</strong></td>
+          <td>6</td>
+          <td contenteditable="true" data-field="capacity" class="editable-cell" placeholder="-"></td>
+          <td contenteditable="true" data-field="input" class="editable-cell" placeholder="-"></td>
+          <td contenteditable="true" data-field="zl-sales" class="editable-cell" placeholder="-"></td>
+          <td contenteditable="false" data-field="zl-share" class="editable-cell" style="font-weight:600;color:#00b894;background:#f0fdf4">-</td>
+          <td contenteditable="true" data-field="note" class="editable-cell" placeholder="-"></td>
+        </tr>
+        <tr data-site="tours" data-size="8" data-factor="1">
+          <td><strong style="color:#3b6cf6">Tours</strong></td>
+          <td>8</td>
+          <td contenteditable="true" data-field="capacity" class="editable-cell" placeholder="-"></td>
+          <td contenteditable="true" data-field="input" class="editable-cell" placeholder="-"></td>
+          <td contenteditable="true" data-field="zl-sales" class="editable-cell" placeholder="-"></td>
+          <td contenteditable="false" data-field="zl-share" class="editable-cell" style="font-weight:600;color:#00b894;background:#f0fdf4">-</td>
+          <td contenteditable="true" data-field="note" class="editable-cell" placeholder="-"></td>
+        </tr>
+        <!-- Rousset -->
+        <tr data-site="rousset" data-size="8" data-factor="1">
+          <td><strong style="color:#3b6cf6">Rousset</strong></td>
+          <td>8</td>
+          <td contenteditable="true" data-field="capacity" class="editable-cell" placeholder="-"></td>
+          <td contenteditable="true" data-field="input" class="editable-cell" placeholder="-"></td>
+          <td contenteditable="true" data-field="zl-sales" class="editable-cell" placeholder="-"></td>
+          <td contenteditable="false" data-field="zl-share" class="editable-cell" style="font-weight:600;color:#00b894;background:#f0fdf4">-</td>
+          <td contenteditable="true" data-field="note" class="editable-cell" placeholder="-"></td>
+        </tr>
+        <!-- Agrate -->
+        <tr data-site="agrate" data-size="8" data-factor="1">
+          <td><strong style="color:#e8453c">Agrate</strong></td>
+          <td>8</td>
+          <td contenteditable="true" data-field="capacity" class="editable-cell" placeholder="-"></td>
+          <td contenteditable="true" data-field="input" class="editable-cell" placeholder="-"></td>
+          <td contenteditable="true" data-field="zl-sales" class="editable-cell" placeholder="-"></td>
+          <td contenteditable="false" data-field="zl-share" class="editable-cell" style="font-weight:600;color:#00b894;background:#f0fdf4">-</td>
+          <td contenteditable="true" data-field="note" class="editable-cell" placeholder="-"></td>
+        </tr>
+        <tr data-site="agrate" data-size="12" data-factor="2.25">
+          <td><strong style="color:#e8453c">Agrate</strong></td>
+          <td>12</td>
+          <td contenteditable="true" data-field="capacity" class="editable-cell" placeholder="-"></td>
+          <td contenteditable="true" data-field="input" class="editable-cell" placeholder="-"></td>
+          <td contenteditable="true" data-field="zl-sales" class="editable-cell" placeholder="-"></td>
+          <td contenteditable="false" data-field="zl-share" class="editable-cell" style="font-weight:600;color:#00b894;background:#f0fdf4">-</td>
+          <td contenteditable="true" data-field="note" class="editable-cell" placeholder="-"></td>
+        </tr>
+        <!-- Catania -->
+        <tr data-site="catania" data-size="6" data-factor="0.5625">
+          <td><strong style="color:#e8453c">Catania</strong></td>
+          <td>6</td>
+          <td contenteditable="true" data-field="capacity" class="editable-cell" placeholder="-"></td>
+          <td contenteditable="true" data-field="input" class="editable-cell" placeholder="-"></td>
+          <td contenteditable="true" data-field="zl-sales" class="editable-cell" placeholder="-"></td>
+          <td contenteditable="false" data-field="zl-share" class="editable-cell" style="font-weight:600;color:#00b894;background:#f0fdf4">-</td>
+          <td contenteditable="true" data-field="note" class="editable-cell" placeholder="-"></td>
+        </tr>
+        <tr data-site="catania" data-size="8" data-factor="1">
+          <td><strong style="color:#e8453c">Catania</strong></td>
+          <td>8</td>
+          <td contenteditable="true" data-field="capacity" class="editable-cell" placeholder="-"></td>
+          <td contenteditable="true" data-field="input" class="editable-cell" placeholder="-"></td>
+          <td contenteditable="true" data-field="zl-sales" class="editable-cell" placeholder="-"></td>
+          <td contenteditable="false" data-field="zl-share" class="editable-cell" style="font-weight:600;color:#00b894;background:#f0fdf4">-</td>
+          <td contenteditable="true" data-field="note" class="editable-cell" placeholder="-"></td>
+        </tr>
+        <!-- AMK -->
+        <tr data-site="amk" data-size="6" data-factor="0.5625">
+          <td><strong style="color:#f5a623">AMK</strong></td>
+          <td>6</td>
+          <td contenteditable="true" data-field="capacity" class="editable-cell" placeholder="-"></td>
+          <td contenteditable="true" data-field="input" class="editable-cell" placeholder="-"></td>
+          <td contenteditable="true" data-field="zl-sales" class="editable-cell" placeholder="-"></td>
+          <td contenteditable="false" data-field="zl-share" class="editable-cell" style="font-weight:600;color:#00b894;background:#f0fdf4">-</td>
+          <td contenteditable="true" data-field="note" class="editable-cell" placeholder="-"></td>
+        </tr>
+        <tr data-site="amk" data-size="8" data-factor="1">
+          <td><strong style="color:#f5a623">AMK</strong></td>
+          <td>8</td>
+          <td contenteditable="true" data-field="capacity" class="editable-cell" placeholder="-"></td>
+          <td contenteditable="true" data-field="input" class="editable-cell" placeholder="-"></td>
+          <td contenteditable="true" data-field="zl-sales" class="editable-cell" placeholder="-"></td>
+          <td contenteditable="false" data-field="zl-share" class="editable-cell" style="font-weight:600;color:#00b894;background:#f0fdf4">-</td>
+          <td contenteditable="true" data-field="note" class="editable-cell" placeholder="-"></td>
+        </tr>
+        <!-- Sum row (折标8寸) -->
+        <tr id="sum-row" style="background:linear-gradient(135deg,#f0f4ff,#e6eeff);font-weight:600;border-top:2px solid #3b6cf6">
+          <td colspan="2" style="text-align:center;color:#3b6cf6">Sum（折标8寸）</td>
+          <td contenteditable="false" data-field="sum-capacity" style="color:#3b6cf6">-</td>
+          <td contenteditable="false" data-field="sum-input" style="color:#3b6cf6">-</td>
+          <td contenteditable="false" data-field="sum-sales" style="color:#3b6cf6">-</td>
+          <td contenteditable="false" data-field="sum-share" style="color:#00b894">-</td>
+          <td data-field="sum-note" style="font-size:11px;color:#8b919d"></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div style="display:flex;gap:10px;margin-bottom:20px">
+    <button onclick="saveCapacityData()" style="padding:6px 16px;background:#3b6cf6;color:#fff;border:none;border-radius:6px;font-size:13px;cursor:pointer;font-weight:500">💾 保存数据</button>
+    <button onclick="clearCapacityData()" style="padding:6px 16px;background:#f4f5f7;color:#6b7280;border:none;border-radius:6px;font-size:13px;cursor:pointer">🗑 清空数据</button>
+    <span id="save-status" style="font-size:12px;color:#00b894;align-self:center;opacity:0;transition:opacity .3s">✓ 已保存</span>
   </div>
 
   <h2>课程目录</h2>
@@ -6095,6 +6243,129 @@ function toggleMod(btn, modId) {
 
   // 限制地图范围：用户只能在工厂所在区域附近拖动，不会滚到空白区迷路
   map.setMaxBounds([[-20, -30], [65, 140]]);
+})();
+
+// ===== 产能数据表格：保存/加载/管理 =====
+(function(){
+  var STORAGE_KEY = 'st_capacity_data';
+
+  // ===== 辅助函数：计算单行市占 + 更新Sum行 =====
+  function calcRowAndSum(){
+    var sumCap = 0, sumInput = 0, sumSales = 0;
+
+    // Process each data row
+    document.querySelectorAll('#capacity-table tbody tr[data-site]').forEach(function(row){
+      var factor = parseFloat(row.getAttribute('data-factor')) || 1;
+      var inputCell = row.querySelector('[data-field="input"]');
+      var salesCell = row.querySelector('[data-field="zl-sales"]');
+      var shareCell = row.querySelector('[data-field="zl-share"]');
+      var capCell = row.querySelector('[data-field="capacity"]');
+
+      // Calculate share = sales / input (not capacity)
+      var inputVal = parseFloat(inputCell.textContent) || 0;
+      var salesVal = parseFloat(salesCell.textContent) || 0;
+      if(inputVal > 0){
+        shareCell.textContent = ((salesVal / inputVal) * 100).toFixed(1);
+      } else {
+        shareCell.textContent = '-';
+      }
+
+      // Accumulate for Sum row (折标8寸)
+      var capVal = parseFloat(capCell.textContent) || 0;
+      sumCap += capVal * factor;
+      sumInput += inputVal * factor;
+      sumSales += salesVal * factor;
+    });
+
+    // Update Sum row
+    var sumRow = document.getElementById('sum-row');
+    if(sumRow){
+      sumRow.querySelector('[data-field="sum-capacity"]').textContent = sumCap > 0 ? sumCap.toFixed(1) : '-';
+      sumRow.querySelector('[data-field="sum-input"]').textContent = sumInput > 0 ? sumInput.toFixed(1) : '-';
+      sumRow.querySelector('[data-field="sum-sales"]').textContent = sumSales > 0 ? sumSales.toFixed(1) : '-';
+      var sumShareCell = sumRow.querySelector('[data-field="sum-share"]');
+      if(sumInput > 0){
+        sumShareCell.textContent = ((sumSales / sumInput) * 100).toFixed(1);
+      } else {
+        sumShareCell.textContent = '-';
+      }
+    }
+  }
+
+  // Load saved data on page load
+  function loadCapacityData(){
+    var saved = localStorage.getItem(STORAGE_KEY);
+    if(!saved) return;
+    try{
+      var data = JSON.parse(saved);
+      document.querySelectorAll('#capacity-table tbody tr[data-site]').forEach(function(row){
+        var site = row.getAttribute('data-site');
+        var size = row.getAttribute('data-size');
+        var key = site + '|' + size;
+        if(data[key]){
+          row.querySelectorAll('.editable-cell').forEach(function(cell){
+            var field = cell.getAttribute('data-field');
+            if(data[key][field] !== undefined){
+              cell.textContent = data[key][field];
+            }
+          });
+        }
+      });
+      // Recalculate share and sum after loading
+      calcRowAndSum();
+    }catch(e){ console.error('Load capacity data failed', e); }
+  }
+
+  // Save data
+  window.saveCapacityData = function(){
+    var data = {};
+    document.querySelectorAll('#capacity-table tbody tr[data-site]').forEach(function(row){
+      var site = row.getAttribute('data-site');
+      var size = row.getAttribute('data-size');
+      var key = site + '|' + size;
+      data[key] = {};
+      row.querySelectorAll('.editable-cell').forEach(function(cell){
+        var field = cell.getAttribute('data-field');
+        data[key][field] = cell.textContent.trim();
+      });
+    });
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+
+    // Show save confirmation
+    var status = document.getElementById('save-status');
+    status.style.opacity = '1';
+    setTimeout(function(){ status.style.opacity = '0'; }, 2000);
+  };
+
+  // Clear all data
+  window.clearCapacityData = function(){
+    if(!confirm('确定要清空所有产能数据吗？此操作不可恢复。')) return;
+    localStorage.removeItem(STORAGE_KEY);
+    document.querySelectorAll('#capacity-table tbody tr[data-site] .editable-cell').forEach(function(cell){
+      cell.textContent = '';
+    });
+    // Reset sum row
+    var sumRow = document.getElementById('sum-row');
+    if(sumRow){
+      sumRow.querySelector('[data-field="sum-capacity"]').textContent = '-';
+      sumRow.querySelector('[data-field="sum-input"]').textContent = '-';
+      sumRow.querySelector('[data-field="sum-sales"]').textContent = '-';
+      sumRow.querySelector('[data-field="sum-share"]').textContent = '-';
+    }
+  };
+
+  // Auto-save on blur + recalculate share & sum
+  document.querySelectorAll('#capacity-table tbody tr[data-site] .editable-cell').forEach(function(cell){
+    cell.addEventListener('blur', function(){
+      calcRowAndSum();
+      window.saveCapacityData();
+    });
+  });
+
+  // Load on init
+  if(document.getElementById('capacity-table')){
+    loadCapacityData();
+  }
 })();
 </script>
 </body>
