@@ -6245,9 +6245,16 @@ function toggleMod(btn, modId) {
   map.setMaxBounds([[-20, -30], [65, 140]]);
 })();
 
-// ===== 产能数据表格：Google Sheets 云端存储 =====
+// ===== 产能数据表格：JSONBin.io 云端存储 =====
+// 配置步骤：
+// 1. 访问 https://jsonbin.io 注册账号
+// 2. 点击左侧 "API Keys" 获取 X-Master-Key（格式：$2a$10$...）
+// 3. 点击 "New Bin" 创建一个空 JSON bin
+// 4. 填入下面的 BIN_ID 和 API_KEY 中
 (function(){
-  var GAS_URL = 'https://script.google.com/macros/s/AKfycbzBs0T-p4-1JNrHbwBycKcXA3a21xhVrLRBWmv50Zc1FYy4_pyw02pA6-Cp-QTDsyxM/exec';
+  var BIN_ID = '6a3a229df5f4af5e2921422b';   // 替换为你的 Bin ID
+  var API_KEY = '$2a$10$MN6zv3DfihctHzqWC5zqzuq4t0EIapya8HNxgxsgYORW7gtw/WWnK'; // 替换为你的 X-Master-Key
+  var BASE_URL = 'https://api.jsonbin.io/v3/b/' + BIN_ID;
 
   // ===== 辅助函数：计算单行市占 + 更新Sum行 =====
   function calcRowAndSum(){
@@ -6284,11 +6291,16 @@ function toggleMod(btn, modId) {
     }
   }
 
-  // ===== 从 Google Sheets 加载数据 =====
+  // ===== 从 JSONBin.io 加载数据 =====
   function loadCapacityData(){
-    fetch(GAS_URL)
+    if(BIN_ID === 'YOUR_BIN_ID_HERE'){
+      console.log('请先在代码中配置 JSONBin.io 的 BIN_ID 和 API_KEY');
+      return;
+    }
+    fetch(BASE_URL + '/latest')
       .then(function(r){ return r.json(); })
-      .then(function(data){
+      .then(function(json){
+        var data = json.record;
         if(!Array.isArray(data)) return;
         data.forEach(function(item){
           var row = document.querySelector('#capacity-table tbody tr[data-site="' + item.site + '"][data-size="' + item.size + '"]');
@@ -6308,8 +6320,12 @@ function toggleMod(btn, modId) {
       .catch(function(e){ console.error('加载数据失败', e); });
   }
 
-  // ===== 保存到 Google Sheets（兼容模式） =====
+  // ===== 保存到 JSONBin.io =====
   window.saveCapacityData = function(){
+    if(BIN_ID === 'YOUR_BIN_ID_HERE'){
+      alert('请先配置 JSONBin.io 的 BIN_ID 和 API_KEY');
+      return;
+    }
     var rows = [];
     document.querySelectorAll('#capacity-table tbody tr[data-site]').forEach(function(row){
       rows.push({
@@ -6322,57 +6338,41 @@ function toggleMod(btn, modId) {
         note: (row.querySelector('[data-field="note"]') || {}).textContent || ''
       });
     });
-
-    // 方法1：标准fetch
-    fetch(GAS_URL, {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
+    fetch(BASE_URL, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Master-Key': API_KEY
+      },
       body: JSON.stringify(rows)
     })
     .then(function(r){ return r.json(); })
     .then(function(result){
-      if(result && result.success){
-        showSaveOk();
+      if(result.record){
+        var status = document.getElementById('save-status');
+        status.style.opacity = '1';
+        setTimeout(function(){ status.style.opacity = '0'; }, 2000);
       } else {
-        throw new Error('Server returned error');
+        throw new Error('保存失败');
       }
     })
     .catch(function(e){
-      console.log('方法1失败，尝试方法2', e);
-      // 方法2：form-data方式（兼容部分GAS配置）
-      var formData = new FormData();
-      formData.append('data', JSON.stringify(rows));
-      return fetch(GAS_URL, {method: 'POST', body: formData});
-    })
-    .then(function(r){ return r ? r.json() : null; })
-    .then(function(result){
-      if(result && result.success) showSaveOk();
-    })
-    .catch(function(e){
       console.error('保存失败', e);
-      alert('保存失败，请确认：\n1. 已按说明更新GAS代码\n2. 已重新部署Web App\n3. 网络连接正常');
+      alert('保存失败，请检查 JSONBin.io 配置是否正确');
     });
-
-    function showSaveOk(){
-      var status = document.getElementById('save-status');
-      status.style.opacity = '1';
-      setTimeout(function(){ status.style.opacity = '0'; }, 2000);
-    }
   };
 
   // ===== 清空数据 =====
   window.clearCapacityData = function(){
     if(!confirm('确定要清空所有产能数据吗？此操作不可恢复。')) return;
-    // Send empty rows to clear Google Sheet
-    fetch(GAS_URL, {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
+    if(BIN_ID === 'YOUR_BIN_ID_HERE') return;
+    fetch(BASE_URL, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Master-Key': API_KEY
+      },
       body: JSON.stringify([])
-    })
-    .catch(function(){
-      var formData = new FormData();
-      formData.append('data', JSON.stringify([]));
-      return fetch(GAS_URL, {method: 'POST', body: formData});
     })
     .then(function(){
       document.querySelectorAll('#capacity-table tbody tr[data-site] .editable-cell').forEach(function(cell){
