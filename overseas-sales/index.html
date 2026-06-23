@@ -353,16 +353,6 @@ tr:hover td{background:#fafbfc}
           <td contenteditable="false" data-field="zl-share" class="editable-cell" style="font-weight:600;color:#00b894;background:#f0fdf4">-</td>
           <td contenteditable="true" data-field="note" class="editable-cell" placeholder="-"></td>
         </tr>
-        <!-- Crolles -->
-        <tr data-site="crolles" data-size="8" data-factor="2.25">
-          <td><strong style="color:#3b6cf6">Crolles</strong></td>
-          <td>8</td>
-          <td contenteditable="true" data-field="capacity" class="editable-cell" placeholder="-"></td>
-          <td contenteditable="true" data-field="input" class="editable-cell" placeholder="-"></td>
-          <td contenteditable="true" data-field="zl-sales" class="editable-cell" placeholder="-"></td>
-          <td contenteditable="false" data-field="zl-share" class="editable-cell" style="font-weight:600;color:#00b894;background:#f0fdf4">-</td>
-          <td contenteditable="true" data-field="note" class="editable-cell" placeholder="-"></td>
-        </tr>
         <!-- Tours -->
         <tr data-site="tours" data-size="6" data-factor="0.5625">
           <td><strong style="color:#3b6cf6">Tours</strong></td>
@@ -6318,7 +6308,7 @@ function toggleMod(btn, modId) {
       .catch(function(e){ console.error('加载数据失败', e); });
   }
 
-  // ===== 保存到 Google Sheets =====
+  // ===== 保存到 Google Sheets（兼容模式） =====
   window.saveCapacityData = function(){
     var rows = [];
     document.querySelectorAll('#capacity-table tbody tr[data-site]').forEach(function(row){
@@ -6333,21 +6323,41 @@ function toggleMod(btn, modId) {
       });
     });
 
+    // 方法1：标准fetch
     fetch(GAS_URL, {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify(rows)
     })
     .then(function(r){ return r.json(); })
-    .then(function(){
-      var status = document.getElementById('save-status');
-      status.style.opacity = '1';
-      setTimeout(function(){ status.style.opacity = '0'; }, 2000);
+    .then(function(result){
+      if(result && result.success){
+        showSaveOk();
+      } else {
+        throw new Error('Server returned error');
+      }
+    })
+    .catch(function(e){
+      console.log('方法1失败，尝试方法2', e);
+      // 方法2：form-data方式（兼容部分GAS配置）
+      var formData = new FormData();
+      formData.append('data', JSON.stringify(rows));
+      return fetch(GAS_URL, {method: 'POST', body: formData});
+    })
+    .then(function(r){ return r ? r.json() : null; })
+    .then(function(result){
+      if(result && result.success) showSaveOk();
     })
     .catch(function(e){
       console.error('保存失败', e);
-      alert('保存失败，请检查网络连接');
+      alert('保存失败，请确认：\n1. 已按说明更新GAS代码\n2. 已重新部署Web App\n3. 网络连接正常');
     });
+
+    function showSaveOk(){
+      var status = document.getElementById('save-status');
+      status.style.opacity = '1';
+      setTimeout(function(){ status.style.opacity = '0'; }, 2000);
+    }
   };
 
   // ===== 清空数据 =====
@@ -6358,6 +6368,11 @@ function toggleMod(btn, modId) {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify([])
+    })
+    .catch(function(){
+      var formData = new FormData();
+      formData.append('data', JSON.stringify([]));
+      return fetch(GAS_URL, {method: 'POST', body: formData});
     })
     .then(function(){
       document.querySelectorAll('#capacity-table tbody tr[data-site] .editable-cell').forEach(function(cell){
