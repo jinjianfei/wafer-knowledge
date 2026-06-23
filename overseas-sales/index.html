@@ -353,16 +353,6 @@ tr:hover td{background:#fafbfc}
           <td contenteditable="false" data-field="zl-share" class="editable-cell" style="font-weight:600;color:#00b894;background:#f0fdf4">-</td>
           <td contenteditable="true" data-field="note" class="editable-cell" placeholder="-"></td>
         </tr>
-        <!-- Crolles -->
-        <tr data-site="crolles" data-size="8" data-factor="2.25">
-          <td><strong style="color:#3b6cf6">Crolles</strong></td>
-          <td>8</td>
-          <td contenteditable="true" data-field="capacity" class="editable-cell" placeholder="-"></td>
-          <td contenteditable="true" data-field="input" class="editable-cell" placeholder="-"></td>
-          <td contenteditable="true" data-field="zl-sales" class="editable-cell" placeholder="-"></td>
-          <td contenteditable="false" data-field="zl-share" class="editable-cell" style="font-weight:600;color:#00b894;background:#f0fdf4">-</td>
-          <td contenteditable="true" data-field="note" class="editable-cell" placeholder="-"></td>
-        </tr>
         <!-- Tours -->
         <tr data-site="tours" data-size="6" data-factor="0.5625">
           <td><strong style="color:#3b6cf6">Tours</strong></td>
@@ -6255,23 +6245,19 @@ function toggleMod(btn, modId) {
   map.setMaxBounds([[-20, -30], [65, 140]]);
 })();
 
-// ===== 产能数据表格：保存/加载/管理 =====
+// ===== 产能数据表格：Google Sheets 云端存储 =====
 (function(){
-  var STORAGE_KEY = 'st_capacity_data';
+  var GAS_URL = 'https://script.google.com/macros/s/AKfycbzBs0T-p4-1JNrHbwBycKcXA3a21xhVrLRBWmv50Zc1FYy4_pyw02pA6-Cp-QTDsyxM/exec';
 
   // ===== 辅助函数：计算单行市占 + 更新Sum行 =====
   function calcRowAndSum(){
     var sumCap = 0, sumInput = 0, sumSales = 0;
-
-    // Process each data row
     document.querySelectorAll('#capacity-table tbody tr[data-site]').forEach(function(row){
       var factor = parseFloat(row.getAttribute('data-factor')) || 1;
       var inputCell = row.querySelector('[data-field="input"]');
       var salesCell = row.querySelector('[data-field="zl-sales"]');
       var shareCell = row.querySelector('[data-field="zl-share"]');
       var capCell = row.querySelector('[data-field="capacity"]');
-
-      // Calculate share = sales / input (not capacity)
       var inputVal = parseFloat(inputCell.textContent) || 0;
       var salesVal = parseFloat(salesCell.textContent) || 0;
       if(inputVal > 0){
@@ -6279,15 +6265,11 @@ function toggleMod(btn, modId) {
       } else {
         shareCell.textContent = '-';
       }
-
-      // Accumulate for Sum row (折标8寸)
       var capVal = parseFloat(capCell.textContent) || 0;
       sumCap += capVal * factor;
       sumInput += inputVal * factor;
       sumSales += salesVal * factor;
     });
-
-    // Update Sum row
     var sumRow = document.getElementById('sum-row');
     if(sumRow){
       sumRow.querySelector('[data-field="sum-capacity"]').textContent = sumCap > 0 ? sumCap.toFixed(1) : '-';
@@ -6302,69 +6284,87 @@ function toggleMod(btn, modId) {
     }
   }
 
-  // Load saved data on page load
+  // ===== 从 Google Sheets 加载数据 =====
   function loadCapacityData(){
-    var saved = localStorage.getItem(STORAGE_KEY);
-    if(!saved) return;
-    try{
-      var data = JSON.parse(saved);
-      document.querySelectorAll('#capacity-table tbody tr[data-site]').forEach(function(row){
-        var site = row.getAttribute('data-site');
-        var size = row.getAttribute('data-size');
-        var key = site + '|' + size;
-        if(data[key]){
-          row.querySelectorAll('.editable-cell').forEach(function(cell){
-            var field = cell.getAttribute('data-field');
-            if(data[key][field] !== undefined){
-              cell.textContent = data[key][field];
-            }
-          });
-        }
-      });
-      // Recalculate share and sum after loading
-      calcRowAndSum();
-    }catch(e){ console.error('Load capacity data failed', e); }
+    fetch(GAS_URL)
+      .then(function(r){ return r.json(); })
+      .then(function(data){
+        if(!Array.isArray(data)) return;
+        data.forEach(function(item){
+          var row = document.querySelector('#capacity-table tbody tr[data-site="' + item.site + '"][data-size="' + item.size + '"]');
+          if(row){
+            var capCell = row.querySelector('[data-field="capacity"]');
+            var inputCell = row.querySelector('[data-field="input"]');
+            var salesCell = row.querySelector('[data-field="zl-sales"]');
+            var noteCell = row.querySelector('[data-field="note"]');
+            if(capCell && item.capacity) capCell.textContent = item.capacity;
+            if(inputCell && item.input) inputCell.textContent = item.input;
+            if(salesCell && item.sales) salesCell.textContent = item.sales;
+            if(noteCell && item.note) noteCell.textContent = item.note;
+          }
+        });
+        calcRowAndSum();
+      })
+      .catch(function(e){ console.error('加载数据失败', e); });
   }
 
-  // Save data
+  // ===== 保存到 Google Sheets =====
   window.saveCapacityData = function(){
-    var data = {};
+    var rows = [];
     document.querySelectorAll('#capacity-table tbody tr[data-site]').forEach(function(row){
-      var site = row.getAttribute('data-site');
-      var size = row.getAttribute('data-size');
-      var key = site + '|' + size;
-      data[key] = {};
-      row.querySelectorAll('.editable-cell').forEach(function(cell){
-        var field = cell.getAttribute('data-field');
-        data[key][field] = cell.textContent.trim();
+      rows.push({
+        site: row.getAttribute('data-site'),
+        size: row.getAttribute('data-size'),
+        capacity: (row.querySelector('[data-field="capacity"]') || {}).textContent || '',
+        input: (row.querySelector('[data-field="input"]') || {}).textContent || '',
+        sales: (row.querySelector('[data-field="zl-sales"]') || {}).textContent || '',
+        share: (row.querySelector('[data-field="zl-share"]') || {}).textContent || '',
+        note: (row.querySelector('[data-field="note"]') || {}).textContent || ''
       });
     });
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
 
-    // Show save confirmation
-    var status = document.getElementById('save-status');
-    status.style.opacity = '1';
-    setTimeout(function(){ status.style.opacity = '0'; }, 2000);
+    fetch(GAS_URL, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(rows)
+    })
+    .then(function(r){ return r.json(); })
+    .then(function(){
+      var status = document.getElementById('save-status');
+      status.style.opacity = '1';
+      setTimeout(function(){ status.style.opacity = '0'; }, 2000);
+    })
+    .catch(function(e){
+      console.error('保存失败', e);
+      alert('保存失败，请检查网络连接');
+    });
   };
 
-  // Clear all data
+  // ===== 清空数据 =====
   window.clearCapacityData = function(){
     if(!confirm('确定要清空所有产能数据吗？此操作不可恢复。')) return;
-    localStorage.removeItem(STORAGE_KEY);
-    document.querySelectorAll('#capacity-table tbody tr[data-site] .editable-cell').forEach(function(cell){
-      cell.textContent = '';
-    });
-    // Reset sum row
-    var sumRow = document.getElementById('sum-row');
-    if(sumRow){
-      sumRow.querySelector('[data-field="sum-capacity"]').textContent = '-';
-      sumRow.querySelector('[data-field="sum-input"]').textContent = '-';
-      sumRow.querySelector('[data-field="sum-sales"]').textContent = '-';
-      sumRow.querySelector('[data-field="sum-share"]').textContent = '-';
-    }
+    // Send empty rows to clear Google Sheet
+    fetch(GAS_URL, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify([])
+    })
+    .then(function(){
+      document.querySelectorAll('#capacity-table tbody tr[data-site] .editable-cell').forEach(function(cell){
+        cell.textContent = '';
+      });
+      var sumRow = document.getElementById('sum-row');
+      if(sumRow){
+        sumRow.querySelector('[data-field="sum-capacity"]').textContent = '-';
+        sumRow.querySelector('[data-field="sum-input"]').textContent = '-';
+        sumRow.querySelector('[data-field="sum-sales"]').textContent = '-';
+        sumRow.querySelector('[data-field="sum-share"]').textContent = '-';
+      }
+    })
+    .catch(function(e){ console.error('清空失败', e); });
   };
 
-  // Auto-save on blur + recalculate share & sum
+  // Auto-save on blur
   document.querySelectorAll('#capacity-table tbody tr[data-site] .editable-cell').forEach(function(cell){
     cell.addEventListener('blur', function(){
       calcRowAndSum();
