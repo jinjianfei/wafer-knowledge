@@ -353,8 +353,7 @@ tr:hover td{background:#fafbfc}
           <td contenteditable="false" data-field="zl-share" class="editable-cell" style="font-weight:600;color:#00b894;background:#f0fdf4">-</td>
           <td contenteditable="true" data-field="note" class="editable-cell" placeholder="-"></td>
         </tr>
-        <!-- Crolles -->
-        <tr data-site="crolles" data-size="8" data-factor="2.25">
+        <tr data-site="crolles" data-size="8" data-factor="1">
           <td><strong style="color:#3b6cf6">Crolles</strong></td>
           <td>8</td>
           <td contenteditable="true" data-field="capacity" class="editable-cell" placeholder="-"></td>
@@ -6262,8 +6261,8 @@ function toggleMod(btn, modId) {
 // 3. 点击 "New Bin" 创建一个空 JSON bin
 // 4. 填入下面的 BIN_ID 和 API_KEY 中
 (function(){
-  var BIN_ID = '6a3a229df5f4af5e2921422b';   // 替换为你的 Bin ID
-  var API_KEY = '$2a$10$MN6zv3DfihctHzqWC5zqzuq4t0EIapya8HNxgxsgYORW7gtw/WWnK'; // 替换为你的 X-Master-Key
+  var BIN_ID = '6a3a229df5f4af5e2921422b';
+  var API_KEY = '$2a$10$MN6zv3DfihctHzqWC5zqzuq4t0EIapya8HNxgxsgYORW7gtw/WWnK';
   var BASE_URL = 'https://api.jsonbin.io/v3/b/' + BIN_ID;
 
   // ===== 辅助函数：计算单行市占 + 更新Sum行 =====
@@ -6319,10 +6318,11 @@ function toggleMod(btn, modId) {
             var inputCell = row.querySelector('[data-field="input"]');
             var salesCell = row.querySelector('[data-field="zl-sales"]');
             var noteCell = row.querySelector('[data-field="note"]');
-            if(capCell && item.capacity) capCell.textContent = item.capacity;
-            if(inputCell && item.input) inputCell.textContent = item.input;
-            if(salesCell && item.sales) salesCell.textContent = item.sales;
-            if(noteCell && item.note) noteCell.textContent = item.note;
+            // 直接覆盖（包括空字符串），但不加载share（share是自动计算的）
+            if(capCell) capCell.textContent = item.capacity || '';
+            if(inputCell) inputCell.textContent = item.input || '';
+            if(salesCell) salesCell.textContent = item.sales || '';
+            if(noteCell) noteCell.textContent = item.note || '';
           }
         });
         calcRowAndSum();
