@@ -6255,17 +6255,11 @@ function toggleMod(btn, modId) {
 })();
 
 // ===== 产能数据表格：JSONBin.io 云端存储 =====
-// 配置步骤：
-// 1. 访问 https://jsonbin.io 注册账号
-// 2. 点击左侧 "API Keys" 获取 X-Master-Key（格式：$2a$10$...）
-// 3. 点击 "New Bin" 创建一个空 JSON bin
-// 4. 填入下面的 BIN_ID 和 API_KEY 中
 (function(){
   var BIN_ID = '6a3a229df5f4af5e2921422b';
   var API_KEY = '$2a$10$MN6zv3DfihctHzqWC5zqzuq4t0EIapya8HNxgxsgYORW7gtw/WWnK';
   var BASE_URL = 'https://api.jsonbin.io/v3/b/' + BIN_ID;
 
-  // ===== 辅助函数：计算单行市占 + 更新Sum行 =====
   function calcRowAndSum(){
     var sumCap = 0, sumInput = 0, sumSales = 0;
     document.querySelectorAll('#capacity-table tbody tr[data-site]').forEach(function(row){
@@ -6274,14 +6268,14 @@ function toggleMod(btn, modId) {
       var salesCell = row.querySelector('[data-field="zl-sales"]');
       var shareCell = row.querySelector('[data-field="zl-share"]');
       var capCell = row.querySelector('[data-field="capacity"]');
-      var inputVal = parseFloat(inputCell.textContent) || 0;
-      var salesVal = parseFloat(salesCell.textContent) || 0;
-      if(inputVal > 0){
+      var inputVal = parseFloat(inputCell && inputCell.textContent) || 0;
+      var salesVal = parseFloat(salesCell && salesCell.textContent) || 0;
+      if(inputVal > 0 && shareCell){
         shareCell.textContent = ((salesVal / inputVal) * 100).toFixed(1);
-      } else {
+      } else if(shareCell){
         shareCell.textContent = '-';
       }
-      var capVal = parseFloat(capCell.textContent) || 0;
+      var capVal = parseFloat(capCell && capCell.textContent) || 0;
       sumCap += capVal * factor;
       sumInput += inputVal * factor;
       sumSales += salesVal * factor;
@@ -6300,47 +6294,64 @@ function toggleMod(btn, modId) {
     }
   }
 
-  // ===== 从 JSONBin.io 加载数据 =====
   function loadCapacityData(){
-    if(BIN_ID === 'YOUR_BIN_ID_HERE'){
-      console.log('请先在代码中配置 JSONBin.io 的 BIN_ID 和 API_KEY');
-      return;
-    }
-    fetch(BASE_URL + '/latest')
-      .then(function(r){ return r.json(); })
-      .then(function(json){
-        var data = json.record;
-        if(!Array.isArray(data)) return;
-        data.forEach(function(item){
-          var row = document.querySelector('#capacity-table tbody tr[data-site="' + item.site + '"][data-size="' + item.size + '"]');
-          if(row){
-            var capCell = row.querySelector('[data-field="capacity"]');
-            var inputCell = row.querySelector('[data-field="input"]');
-            var salesCell = row.querySelector('[data-field="zl-sales"]');
-            var noteCell = row.querySelector('[data-field="note"]');
-            // 直接覆盖（包括空字符串），但不加载share（share是自动计算的）
-            if(capCell) capCell.textContent = item.capacity || '';
-            if(inputCell) inputCell.textContent = item.input || '';
-            if(salesCell) salesCell.textContent = item.sales || '';
-            if(noteCell) noteCell.textContent = item.note || '';
-          }
-        });
-        calcRowAndSum();
-      })
-      .catch(function(e){ console.error('加载数据失败', e); });
+    var table = document.getElementById('capacity-table');
+    if(!table){ console.error('capacity-table not found'); return; }
+
+    // 显示加载中
+    var rows = table.querySelectorAll('tbody tr[data-site]');
+    rows.forEach(function(r){
+      r.style.opacity = '0.5';
+    });
+
+    fetch(BASE_URL + '/latest?t=' + Date.now(), {
+      headers: {'X-Master-Key': API_KEY}
+    })
+    .then(function(r){ return r.json(); })
+    .then(function(json){
+      var data = json.record;
+      if(!Array.isArray(data)){
+        console.error('JSONBin data is not array:', data);
+        return;
+      }
+      console.log('Loaded', data.length, 'rows from JSONBin');
+
+      var matchCount = 0;
+      data.forEach(function(item){
+        var sel = '#capacity-table tbody tr[data-site="' + item.site + '"][data-size="' + item.size + '"]';
+        var row = document.querySelector(sel);
+        if(row){
+          matchCount++;
+          var capCell = row.querySelector('[data-field="capacity"]');
+          var inputCell = row.querySelector('[data-field="input"]');
+          var salesCell = row.querySelector('[data-field="zl-sales"]');
+          var noteCell = row.querySelector('[data-field="note"]');
+          if(capCell) capCell.textContent = item.capacity != null ? item.capacity : '';
+          if(inputCell) inputCell.textContent = item.input != null ? item.input : '';
+          if(salesCell) salesCell.textContent = item.sales != null ? item.sales : '';
+          if(noteCell) noteCell.textContent = item.note != null ? item.note : '';
+        } else {
+          console.warn('No row found for', item.site, item.size);
+        }
+      });
+      console.log('Matched', matchCount, 'of', data.length, 'rows');
+
+      // 恢复行不透明度
+      rows.forEach(function(r){ r.style.opacity = '1'; });
+      calcRowAndSum();
+    })
+    .catch(function(e){
+      console.error('JSONBin加载失败:', e);
+      rows.forEach(function(r){ r.style.opacity = '1'; });
+    });
   }
 
-  // ===== 保存到 JSONBin.io =====
   window.saveCapacityData = function(){
-    if(BIN_ID === 'YOUR_BIN_ID_HERE'){
-      alert('请先配置 JSONBin.io 的 BIN_ID 和 API_KEY');
-      return;
-    }
     var rows = [];
     document.querySelectorAll('#capacity-table tbody tr[data-site]').forEach(function(row){
       rows.push({
-        site: row.getAttribute('data-site'),
-        size: row.getAttribute('data-size'),
+        site: row.getAttribute('data-site') || '',
+        size: row.getAttribute('data-size') || '',
         capacity: (row.querySelector('[data-field="capacity"]') || {}).textContent || '',
         input: (row.querySelector('[data-field="input"]') || {}).textContent || '',
         sales: (row.querySelector('[data-field="zl-sales"]') || {}).textContent || '',
@@ -6348,6 +6359,7 @@ function toggleMod(btn, modId) {
         note: (row.querySelector('[data-field="note"]') || {}).textContent || ''
       });
     });
+
     fetch(BASE_URL, {
       method: 'PUT',
       headers: {
@@ -6360,28 +6372,24 @@ function toggleMod(btn, modId) {
     .then(function(result){
       if(result.record){
         var status = document.getElementById('save-status');
+        status.textContent = '\u2713 已保存到云端';
         status.style.opacity = '1';
-        setTimeout(function(){ status.style.opacity = '0'; }, 2000);
+        setTimeout(function(){ status.style.opacity = '0'; status.textContent = '\u2713 已保存'; }, 2000);
       } else {
-        throw new Error('保存失败');
+        throw new Error('保存失败: ' + JSON.stringify(result));
       }
     })
     .catch(function(e){
-      console.error('保存失败', e);
-      alert('保存失败，请检查 JSONBin.io 配置是否正确');
+      console.error('保存失败:', e);
+      alert('保存失败: ' + e.message);
     });
   };
 
-  // ===== 清空数据 =====
   window.clearCapacityData = function(){
-    if(!confirm('确定要清空所有产能数据吗？此操作不可恢复。')) return;
-    if(BIN_ID === 'YOUR_BIN_ID_HERE') return;
+    if(!confirm('确定清空所有数据？')) return;
     fetch(BASE_URL, {
       method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Master-Key': API_KEY
-      },
+      headers: {'Content-Type': 'application/json', 'X-Master-Key': API_KEY},
       body: JSON.stringify([])
     })
     .then(function(){
@@ -6396,7 +6404,7 @@ function toggleMod(btn, modId) {
         sumRow.querySelector('[data-field="sum-share"]').textContent = '-';
       }
     })
-    .catch(function(e){ console.error('清空失败', e); });
+    .catch(function(e){ console.error('清空失败:', e); });
   };
 
   // Auto-save on blur
@@ -6408,9 +6416,7 @@ function toggleMod(btn, modId) {
   });
 
   // Load on init
-  if(document.getElementById('capacity-table')){
-    loadCapacityData();
-  }
+  loadCapacityData();
 })();
 </script>
 </body>
