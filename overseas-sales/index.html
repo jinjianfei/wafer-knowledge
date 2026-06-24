@@ -6,6 +6,7 @@
 <title>海外销售学习之路</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
@@ -592,7 +593,6 @@ tr:hover td{background:#fafbfc}
       <div style="padding:16px">
         <div style="display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap">
           <span style="font-size:10px;padding:2px 8px;background:#f5a623;color:#fff;border-radius:10px;font-weight:600">8寸减少</span>
-          <span style="font-size:10px;padding:2px 8px;background:#8b919d;color:#fff;border-radius:10px;font-weight:600">8寸不变</span>
           <span style="font-size:10px;padding:2px 8px;background:#3b6cf6;color:#fff;border-radius:10px;font-weight:600">12寸增加</span>
         </div>
         <div style="font-size:12px;line-height:1.8">
@@ -780,6 +780,84 @@ tr:hover td{background:#fafbfc}
     <button onclick="saveCapacityData()" style="padding:6px 16px;background:#3b6cf6;color:#fff;border:none;border-radius:6px;font-size:13px;cursor:pointer;font-weight:500">💾 保存数据</button>
     <button onclick="clearCapacityData()" style="padding:6px 16px;background:#f4f5f7;color:#6b7280;border:none;border-radius:6px;font-size:13px;cursor:pointer">🗑 清空数据</button>
     <span id="save-status" style="font-size:12px;color:#00b894;align-self:center;opacity:0;transition:opacity .3s">✓ 已保存</span>
+  </div>
+
+  <!-- 产能分析模块 -->
+  <h2>产能数据分析</h2>
+  <p style="font-size:13px;color:#6b7280;margin-bottom:12px">数据自动从上方表格联动更新。鼠标悬停气泡查看各工厂详细投片与市占率。</p>
+
+  <div style="display:flex;gap:16px;align-items:stretch">
+
+    <!-- ① 不同工厂维度：散点气泡图 -->
+    <div style="flex:1.4;min-width:0">
+      <h3 style="font-size:14px;margin-bottom:8px">① 不同工厂维度（X=投片，Y=市占率，气泡=投片量）</h3>
+      <div id="factory-bubble-chart-wrap" style="width:100%;height:380px;border:1px solid #e8eaed;border-radius:8px;background:#fff;overflow:hidden">
+        <div id="factory-bubble-chart" style="width:100%;height:100%"></div>
+      </div>
+    </div>
+
+    <!-- ② 不同尺寸和区域 -->
+    <div style="flex:1;min-width:300px">
+      <h3 style="font-size:14px;margin-bottom:8px">② 不同尺寸和区域</h3>
+      <div class="table-wrap" style="margin-bottom:0">
+        <table id="dimension-table" style="font-size:12px">
+          <thead>
+            <tr>
+              <th style="width:22%">维度</th>
+              <th style="width:18%">产能</th>
+              <th style="width:18%">投片</th>
+              <th style="width:18%">中环销量</th>
+              <th style="width:24%">中环市占(%)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr data-dim="size-6" data-factor="0.5625">
+              <td><strong>6</strong></td>
+              <td data-field="cap">-</td>
+              <td data-field="input">-</td>
+              <td data-field="sales">-</td>
+              <td data-field="share" style="font-weight:600;color:#00b894">-</td>
+            </tr>
+            <tr data-dim="size-8" data-factor="1">
+              <td><strong>8</strong></td>
+              <td data-field="cap">-</td>
+              <td data-field="input">-</td>
+              <td data-field="sales">-</td>
+              <td data-field="share" style="font-weight:600;color:#00b894">-</td>
+            </tr>
+            <tr data-dim="size-12" data-factor="2.25">
+              <td><strong>12</strong></td>
+              <td data-field="cap">-</td>
+              <td data-field="input">-</td>
+              <td data-field="sales">-</td>
+              <td data-field="share" style="font-weight:600;color:#00b894">-</td>
+            </tr>
+            <tr data-dim="region-sg" data-factor="mix">
+              <td><strong style="color:#f5a623">新加坡</strong></td>
+              <td data-field="cap">-</td>
+              <td data-field="input">-</td>
+              <td data-field="sales">-</td>
+              <td data-field="share" style="font-weight:600;color:#00b894">-</td>
+            </tr>
+            <tr data-dim="region-eu" data-factor="mix">
+              <td><strong style="color:#3b6cf6">欧洲</strong></td>
+              <td data-field="cap">-</td>
+              <td data-field="input">-</td>
+              <td data-field="sales">-</td>
+              <td data-field="share" style="font-weight:600;color:#00b894">-</td>
+            </tr>
+            <tr id="dim-sum-row" style="background:linear-gradient(135deg,#f0f4ff,#e6eeff);font-weight:600;border-top:2px solid #3b6cf6">
+              <td style="color:#3b6cf6">Sum（折标8寸）</td>
+              <td data-field="cap" style="color:#3b6cf6">-</td>
+              <td data-field="input" style="color:#3b6cf6">-</td>
+              <td data-field="sales" style="color:#3b6cf6">-</td>
+              <td data-field="share" style="color:#00b894">-</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
   </div>
 
 
@@ -6271,6 +6349,195 @@ function toggleMod(btn, modId) {
         sumShareCell.textContent = '-';
       }
     }
+    updateAnalysis();
+  }
+
+  // ===== 联动更新分析模块（气泡图 + 维度表格） =====
+  function updateAnalysis(){
+    // 收集各工厂数据
+    var factoryData = {};
+    var sizeData = {'6':{cap:0,input:0,sales:0},'8':{cap:0,input:0,sales:0},'12':{cap:0,input:0,sales:0}};
+    var regionData = {sg:{cap:0,input:0,sales:0},eu:{cap:0,input:0,sales:0}};
+    var allCap = 0, allInput = 0, allSales = 0;
+
+    document.querySelectorAll('#capacity-table tbody tr[data-site]').forEach(function(row){
+      var site = row.getAttribute('data-site');
+      var size = row.getAttribute('data-size');
+      var factor = parseFloat(row.getAttribute('data-factor')) || 1;
+      var capCell = row.querySelector('[data-field="capacity"]');
+      var inputCell = row.querySelector('[data-field="input"]');
+      var salesCell = row.querySelector('[data-field="zl-sales"]');
+      var cap = capCell ? parseFloat(capCell.textContent) || 0 : 0;
+      var input = inputCell ? parseFloat(inputCell.textContent) || 0 : 0;
+      var sales = salesCell ? parseFloat(salesCell.textContent) || 0 : 0;
+
+      // 工厂数据（折标）
+      if(!factoryData[site]) factoryData[site] = {name:site,cap:0,input:0,sales:0,details:[]};
+      factoryData[site].cap += cap * factor;
+      factoryData[site].input += input * factor;
+      factoryData[site].sales += sales * factor;
+      factoryData[site].details.push({size:size,input:input,sales:sales});
+
+      // 尺寸数据（不折标，原始值）
+      if(sizeData[size]){
+        sizeData[size].cap += cap;
+        sizeData[size].input += input;
+        sizeData[size].sales += sales;
+      }
+
+      // 区域数据（折标）
+      if(site === 'amk'){
+        regionData.sg.cap += cap * factor;
+        regionData.sg.input += input * factor;
+        regionData.sg.sales += sales * factor;
+      } else {
+        regionData.eu.cap += cap * factor;
+        regionData.eu.input += input * factor;
+        regionData.eu.sales += sales * factor;
+      }
+
+      allCap += cap * factor;
+      allInput += input * factor;
+      allSales += sales * factor;
+    });
+
+    // 更新气泡图
+    updateBubbleChart(factoryData);
+    // 更新维度表格
+    updateDimensionTable(sizeData, regionData, allCap, allInput, allSales);
+  }
+
+  // 全局图表实例
+  var _bubbleChart = null;
+
+  function getBubbleChart(){
+    var chartDom = document.getElementById('factory-bubble-chart');
+    if(!chartDom) return null;
+    if(!_bubbleChart){
+      _bubbleChart = echarts.init(chartDom);
+      // 使用ResizeObserver监听容器大小变化
+      var wrap = document.getElementById('factory-bubble-chart-wrap');
+      if(wrap && window.ResizeObserver){
+        new ResizeObserver(function(){
+          _bubbleChart && _bubbleChart.resize();
+        }).observe(wrap);
+      }
+    }
+    return _bubbleChart;
+  }
+
+  function updateBubbleChart(factoryData){
+    var myChart = getBubbleChart();
+    if(!myChart) return;
+
+    var siteNames = {crolles:'Crolles',tours:'Tours',rousset:'Rousset',agrate:'Agrate',catania:'Catania',amk:'AMK'};
+    var siteColors = {crolles:'#3b6cf6',tours:'#6b9ef5',rousset:'#7aa6f7',agrate:'#e8453c',catania:'#d64040',amk:'#f5a623'};
+
+    var seriesData = [];
+    Object.keys(factoryData).forEach(function(site){
+      var d = factoryData[site];
+      var share = d.input > 0 ? ((d.sales / d.input) * 100).toFixed(1) : 0;
+      var tooltipLines = d.details.map(function(det){
+        return det.size + '寸投片：' + (det.input || 0) + 'K/M';
+      }).join('\n');
+      tooltipLines += '\n市占率：' + share + '%';
+
+      seriesData.push({
+        name: siteNames[site] || site,
+        value: [d.input, parseFloat(share), d.input],
+        itemStyle: {color: siteColors[site] || '#999'},
+        tooltipText: tooltipLines,
+        symbolSize: Math.max(20, Math.min(80, d.input * 0.8))
+      });
+    });
+
+    myChart.setOption({
+      grid: {left:'12%',right:'8%',top:'10%',bottom:'18%'},
+      xAxis: {
+        name:'投片（折标8寸，K/M）',
+        nameLocation:'center',
+        nameGap:28,
+        type:'value',
+        splitLine:{lineStyle:{type:'dashed',color:'#eee'}},
+        axisLabel:{fontSize:11,color:'#666'},
+        nameTextStyle:{fontSize:12,color:'#333',fontWeight:600}
+      },
+      yAxis: {
+        name:'市占率（%）',
+        nameLocation:'center',
+        nameGap:38,
+        type:'value',
+        splitLine:{lineStyle:{type:'dashed',color:'#eee'}},
+        axisLabel:{fontSize:11,color:'#666'},
+        nameTextStyle:{fontSize:12,color:'#333',fontWeight:600}
+      },
+      tooltip: {
+        trigger:'item',
+        formatter: function(p){
+          return '<strong>' + p.name + '</strong><br/>' + p.data.tooltipText.replace(/\n/g,'<br/>');
+        },
+        backgroundColor:'rgba(255,255,255,0.95)',
+        borderColor:'#e8eaed',
+        borderWidth:1,
+        textStyle:{color:'#333',fontSize:12}
+      },
+      series: [{
+        type:'scatter',
+        data:seriesData,
+        label:{
+          show:true,
+          formatter:function(p){return p.name;},
+          position:'right',
+          fontSize:11,
+          fontWeight:600,
+          color:'#333',
+          distance:8
+        },
+        labelLayout:{hideOverlap:true}
+      }]
+    }, true);
+  }
+
+  function updateDimensionTable(sizeData, regionData, allCap, allInput, allSales){
+    var table = document.getElementById('dimension-table');
+    if(!table) return;
+
+    var dimMap = {
+      'size-6': sizeData['6'],
+      'size-8': sizeData['8'],
+      'size-12': sizeData['12'],
+      'region-sg': regionData.sg,
+      'region-eu': regionData.eu
+    };
+
+    table.querySelectorAll('tbody tr[data-dim]').forEach(function(row){
+      var dim = row.getAttribute('data-dim');
+      var d = dimMap[dim];
+      if(!d) return;
+      row.querySelector('[data-field="cap"]').textContent = d.cap > 0 ? d.cap.toFixed(1) : '-';
+      row.querySelector('[data-field="input"]').textContent = d.input > 0 ? d.input.toFixed(1) : '-';
+      row.querySelector('[data-field="sales"]').textContent = d.sales > 0 ? d.sales.toFixed(1) : '-';
+      var shareCell = row.querySelector('[data-field="share"]');
+      if(d.input > 0){
+        shareCell.textContent = ((d.sales / d.input) * 100).toFixed(1);
+      } else {
+        shareCell.textContent = '-';
+      }
+    });
+
+    // Sum row
+    var sumRow = document.getElementById('dim-sum-row');
+    if(sumRow){
+      sumRow.querySelector('[data-field="cap"]').textContent = allCap > 0 ? allCap.toFixed(1) : '-';
+      sumRow.querySelector('[data-field="input"]').textContent = allInput > 0 ? allInput.toFixed(1) : '-';
+      sumRow.querySelector('[data-field="sales"]').textContent = allSales > 0 ? allSales.toFixed(1) : '-';
+      var sumShareCell = sumRow.querySelector('[data-field="share"]');
+      if(allInput > 0){
+        sumShareCell.textContent = ((allSales / allInput) * 100).toFixed(1);
+      } else {
+        sumShareCell.textContent = '-';
+      }
+    }
   }
 
   function loadCapacityData(){
@@ -6396,6 +6663,7 @@ function toggleMod(btn, modId) {
 
   // Load on init
   loadCapacityData();
+
 })();
 </script>
 </body>
