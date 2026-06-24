@@ -346,7 +346,25 @@ tr:hover td{background:#fafbfc}
   </div>
   <h1>ST公司概况与组织架构</h1>
 
-  <p>STMicroelectronics（NYSE: STM）是全球领先的半导体IDM公司，总部位于瑞士日内瓦（Geneva），2024年营收约161亿美元，全球员工约50,000人，拥有18,000+项专利。理解ST的内部组织架构，找准每个决策节点上的关键人物，是开展销售工作的基础。</p>
+  <p>STMicroelectronics（NYSE: STM）是全球领先的半导体IDM公司，总部位于瑞士日内瓦（Geneva），2024年营收约161亿美元，2025年营收约118亿美元（受行业库存调整周期影响），全球员工约50,000人，拥有18,000+项专利。理解ST的内部组织架构，找准每个决策节点上的关键人物，是开展销售工作的基础。</p>
+
+  <!-- 管理层与对接窗口入口 -->
+  <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin:20px 0">
+    <div class="card" style="cursor:pointer;border-left:4px solid #3b6cf6" onclick="showMgmtArch()">
+      <div class="card-header">
+        <span class="card-badge" style="background:#3b6cf6">&#127942;</span>
+        <span class="card-title">ST管理层架构</span>
+      </div>
+      <div class="card-type">执行委员会成员、职责分工、个人简历</div>
+    </div>
+    <div class="card" style="cursor:pointer;border-left:4px solid #00b894" onclick="showMgmtContact()">
+      <div class="card-header">
+        <span class="card-badge" style="background:#00b894">&#128225;</span>
+        <span class="card-title">ST对接窗口</span>
+      </div>
+      <div class="card-type">各Site关键Contact、决策链、对接策略</div>
+    </div>
+  </div>
 
   <h2>一、ST核心组织架构</h2>
 
@@ -360,7 +378,7 @@ tr:hover td{background:#fafbfc}
 
   <h3>2. GPO — Global Procurement Organization（全球采购组织）</h3>
   <ul>
-    <li><strong>位置：硅片采购的GPO位于法国Crolles</strong>（不是Geneva！很多新手误以为在总部日内瓦。注意：其他物料品类的GPO可能在不同Site）</li>
+    <li><strong>位置：硅片采购的GPO位于法国Crolles</strong>（注意：其他物料品类的GPO可能在不同Site）</li>
     <li><strong>职责：</strong>全球战略采购决策、供应商审核、年度合同谈判、价格框架制定</li>
     <li><strong>关键角色：</strong>Category Manager（负责Silicon/Raw Materials品类）、GPO Director</li>
     <li><strong>对接重点：</strong>年度价格谈判、Supplier Approval、战略合同条款</li>
@@ -372,11 +390,11 @@ tr:hover td{background:#fafbfc}
 
   <h3>3. MP — Material Planning（物料计划）</h3>
   <ul>
-    <li><strong>位置：</strong>各Site均有MP团队，Crolles的MP负责协调全球物料分配</li>
+    <li><strong>位置：</strong>各Site均有MP团队</li>
     <li><strong>职责：</strong>Forecast管理、物料需求计划（MRP）、库存管理、交货排程</li>
     <li><strong>关键角色：</strong>Material Planner、Demand Planning Manager</li>
     <li><strong>对接重点：</strong>月度/季度Forecast确认、交货计划调整、VMI（Vendor Managed Inventory）安排</li>
-    <li><strong>为什么重要：</strong>Planner决定了你的订单什么时候下、要多少量、交货到哪个Site。和Planner关系好，Forecast调整更灵活</li>
+    <li><strong>为什么重要：</strong>Planner决定了你的订单什么时候下、要多少量、交货到哪个Site。和Planner关系好，Forecast调整更灵活，但MP会根据allocation上限进行调整</li>
   </ul>
 
   <h3>4. Quality Assurance（质量保证）</h3>
@@ -440,7 +458,7 @@ tr:hover td{background:#fafbfc}
       <tr><td><strong>R&D在Crolles定义Spec</strong></td><td>技术认可必须通过R&D，早期介入新工艺开发</td></tr>
       <tr><td><strong>SQE是"守门员"</strong></td><td>没有SQE认可，硅片进不了Fab</td></tr>
       <tr><td><strong>各Site有一定自主权但GPO有否决权</strong></td><td>Site关系决定订单，GPO关系决定战略合同</td></tr>
-      <tr><td><strong>Catania是新业务线最灵活</strong></td><td>SiC是最大机会窗口，新供应商认证相对容易</td></tr>
+      <tr><td><strong>Catania SiC业务持续增长</strong></td><td>SiC衬底需求爆发，但认证标准严格</td></tr>
     </tbody>
   </table></div>
 
@@ -453,7 +471,7 @@ tr:hover td{background:#fafbfc}
   </div>
 
   <div class="checklist">
-    <span class="check-item">记住GPO在Crolles不在Geneva</span>
+    <span class="check-item">记住GPO负责硅片战略采购</span>
     <span class="check-item">了解MP物料计划的角色</span>
     <span class="check-item">掌握四方决策矩阵</span>
     <span class="check-item">熟悉硅片特殊决策流程</span>
@@ -3861,6 +3879,319 @@ z
   </div>
 </div>
 
+<!-- ===== ST管理层架构（次级页面，不在侧边栏导航中） ===== -->
+<div class="page" id="mgmt-arch">
+  <button onclick="go('st1',q('st1'))" style="margin-bottom:12px;padding:6px 14px;background:#f4f5f7;color:#555;border:none;border-radius:6px;font-size:13px;cursor:pointer">&#8592; 返回ST概况</button>
+
+  <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+    <span style="font-size:11px;font-weight:600;padding:2px 8px;background:#eef2ff;color:#3b6cf6;border-radius:4px">ST管理层</span>
+  </div>
+  <h1>ST管理层架构</h1>
+
+  <p>ST的管理层由总裁兼首席执行官和执行委员会组成。执行委员会负责制定公司战略方向、监督业务运营，并确保公司目标的实现。了解ST管理层有助于你理解公司的决策逻辑和战略重点。</p>
+
+  <!-- CEO -->
+  <h2>总裁兼首席执行官</h2>
+  <div style="border:1px solid #e8eaed;border-radius:12px;padding:20px;background:linear-gradient(135deg,#eef2ff,#fff);margin-bottom:24px;display:flex;gap:20px;align-items:flex-start">
+    <img src="https://www.st.com.cn/content/dam/aboutus/who-we-are/management/pictures/jean-marc-chery-portrait-488x469.jpg" alt="Jean-Marc Chery" style="width:72px;height:72px;border-radius:50%;object-fit:cover;flex-shrink:0;border:2px solid #3b6cf6" onerror="this.style.display='none';this.parentNode.insertBefore(Object.assign(document.createElement('div'),{style:'width:72px;height:72px;border-radius:50%;background:#3b6cf6;color:#fff;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:700;flex-shrink:0',textContent:'JMC'}),this.nextSibling)">
+    <div style="flex:1">
+      <div style="font-size:18px;font-weight:700;color:#1a1d23;margin-bottom:4px">Jean-Marc Chery</div>
+      <div style="font-size:13px;color:#3b6cf6;font-weight:600;margin-bottom:10px">President & Chief Executive Officer</div>
+      <div style="font-size:12px;color:#555;line-height:1.8">
+        1960年出生于法国奥尔良。1983年毕业于ENSAM（Arts et M&eacute;tiers ParisTech）工程学位。<br/>
+        1986年加入Thomson Semiconducteurs（ST前身），历任汽车产品部总经理、首席运营官，2018年起担任总裁兼首席执行官。
+      </div>
+      <button onclick="openMgmtModal('chery')" style="margin-top:10px;padding:4px 12px;background:#3b6cf6;color:#fff;border:none;border-radius:4px;font-size:12px;cursor:pointer">查看完整简历</button>
+    </div>
+  </div>
+
+  <!-- 执行委员会 -->
+  <h2>执行委员会（Executive Committee）</h2>
+  <p style="font-size:13px;color:#6b7280;margin-bottom:16px">点击成员卡片查看完整个人简历</p>
+
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;margin-bottom:24px">
+
+    <!-- Marco Cassis -->
+    <div style="border:1px solid #e8eaed;border-radius:10px;padding:16px;background:#fff;cursor:pointer;transition:box-shadow .2s" onclick="openMgmtModal('cassis')" onmouseover="this.style.boxShadow='0 4px 12px rgba(0,0,0,.1)'" onmouseout="this.style.boxShadow='none'">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">
+        <img src="https://www.st.com.cn/content/dam/aboutus/who-we-are/management/pictures/marco-cassis-portrait-396x396.jpg" alt="MC" style="width:48px;height:48px;border-radius:50%;object-fit:cover;flex-shrink:0;border:2px solid #e8453c" onerror="this.style.display='none';var d=document.createElement('div');d.style.cssText='width:48px;height:48px;border-radius:50%;background:#e8453c;color:#fff;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;flex-shrink:0';d.textContent='MC';this.parentNode.insertBefore(d,this)">
+        <div>
+          <div style="font-size:14px;font-weight:700;color:#1a1d23">Marco Cassis</div>
+          <div style="font-size:11px;color:#e8453c">APMS + 战略发展</div>
+        </div>
+      </div>
+      <div style="font-size:11px;color:#666;line-height:1.6">模拟、功率与分立器件、MEMS与传感器产品部总裁，兼管战略发展、系统研发与应用事业部及创新办公室</div>
+    </div>
+
+    <!-- Remi El-Ouazzane -->
+    <div style="border:1px solid #e8eaed;border-radius:10px;padding:16px;background:#fff;cursor:pointer;transition:box-shadow .2s" onclick="openMgmtModal('elouazzane')" onmouseover="this.style.boxShadow='0 4px 12px rgba(0,0,0,.1)'" onmouseout="this.style.boxShadow='none'">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">
+        <img src="https://www.st.com.cn/content/dam/aboutus/who-we-are/management/pictures/remi-elouzzane-portrait-396x396.jpg" alt="RE" style="width:48px;height:48px;border-radius:50%;object-fit:cover;flex-shrink:0;border:2px solid #00b894" onerror="this.style.display='none';var d=document.createElement('div');d.style.cssText='width:48px;height:48px;border-radius:50%;background:#00b894;color:#fff;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;flex-shrink:0';d.textContent='RE';this.parentNode.insertBefore(d,this)">
+        <div>
+          <div style="font-size:14px;font-weight:700;color:#1a1d23">R&eacute;mi El-Ouazzane</div>
+          <div style="font-size:11px;color:#00b894">MDRF</div>
+        </div>
+      </div>
+      <div style="font-size:11px;color:#666;line-height:1.6">微控制器、数字IC和射频产品部（MDRF）总裁</div>
+    </div>
+
+    <!-- Jerome Roux -->
+    <div style="border:1px solid #e8eaed;border-radius:10px;padding:16px;background:#fff;cursor:pointer;transition:box-shadow .2s" onclick="openMgmtModal('roux')" onmouseover="this.style.boxShadow='0 4px 12px rgba(0,0,0,.1)'" onmouseout="this.style.boxShadow='none'">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">
+        <div style="width:48px;height:48px;border-radius:50%;background:#3b6cf6;color:#fff;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700">JR</div>
+        <div>
+          <div style="font-size:14px;font-weight:700;color:#1a1d23">J&eacute;r&ocirc;me Roux</div>
+          <div style="font-size:11px;color:#3b6cf6">Sales &amp; Marketing</div>
+        </div>
+      </div>
+      <div style="font-size:11px;color:#666;line-height:1.6">销售与市场部总裁，负责全球销售网络和客户关系</div>
+    </div>
+
+    <!-- Fabio Gualandris -->
+    <div style="border:1px solid #e8eaed;border-radius:10px;padding:16px;background:#fff;cursor:pointer;transition:box-shadow .2s" onclick="openMgmtModal('gualandris')" onmouseover="this.style.boxShadow='0 4px 12px rgba(0,0,0,.1)'" onmouseout="this.style.boxShadow='none'">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">
+        <div style="width:48px;height:48px;border-radius:50%;background:#f5a623;color:#fff;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700">FG</div>
+        <div>
+          <div style="font-size:14px;font-weight:700;color:#1a1d23">Fabio Gualandris</div>
+          <div style="font-size:11px;color:#b8810a">Quality &amp; Manufacturing</div>
+        </div>
+      </div>
+      <div style="font-size:11px;color:#666;line-height:1.6">质量、制造与技术部总裁，负责全球制造运营和质量体系</div>
+    </div>
+
+    <!-- Lorenzo Grandi -->
+    <div style="border:1px solid #e8eaed;border-radius:10px;padding:16px;background:#fff;cursor:pointer;transition:box-shadow .2s" onclick="openMgmtModal('grandi')" onmouseover="this.style.boxShadow='0 4px 12px rgba(0,0,0,.1)'" onmouseout="this.style.boxShadow='none'">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">
+        <img src="https://www.st.com.cn/content/dam/aboutus/who-we-are/management/pictures/lorenzo-grandi-portrait-396x396.jpg" alt="LG" style="width:48px;height:48px;border-radius:50%;object-fit:cover;flex-shrink:0;border:2px solid #6c5ce7" onerror="this.style.display='none';var d=document.createElement('div');d.style.cssText='width:48px;height:48px;border-radius:50%;background:#6c5ce7;color:#fff;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;flex-shrink:0';d.textContent='LG';this.parentNode.insertBefore(d,this)">
+        <div>
+          <div style="font-size:14px;font-weight:700;color:#1a1d23">Lorenzo Grandi</div>
+          <div style="font-size:11px;color:#6c5ce7">President &amp; CFO</div>
+        </div>
+      </div>
+      <div style="font-size:11px;color:#666;line-height:1.6">总裁兼首席财务官，负责财务战略、投资者关系和企业发展</div>
+    </div>
+
+    <!-- Rajita D'Souza -->
+    <div style="border:1px solid #e8eaed;border-radius:10px;padding:16px;background:#fff;cursor:pointer;transition:box-shadow .2s" onclick="openMgmtModal('dsouza')" onmouseover="this.style.boxShadow='0 4px 12px rgba(0,0,0,.1)'" onmouseout="this.style.boxShadow='none'">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">
+        <div style="width:48px;height:48px;border-radius:50%;background:#e17055;color:#fff;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700">RD</div>
+        <div>
+          <div style="font-size:14px;font-weight:700;color:#1a1d23">Rajita D'Souza</div>
+          <div style="font-size:11px;color:#e17055">HR &amp; CSR</div>
+        </div>
+      </div>
+      <div style="font-size:11px;color:#666;line-height:1.6">人力资源与企业社会责任总裁，负责全球人才战略和ESG</div>
+    </div>
+
+    <!-- Steven Rose -->
+    <div style="border:1px solid #e8eaed;border-radius:10px;padding:16px;background:#fff;cursor:pointer;transition:box-shadow .2s" onclick="openMgmtModal('rose')" onmouseover="this.style.boxShadow='0 4px 12px rgba(0,0,0,.1)'" onmouseout="this.style.boxShadow='none'">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">
+        <div style="width:48px;height:48px;border-radius:50%;background:#00b894;color:#fff;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700">SR</div>
+        <div>
+          <div style="font-size:14px;font-weight:700;color:#1a1d23">Steven Rose</div>
+          <div style="font-size:11px;color:#00b894">Legal &amp; Public Affairs</div>
+        </div>
+      </div>
+      <div style="font-size:11px;color:#666;line-height:1.6">法律事务与公共事务总裁，负责全球法律合规和政府关系</div>
+    </div>
+
+  </div>
+
+  <!-- 其他高层（Other Directors） -->
+  <h2>其他高层（Executive Vice Presidents）</h2>
+  <p style="font-size:13px;color:#6b7280;margin-bottom:16px">向执行委员会汇报的关键执行副总裁，负责各业务线和区域运营</p>
+
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;margin-bottom:24px">
+
+    <!-- Christophe Ayela -->
+    <div style="border:1px solid #e8eaed;border-radius:10px;padding:16px;background:#fff;cursor:pointer;transition:box-shadow .2s" onclick="openMgmtModal('ayela')" onmouseover="this.style.boxShadow='0 4px 12px rgba(0,0,0,.1)'" onmouseout="this.style.boxShadow='none'">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">
+        <img src="https://www.st.com.cn/content/dam/aboutus/who-we-are/management/pictures/christophe-ayela-395x395.jpg" alt="CA" style="width:48px;height:48px;border-radius:50%;object-fit:cover;flex-shrink:0;border:2px solid #e17055" onerror="this.style.display='none';var d=document.createElement('div');d.style.cssText='width:48px;height:48px;border-radius:50%;background:#e17055;color:#fff;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;flex-shrink:0';d.textContent='CA';this.parentNode.insertBefore(d,this)">
+        <div>
+          <div style="font-size:14px;font-weight:700;color:#1a1d23">Christophe Ayela</div>
+          <div style="font-size:11px;color:#e17055">前端制造执行副总裁</div>
+        </div>
+      </div>
+      <div style="font-size:11px;color:#666;line-height:1.6">2025年7月起担任前端制造执行副总裁，负责全球晶圆厂运营。1990年加入ST，历任图尔工厂运营总监、亚太区前端制造总经理。</div>
+    </div>
+
+    <!-- Michael Anfang -->
+    <div style="border:1px solid #e8eaed;border-radius:10px;padding:16px;background:#fff;cursor:pointer;transition:box-shadow .2s" onclick="openMgmtModal('anfang')" onmouseover="this.style.boxShadow='0 4px 12px rgba(0,0,0,.1)'" onmouseout="this.style.boxShadow='none'">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">
+        <img src="https://www.st.com.cn/content/dam/aboutus/who-we-are/management/pictures/michael-anfang-portrait-285x285.jpg" alt="MA" style="width:48px;height:48px;border-radius:50%;object-fit:cover;flex-shrink:0;border:2px solid #0984e3" onerror="this.style.display='none';var d=document.createElement('div');d.style.cssText='width:48px;height:48px;border-radius:50%;background:#0984e3;color:#fff;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;flex-shrink:0';d.textContent='MA';this.parentNode.insertBefore(d,this)">
+        <div>
+          <div style="font-size:14px;font-weight:700;color:#1a1d23">Michael Anfang</div>
+          <div style="font-size:11px;color:#0984e3">EMEA销售与市场执行副总裁</div>
+        </div>
+      </div>
+      <div style="font-size:11px;color:#666;line-height:1.6">2018年11月起担任EMEA销售与市场执行副总裁。1999年加入ST，历任汽车电子多个管理职位。</div>
+    </div>
+
+    <!-- Maria Heriz -->
+    <div style="border:1px solid #e8eaed;border-radius:10px;padding:16px;background:#fff;cursor:pointer;transition:box-shadow .2s" onclick="openMgmtModal('heriz')" onmouseover="this.style.boxShadow='0 4px 12px rgba(0,0,0,.1)'" onmouseout="this.style.boxShadow='none'">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">
+        <img src="https://www.st.com.cn/content/dam/aboutus/who-we-are/management/pictures/maria-heriz-portrait-285x285.jpg" alt="MH" style="width:48px;height:48px;border-radius:50%;object-fit:cover;flex-shrink:0;border:2px solid #fd79a8" onerror="this.style.display='none';var d=document.createElement('div');d.style.cssText='width:48px;height:48px;border-radius:50%;background:#fd79a8;color:#fff;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;flex-shrink:0';d.textContent='MH';this.parentNode.insertBefore(d,this)">
+        <div>
+          <div style="font-size:14px;font-weight:700;color:#1a1d23">Maria Heriz</div>
+          <div style="font-size:11px;color:#fd79a8">嵌入式处理分部EVP</div>
+        </div>
+      </div>
+      <div style="font-size:11px;color:#666;line-height:1.6">2025年9月起担任嵌入式处理分部执行副总裁。曾任职于德州仪器、恩智浦、泰克科技。</div>
+    </div>
+
+    <!-- Hiroshi Noguchi -->
+    <div style="border:1px solid #e8eaed;border-radius:10px;padding:16px;background:#fff;cursor:pointer;transition:box-shadow .2s" onclick="openMgmtModal('noguchi')" onmouseover="this.style.boxShadow='0 4px 12px rgba(0,0,0,.1)'" onmouseout="this.style.boxShadow='none'">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">
+        <img src="https://www.st.com.cn/content/dam/aboutus/who-we-are/management/pictures/hiroshi-noguchi-portrait-285x285.jpg" alt="HN" style="width:48px;height:48px;border-radius:50%;object-fit:cover;flex-shrink:0;border:2px solid #e84393" onerror="this.style.display='none';var d=document.createElement('div');d.style.cssText='width:48px;height:48px;border-radius:50%;background:#e84393;color:#fff;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;flex-shrink:0';d.textContent='HN';this.parentNode.insertBefore(d,this)">
+        <div>
+          <div style="font-size:14px;font-weight:700;color:#1a1d23">Hiroshi Noguchi</div>
+          <div style="font-size:11px;color:#e84393">亚太区（除中国外）销售EVP</div>
+        </div>
+      </div>
+      <div style="font-size:11px;color:#666;line-height:1.6">2022年1月起担任亚太区（除中国外）销售与市场执行副总裁。2007年加入ST日本公司，主导MEMS传感器业务在日本的大幅增长。</div>
+    </div>
+
+    <!-- Claudia Levo -->
+    <div style="border:1px solid #e8eaed;border-radius:10px;padding:16px;background:#fff;cursor:pointer;transition:box-shadow .2s" onclick="openMgmtModal('levo')" onmouseover="this.style.boxShadow='0 4px 12px rgba(0,0,0,.1)'" onmouseout="this.style.boxShadow='none'">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">
+        <img src="https://www.st.com.cn/content/dam/aboutus/who-we-are/management/pictures/claudia-levo-portrait-285x285.jpg" alt="CL" style="width:48px;height:48px;border-radius:50%;object-fit:cover;flex-shrink:0;border:2px solid #a29bfe" onerror="this.style.display='none';var d=document.createElement('div');d.style.cssText='width:48px;height:48px;border-radius:50%;background:#a29bfe;color:#fff;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;flex-shrink:0';d.textContent='CL';this.parentNode.insertBefore(d,this)">
+        <div>
+          <div style="font-size:14px;font-weight:700;color:#1a1d23">Claudia Levo</div>
+          <div style="font-size:11px;color:#a29bfe">整合营销与传播EVP</div>
+        </div>
+      </div>
+      <div style="font-size:11px;color:#666;line-height:1.6">2018年6月起担任整合营销与传播执行副总裁，负责公共关系、媒体关系、数字营销等企业传播事务。</div>
+    </div>
+
+    <!-- Nicolas Yackowlew -->
+    <div style="border:1px solid #e8eaed;border-radius:10px;padding:16px;background:#fff;cursor:pointer;transition:box-shadow .2s" onclick="openMgmtModal('yackowlew')" onmouseover="this.style.boxShadow='0 4px 12px rgba(0,0,0,.1)'" onmouseout="this.style.boxShadow='none'">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">
+        <img src="https://www.st.com.cn/content/dam/aboutus/who-we-are/management/pictures/nicolas-yackowlew-portrait-396x396.jpg" alt="NY" style="width:48px;height:48px;border-radius:50%;object-fit:cover;flex-shrink:0;border:2px solid #00cec9" onerror="this.style.display='none';var d=document.createElement('div');d.style.cssText='width:48px;height:48px;border-radius:50%;background:#00cec9;color:#fff;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;flex-shrink:0';d.textContent='NY';this.parentNode.insertBefore(d,this)">
+        <div>
+          <div style="font-size:14px;font-weight:700;color:#1a1d23">Nicolas Yackowlew</div>
+          <div style="font-size:11px;color:#00cec9">产品质量与可靠性EVP</div>
+        </div>
+      </div>
+      <div style="font-size:11px;color:#666;line-height:1.6">2018年8月起担任产品质量和可靠性执行副总裁。1996年加入ST，从产品质量工程师做起，全面管控存储器、MCU和安全MCU的质量体系。</div>
+    </div>
+
+    <!-- Giuseppe Notarnicola -->
+    <div style="border:1px solid #e8eaed;border-radius:10px;padding:16px;background:#fff;cursor:pointer;transition:box-shadow .2s" onclick="openMgmtModal('notarnicola')" onmouseover="this.style.boxShadow='0 4px 12px rgba(0,0,0,.1)'" onmouseout="this.style.boxShadow='none'">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">
+        <div style="width:48px;height:48px;border-radius:50%;background:#2d3436;color:#fff;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700">GN</div>
+        <div>
+          <div style="font-size:14px;font-weight:700;color:#1a1d23">Giuseppe Notarnicola</div>
+          <div style="font-size:11px;color:#2d3436">资金管理、并购EVP</div>
+        </div>
+      </div>
+      <div style="font-size:11px;color:#666;line-height:1.6">2006年起担任执行副总裁，负责资金管理、保险、并购、知识产权和在意大利的公共事务。同时担任ST意大利公司总裁。</div>
+    </div>
+
+    <!-- Rino Peruzzi -->
+    <div style="border:1px solid #e8eaed;border-radius:10px;padding:16px;background:#fff;cursor:pointer;transition:box-shadow .2s" onclick="openMgmtModal('peruzzi')" onmouseover="this.style.boxShadow='0 4px 12px rgba(0,0,0,.1)'" onmouseout="this.style.boxShadow='none'">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">
+        <div style="width:48px;height:48px;border-radius:50%;background:#636e72;color:#fff;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700">RP</div>
+        <div>
+          <div style="font-size:14px;font-weight:700;color:#1a1d23">Rino Peruzzi</div>
+          <div style="font-size:11px;color:#636e72">美洲和全球大客户EVP</div>
+        </div>
+      </div>
+      <div style="font-size:11px;color:#666;line-height:1.6">2022年8月起担任美洲和全球大客户部执行副总裁。1998年加入ST，从存储业务客户主管做起，组建了全球大客户组织。</div>
+    </div>
+
+    <!-- Frederique Le Greves -->
+    <div style="border:1px solid #e8eaed;border-radius:10px;padding:16px;background:#fff;cursor:pointer;transition:box-shadow .2s" onclick="openMgmtModal('legreves')" onmouseover="this.style.boxShadow='0 4px 12px rgba(0,0,0,.1)'" onmouseout="this.style.boxShadow='none'">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">
+        <div style="width:48px;height:48px;border-radius:50%;background:#b2bec3;color:#fff;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700">FL</div>
+        <div>
+          <div style="font-size:14px;font-weight:700;color:#1a1d23">Fr&eacute;d&eacute;rique Le Gr&egrave;ves</div>
+          <div style="font-size:11px;color:#b2bec3">欧洲和法国公共事务EVP</div>
+        </div>
+      </div>
+      <div style="font-size:11px;color:#666;line-height:1.6">2021年3月起担任欧洲和法国公共事务执行副总裁，兼ST法国公司总裁。2022年被任命为法国"电子行业"战略委员会主席。</div>
+    </div>
+
+    <!-- Ricardo De Sa Earp -->
+    <div style="border:1px solid #e8eaed;border-radius:10px;padding:16px;background:#fff;cursor:pointer;transition:box-shadow .2s" onclick="openMgmtModal('desaearp')" onmouseover="this.style.boxShadow='0 4px 12px rgba(0,0,0,.1)'" onmouseout="this.style.boxShadow='none'">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">
+        <div style="width:48px;height:48px;border-radius:50%;background:#d63031;color:#fff;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700">RE</div>
+        <div>
+          <div style="font-size:14px;font-weight:700;color:#1a1d23">Ricardo De Sa Earp</div>
+          <div style="font-size:11px;color:#d63031">全球分销与销售EVP</div>
+        </div>
+      </div>
+      <div style="font-size:11px;color:#666;line-height:1.6">2026年1月起担任全球分销整合、销售与市场营销执行副总裁。1997年加入ST，历任MCU产品部总经理等职位。</div>
+    </div>
+
+    <!-- Simone Ferri -->
+    <div style="border:1px solid #e8eaed;border-radius:10px;padding:16px;background:#fff;cursor:pointer;transition:box-shadow .2s" onclick="openMgmtModal('ferri')" onmouseover="this.style.boxShadow='0 4px 12px rgba(0,0,0,.1)'" onmouseout="this.style.boxShadow='none'">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">
+        <div style="width:48px;height:48px;border-radius:50%;background:#6c5ce7;color:#fff;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700">SF</div>
+        <div>
+          <div style="font-size:14px;font-weight:700;color:#1a1d23">Simone Ferri</div>
+          <div style="font-size:11px;color:#6c5ce7">MEMS子产品部EVP</div>
+        </div>
+      </div>
+      <div style="font-size:11px;color:#666;line-height:1.6">2026年1月起担任MEMS子产品部执行副总裁。1999年加入ST任R&D工程师，2016年起担任消费级MEMS事业部总监。</div>
+    </div>
+
+    <!-- Vincent Fraisse -->
+    <div style="border:1px solid #e8eaed;border-radius:10px;padding:16px;background:#fff;cursor:pointer;transition:box-shadow .2s" onclick="openMgmtModal('fraisse')" onmouseover="this.style.boxShadow='0 4px 12px rgba(0,0,0,.1)'" onmouseout="this.style.boxShadow='none'">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">
+        <div style="width:48px;height:48px;border-radius:50%;background:#fdcb6e;color:#fff;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700">VF</div>
+        <div>
+          <div style="font-size:14px;font-weight:700;color:#1a1d23">Vincent Fraisse</div>
+          <div style="font-size:11px;color:#fdcb6e">RF与光通信EVP</div>
+        </div>
+      </div>
+      <div style="font-size:11px;color:#666;line-height:1.6">担任RF与光通信子产品部执行副总裁，负责ST在射频和光通信领域的产品战略。</div>
+    </div>
+
+    <!-- Alexandre Balmefrezol -->
+    <div style="border:1px solid #e8eaed;border-radius:10px;padding:16px;background:#fff;cursor:pointer;transition:box-shadow .2s" onclick="openMgmtModal('balmefrezol')" onmouseover="this.style.boxShadow='0 4px 12px rgba(0,0,0,.1)'" onmouseout="this.style.boxShadow='none'">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">
+        <div style="width:48px;height:48px;border-radius:50%;background:#00b894;color:#fff;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700">AB</div>
+        <div>
+          <div style="font-size:14px;font-weight:700;color:#1a1d23">Alexandre Balmefrezol</div>
+          <div style="font-size:11px;color:#00b894">成像事业部EVP</div>
+        </div>
+      </div>
+      <div style="font-size:11px;color:#666;line-height:1.6">2023年1月起担任执行副总裁兼成像事业部总经理。1997年加入ST任产品设计工程师，主导飞行时间传感器和全局快门图像传感器的设计。</div>
+    </div>
+
+    <!-- Stefano Cantu -->
+    <div style="border:1px solid #e8eaed;border-radius:10px;padding:16px;background:#fff;cursor:pointer;transition:box-shadow .2s" onclick="openMgmtModal('cantu')" onmouseover="this.style.boxShadow='0 4px 12px rgba(0,0,0,.1)'" onmouseout="this.style.boxShadow='none'">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">
+        <div style="width:48px;height:48px;border-radius:50%;background:#e17055;color:#fff;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700">SC</div>
+        <div>
+          <div style="font-size:14px;font-weight:700;color:#1a1d23">Stefano Cant&ugrave;</div>
+          <div style="font-size:11px;color:#e17055">战略计划办公室EVP</div>
+        </div>
+      </div>
+      <div style="font-size:11px;color:#666;line-height:1.6">2024年10月起担任公司战略计划办公室执行副总裁。1994年加入ST，历任汽车电子事业部供应链总经理。</div>
+    </div>
+
+  </div>
+
+  <!-- 管理层简历弹窗 -->
+  <div id="mgmt-modal" style="position:fixed;inset:0;background:rgba(0,0,0,.4);display:none;align-items:center;justify-content:center;z-index:5000;padding:20px" onclick="if(event.target===this)closeMgmtModal()">
+    <div style="background:#fff;border-radius:12px;max-width:560px;width:100%;max-height:80vh;overflow:auto;padding:28px;position:relative">
+      <button onclick="closeMgmtModal()" style="position:absolute;top:12px;right:12px;width:32px;height:32px;border-radius:50%;border:none;background:#f4f5f7;color:#666;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center">&times;</button>
+      <div id="mgmt-modal-content"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== ST对接窗口（次级页面，占位） ===== -->
+<div class="page" id="mgmt-contact">
+  <button onclick="go('st1',q('st1'))" style="margin-bottom:12px;padding:6px 14px;background:#f4f5f7;color:#555;border:none;border-radius:6px;font-size:13px;cursor:pointer">&#8592; 返回ST概况</button>
+  <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+    <span style="font-size:11px;font-weight:600;padding:2px 8px;background:#e6f9f2;color:#00b894;border-radius:4px">ST对接</span>
+  </div>
+  <h1>ST对接窗口</h1>
+  <p>内容建设中...</p>
+</div>
+
   <!-- ========== Cross-culture Overview ========== -->
 <div class="page" id="culture-overview">
   <h1>跨文化商务沟通</h1>
@@ -6206,6 +6537,223 @@ function toggleMod(btn, modId) {
   document.querySelectorAll('.mod-header').forEach(m => m.classList.remove('active'));
   btn.classList.add('active');
 }
+
+// ===== 头像辅助函数：有照片用照片，否则用首字母 =====
+window.mgmtAvatar = function(url, initials, color, size){
+  size = size || 48;
+  var s = size + 'px';
+  if(url){
+    return '<img src="' + url + '" alt="' + initials + '" style="width:' + s + ';height:' + s + ';border-radius:50%;object-fit:cover;flex-shrink:0;border:2px solid ' + color + '" onerror="this.style.display=\'none\';var d=document.createElement(\'div\');d.style.cssText=\'width:' + s + ';height:' + s + ';border-radius:50%;background:' + color + ';color:#fff;display:flex;align-items:center;justify-content:center;font-size:' + (size*0.375) + 'px;font-weight:700;flex-shrink:0\';d.textContent=\'' + initials + '\';this.parentNode.insertBefore(d,this)">';
+  }
+  return '<div style="width:' + s + ';height:' + s + ';border-radius:50%;background:' + color + ';color:#fff;display:flex;align-items:center;justify-content:center;font-size:' + (size*0.375) + 'px;font-weight:700;flex-shrink:0">' + initials + '</div>';
+};
+
+// ===== 管理层简历数据 =====
+var MGMT_BIOS = {
+  chery: {
+    name: 'Jean-Marc Chery',
+    title: 'President & Chief Executive Officer',
+    color: '#3b6cf6',
+    initials: 'JMC',
+    bio: '<p><strong>出生：</strong>1960年，法国奥尔良</p><p><strong>教育：</strong>1983年毕业于ENSAM（Arts et M&eacute;tiers ParisTech），工程学位</p><p><strong>职业经历：</strong></p><ul><li>1986年加入Thomson Semiconducteurs（ST前身）</li><li>历任汽车产品部总经理</li><li>2017年担任Chief Operating Officer</li><li>2018年起担任President &amp; Chief Executive Officer</li><li>主导ST向SiC功率器件和FD-SOI技术的战略转型</li></ul><p><strong>对你意味着：</strong>Jean-Marc Chery是ST的最高决策者，对SiC战略投入有最终决定权。在年度Business Review中提及你对SiC产能扩张的支持，能直接呼应他的战略方向。</p>'
+  },
+  cassis: {
+    name: 'Marco Cassis',
+    title: 'APMS Product Group President + Strategy',
+    color: '#e8453c',
+    initials: 'MC',
+    bio: '<p><strong>出生：</strong>1963年，意大利特雷维索</p><p><strong>教育：</strong>米兰理工大学电子工程硕士学位</p><p><strong>职责：</strong>模拟、功率与分立器件、MEMS与传感器产品部（APMS）总裁，兼管战略发展部、系统研发与应用事业部及创新办公室</p><p><strong>职业经历：</strong></p><ul><li>1987年加入SGS-Thomson</li><li>历任模拟产品部多个管理职位</li><li>2017年起担任APMS产品部总裁</li><li>2023年起兼管战略发展与系统研发</li></ul><p><strong>对你意味着：</strong>Marco Cassis管辖的APMS是ST最大的产品部门（占收入~57%），包含SiC和功率器件。他是你在产品层面的最高对接窗口，SiC衬底的Qualification需要他的团队认可。</p>'
+  },
+  elouazzane: {
+    name: 'R&eacute;mi El-Ouazzane',
+    title: 'MDRF Product Group President',
+    color: '#00b894',
+    initials: 'RE',
+    bio: '<p><strong>出生：</strong>1973年，法国</p><p><strong>教育：</strong>格勒诺布尔理工学院（INPG）学士学位，哈佛综合管理学位</p><p><strong>职责：</strong>微控制器、数字IC和射频产品部（MDRF）总裁</p><p><strong>职业经历：</strong></p><ul><li>1996年职业生涯始于Gemplus（后Gemalto）</li><li>2011年加入Intel，历任多个产品管理职位</li><li>2020年加入ST担任MDRF产品部总裁</li><li>负责STM32 MCU、NOR Flash和RF产品线的全球战略</li></ul><p><strong>对你意味着：</strong>R&eacute;mi负责ST第二大产品部门MDRF。他的MCU和Flash产品线的硅片需求稳定，是你可以长期维护的业务基本盘。</p>'
+  },
+  roux: {
+    name: 'J&eacute;r&ocirc;me Roux',
+    title: 'Sales & Marketing President',
+    color: '#3b6cf6',
+    initials: 'JR',
+    bio: '<p><strong>出生：</strong>1965年，法国安提比斯</p><p><strong>教育：</strong>巴黎ISG商学院商学硕士（MSG）</p><p><strong>职责：</strong>销售与市场部总裁，负责全球销售网络和客户关系</p><p><strong>职业经历：</strong></p><ul><li>1988年加入SGS-THOMSON</li><li>历任欧洲、亚太区销售管理职位</li><li>2020年起担任Sales &amp; Marketing总裁</li><li>主导ST的全球销售网络布局</li></ul><p><strong>对你意味着：</strong>J&eacute;r&ocirc;me Roux是ST销售体系的最高负责人。虽然你不会直接对接他，但他的销售策略决定了各Site的采购节奏和Forecast模式。</p>'
+  },
+  gualandris: {
+    name: 'Fabio Gualandris',
+    title: 'Quality & Manufacturing President',
+    color: '#f5a623',
+    initials: 'FG',
+    bio: '<p><strong>出生：</strong>1959年，意大利贝加莫</p><p><strong>教育：</strong>米兰大学物理学硕士</p><p><strong>职责：</strong>质量、制造与技术部总裁，负责全球制造运营和质量体系</p><p><strong>职业经历：</strong></p><ul><li>1984年加入SGS Microelettronica（ST前身）</li><li>历任制造运营、工艺开发管理职位</li><li>2017年起担任Quality &amp; Manufacturing总裁</li><li>负责ST全球12个制造基地的运营</li></ul><p><strong>对你意味着：</strong>Fabio Gualandris管辖所有ST的Fab（包括你要供货的6个Site）。他的质量标准和产能规划直接影响你的硅片需求量和认证要求。</p>'
+  },
+  grandi: {
+    name: 'Lorenzo Grandi',
+    title: 'President & Chief Financial Officer',
+    color: '#6c5ce7',
+    initials: 'LG',
+    bio: '<p><strong>出生：</strong>1961年，意大利桑治奥</p><p><strong>教育：</strong>摩德纳大学物理学，米兰SDA博科尼商学院MBA</p><p><strong>职责：</strong>总裁兼首席财务官，负责财务战略、投资者关系和企业发展</p><p><strong>职业经历：</strong></p><ul><li>1987年加入SGS-THOMSON</li><li>历任财务控制、投资者关系管理职位</li><li>2017年起担任CFO</li><li>2020年起兼任President</li></ul><p><strong>对你意味着：</strong>Lorenzo Grandi掌控ST的财务预算和资本支出。他的Capex决策（如Catania SiC扩产的7.3亿欧元）直接决定了你的长期硅片需求。</p>'
+  },
+  dsouza: {
+    name: "Rajita D'Souza",
+    title: 'HR & Corporate Social Responsibility President',
+    color: '#e17055',
+    initials: 'RD',
+    bio: '<p><strong>出生：</strong>1973年，印度孟买</p><p><strong>教育：</strong>孟买大学法学硕士（LLM），人力资源管理专业</p><p><strong>职责：</strong>人力资源与企业社会责任总裁，负责全球人才战略和ESG</p><p><strong>职业经历：</strong></p><ul><li>1997年职业生涯始于Tata Group</li><li>2015年加入Schneider Electric担任HR VP</li><li>2021年加入ST担任HR &amp; CSR总裁</li><li>推动ST的多元化、包容性和可持续发展战略</li></ul><p><strong>对你意味着：</strong>Rajita虽然不直接参与采购决策，但她的ESG战略可能影响ST的供应商选择标准（如碳足迹、多元化供应商政策）。</p>'
+  },
+  rose: {
+    name: 'Steven Rose',
+    title: 'Legal & Public Affairs President',
+    color: '#00b894',
+    initials: 'SR',
+    bio: '<p><strong>职责：</strong>法律事务与公共事务总裁，负责全球法律合规和政府关系</p><p><strong>职业经历：</strong></p><ul><li>2013年起负责ST法律事务</li><li>2018年起担任Legal Affairs总裁</li><li>2023年起兼任Public Affairs</li><li>负责ST的全球法律合规、知识产权和政府关系</li></ul><p><strong>对你意味着：</strong>Steven Rose管辖的法律团队负责供应商合同条款审核和知识产权保护。如果你的供应协议涉及技术授权或专利条款，会经过他的团队。</p>'
+  },
+  ayela: {
+    name: 'Christophe Ayela',
+    title: 'EVP, Front-End Manufacturing',
+    color: '#e17055',
+    initials: 'CA',
+    bio: '<p><strong>出生：</strong>1966年，法国干邑</p><p><strong>教育：</strong>法国图卢兹国立应用科学学院（INSA）微电子工程学位</p><p><strong>职责：</strong>前端制造执行副总裁，负责全球晶圆厂运营</p><p><strong>职业经历：</strong></p><ul><li>1990年加入ST图尔工厂任研发工程师</li><li>2005年任图尔运营副总监，2011年升为总监</li><li>2016年晋升为图尔前端及雷恩后端两个工厂运营总监</li><li>2018年任亚太区前端制造总经理，主导新加坡AMK 200mm晶圆厂扩建</li><li>2023年底升任负责模拟与功率前端制造业务的执行副总裁</li><li>2025年7月晋升为前端制造执行副总裁</li></ul><p><strong>对你意味着：</strong>Christophe Ayela是全球晶圆厂运营的最高负责人，直接管理你要供货的Catania、Agrate、Rousset、Tours、AMK五个Site的产能规划。他的Capex决策直接影响你的硅片需求量。</p>'
+  },
+  anfang: {
+    name: 'Michael Anfang',
+    title: 'EVP, EMEA Sales & Marketing',
+    color: '#0984e3',
+    initials: 'MA',
+    bio: '<p><strong>出生：</strong>1968年，奥地利基茨比厄尔</p><p><strong>教育：</strong>奥地利萨尔费尔登高等技术学校电子工程学位，德国哈根函授大学企业管理与市场营销学位</p><p><strong>职责：</strong>欧洲、中东及非洲区（EMEA）销售与市场执行副总裁</p><p><strong>职业经历：</strong></p><ul><li>1990年职业生涯始于Siemens Semiconductor AG产品工程部门</li><li>1999年加入ST任汽车电子业务开发经理</li><li>2002年调往Agrate负责MCU产品营销</li><li>2013年加入ST EMEA组织任汽车电子营销与应用副总裁</li><li>2018年11月起担任EMEA销售与市场执行副总裁</li></ul><p><strong>对你意味着：</strong>Michael Anfang管辖EMEA区域的所有销售活动，包括你对接的Catania、Agrate、Rousset、Tours四个Site。理解他的区域销售策略有助于你把握各Site的采购节奏。</p>'
+  },
+  heriz: {
+    name: 'Maria Heriz',
+    title: 'EVP, Embedded Processing Division',
+    color: '#fd79a8',
+    initials: 'MH',
+    bio: '<p><strong>出生：</strong>1977年，西班牙马德里</p><p><strong>教育：</strong>马德里理工大学和法国巴黎高等电信学院电气工程和电信工程双硕士</p><p><strong>职责：</strong>嵌入式处理分部执行副总裁</p><p><strong>职业经历：</strong></p><ul><li>职业生涯始于德州仪器，历任客户及销售总监</li><li>2016年晋升恩智浦EMEA大众市场与分销业务销售副总裁</li><li>2018年加入泰克科技任首席产品与市场官</li><li>2022-2024年出任半导体真空技术制造商VAT董事会成员</li><li>2025年9月加入ST担任嵌入式处理分部执行副总裁</li></ul><p><strong>对你意味着：</strong>Maria Heriz负责MCU和嵌入式处理器产品线，这些产品对硅片的需求稳定且量大。她丰富的行业人脉可以帮助你理解ST内部的决策链条。</p>'
+  },
+  noguchi: {
+    name: 'Hiroshi Noguchi',
+    title: 'EVP, APAC (ex-China) Sales',
+    color: '#e84393',
+    initials: 'HN',
+    bio: '<p><strong>出生：</strong>1975年，日本长崎</p><p><strong>教育：</strong>美国西北大学电气工程学士，斯坦福大学电气工程硕士</p><p><strong>职责：</strong>亚太区（除中国外）销售与市场执行副总裁</p><p><strong>职业经历：</strong></p><ul><li>1999年加入Lucent Technologies贝尔实验室任光学工程师</li><li>2007年加入ST日本公司任运动MEMS市场营销工程师</li><li>2015年任日本模拟器件、MEMS和传感器产品部总监</li><li>2017年任ST日本公司区域经理</li><li>2022年1月起担任亚太区（除中国外）销售与市场执行副总裁</li></ul><p><strong>对你意味着：</strong>Hiroshi Noguchi管辖亚太区（除中国外）的销售，包括新加坡AMK Site。他的团队对接日本、韩国和东南亚客户的硅片需求，是了解亚太市场动态的重要窗口。</p>'
+  },
+  levo: {
+    name: 'Claudia Levo',
+    title: 'EVP, Integrated Marketing & Communications',
+    color: '#a29bfe',
+    initials: 'CL',
+    bio: '<p><strong>出生：</strong>1965年，意大利热那亚</p><p><strong>教育：</strong>语言学校（Liceo Linguistico）英语和俄语专业文凭</p><p><strong>职责：</strong>整合营销与传播执行副总裁</p><p><strong>职业经历：</strong></p><ul><li>1993年加入Marconi Telecom任企业传播管理职务</li><li>2005年负责Marconi与爱立信整合传播活动</li><li>2008年任意大利Italtel公司传播副总裁</li><li>2009年加入ST-Ericsson任全球传播部总监</li><li>2018年6月起担任ST整合营销与传播执行副总裁</li></ul><p><strong>对你意味着：</strong>Claudia Levo虽然不直接参与采购决策，但她负责ST的对外传播战略。了解ST的公开 messaging 有助于你在商务谈判中引用ST的战略重点。</p>'
+  },
+  yackowlew: {
+    name: 'Nicolas Yackowlew',
+    title: 'EVP, Product Quality & Reliability',
+    color: '#00cec9',
+    initials: 'NY',
+    bio: '<p><strong>出生：</strong>1969年，法国米卢斯</p><p><strong>教育：</strong>法国尼斯索菲亚安提波利斯大学化学学士学位</p><p><strong>职责：</strong>产品质量和可靠性执行副总裁</p><p><strong>职业经历：</strong></p><ul><li>1996年加入ST任产品质量工程师</li><li>2006年晋升为质量和可靠性部门经理</li><li>2009年任质量和可靠性总监，管控存储器、MCU和安全MCU质量</li><li>2016年开始负责MDG产品质量和可靠性</li><li>2018年8月起担任产品质量和可靠性执行副总裁</li></ul><p><strong>对你意味着：</strong>Nicolas Yackowlew管控ST所有产品的质量标准和可靠性要求。他的质量审核标准直接决定了你的硅片需要通过哪些质量认证（如AEC-Q100、PPAP等），是Qualification流程的关键决策者。</p>'
+  },
+  notarnicola: {
+    name: 'Giuseppe Notarnicola',
+    title: 'EVP, Treasury, M&A, IP',
+    color: '#2d3436',
+    initials: 'GN',
+    bio: '<p><strong>出生：</strong>1961年，意大利乌迪内附近科德罗伊波</p><p><strong>教育：</strong>罗马社会科学自由大学（LUISS）工商管理学院，优异成绩毕业</p><p><strong>职责：</strong>执行副总裁，负责资金管理、保险、并购、知识产权与意大利公共事务</p><p><strong>职业经历：</strong></p><ul><li>1987年加入BNL银行开启职业生涯</li><li>2004年升任BNL大型企业客户主管</li><li>2006年加入ST任资金管理副总裁</li><li>2013年起兼管保险业务，2018年扩展至并购和知识产权</li><li>同时担任ST意大利公司总裁</li></ul><p><strong>对你意味着：</strong>Giuseppe Notarnicola负责ST的资本配置和并购决策。如果ST计划通过收购来扩充产能（如SiC衬底厂），他的团队会参与评估。了解他的财务方向有助于预判ST的Capex计划。</p>'
+  },
+  peruzzi: {
+    name: 'Rino Peruzzi',
+    title: 'EVP, Americas & Global Key Accounts',
+    color: '#636e72',
+    initials: 'RP',
+    bio: '<p><strong>出生：</strong>1965年，美国纽约州水牛城</p><p><strong>教育：</strong>2023年获约克圣约翰大学工商管理硕士学位</p><p><strong>职责：</strong>执行副总裁，美洲和全球大客户部负责人</p><p><strong>职业经历：</strong></p><ul><li>1984年加入Micom Communications Systems电子部门</li><li>1998年加入ST任存储业务部客户主管</li><li>2003年升任全球存储业务销售总监</li><li>2012年组建全球大客户（GKA）组织</li><li>2022年8月起担任美洲和全球大客户部执行副总裁</li></ul><p><strong>对你意味着：</strong>Rino Peruzzi负责ST的全球大客户战略，他组建的大客户组织决定了重点客户的资源分配。如果你是服务于ST大客户的硅片供应商，他的策略直接影响你的业务优先级。</p>'
+  },
+  legreves: {
+    name: "Fr&eacute;d&eacute;rique Le Gr&egrave;ves",
+    title: 'EVP, European & French Public Affairs',
+    color: '#b2bec3',
+    initials: 'FL',
+    bio: '<p><strong>出生：</strong>1967年，法国叙雷讷</p><p><strong>教育：</strong>1991年巴黎商学院企业管理硕士，2019年完成伦敦商学院高管课程</p><p><strong>职责：</strong>欧洲和法国公共事务执行副总裁，兼ST法国公司总裁</p><p><strong>职业经历：</strong></p><ul><li>1995-2003年任Aptiv EMEA传播总监</li><li>2003-2008年任日产汽车欧洲区和美洲区传播副总裁</li><li>2008-2021年任雷诺集团企业传播全球副总裁</li><li>2021年3月加入ST</li><li>2022年被任命为法国"电子行业"战略委员会主席</li><li>2023年12月任欧洲半导体行业协会（ESIA）副主席</li></ul><p><strong>对你意味着：</strong>Fr&eacute;d&eacute;rique Le Gr&egrave;ves负责ST在欧洲的政策倡导和公共事务。她的European Chips Act政策推动可能影响ST的Capex优先级，进而影响硅片需求。</p>'
+  },
+  desaearp: {
+    name: 'Ricardo De Sa Earp',
+    title: 'EVP, Global Distribution & Sales',
+    color: '#d63031',
+    initials: 'RE',
+    bio: '<p><strong>出生：</strong>1963年，巴西彼得罗波利斯</p><p><strong>教育：</strong>巴西航空技术学院电子工程学士，荷兰埃因霍温科技大学电子工程硕士，INSEAD工商管理硕士</p><p><strong>职责：</strong>全球分销整合、销售与市场营销执行副总裁</p><p><strong>职业经历：</strong></p><ul><li>1993年加入法雷奥集团电子部门</li><li>1997年加入ST任ASD&amp;IPAD产品部战略营销经理</li><li>2003年升任该部门总经理</li><li>2018年任集团副总裁兼微控制器产品部总经理</li><li>2022年起任执行副总裁兼通用微控制器子产品部副总裁</li><li>2026年1月起担任全球分销整合、销售与市场营销EVP</li></ul><p><strong>对你意味着：</strong>Ricardo De Sa Earp负责ST的全球分销战略，他的分销网络布局决定了中小客户的覆盖范围。了解他的分销策略有助于你预判ST的渠道需求。</p>'
+  },
+  ferri: {
+    name: 'Simone Ferri',
+    title: 'EVP, MEMS Sub-Group',
+    color: '#6c5ce7',
+    initials: 'SF',
+    bio: '<p><strong>出生：</strong>1972年，意大利米兰</p><p><strong>教育：</strong>米兰理工大学微电子学位，MBA</p><p><strong>职责：</strong>MEMS子产品部执行副总裁</p><p><strong>职业经历：</strong></p><ul><li>1999年加入ST任R&amp;D工程师</li><li>2014年负责ST MEMS消费级传感器</li><li>2016年任消费级MEMS事业部总监</li><li>2023年起担任模拟、MEMS和传感器集团副总裁兼MEMS子产品部总经理</li><li>2026年1月起担任EVP</li></ul><p><strong>对你意味着：</strong>Simone Ferri负责ST的MEMS产品线，MEMS传感器对SOI硅片有特殊需求。他的产品路线图决定了SOI硅片的长期需求趋势。</p>'
+  },
+  fraisse: {
+    name: 'Vincent Fraisse',
+    title: 'EVP, RF & Optical Communication',
+    color: '#fdcb6e',
+    initials: 'VF',
+    bio: '<p><strong>职责：</strong>射频与光通信子产品部执行副总裁</p><p><strong>职业经历：</strong></p><ul><li>担任RF &amp; Optical Communication Sub-Group执行副总裁</li><li>负责ST在射频和光通信领域的产品战略</li></ul><p><strong>对你意味着：</strong>Vincent Fraisse负责RF和光通信产品线，这些产品对硅片的电阻率和厚度有特殊要求。了解他的产品方向有助于你提前布局特种硅片能力。</p>'
+  },
+  balmefrezol: {
+    name: 'Alexandre Balmefrezol',
+    title: 'EVP, Imaging Division',
+    color: '#00b894',
+    initials: 'AB',
+    bio: '<p><strong>出生：</strong>1974年，法国米约</p><p><strong>教育：</strong>1997年蒙彼利埃工程科学学院（ISIM）电子工程学位，2011年格勒诺布尔管理学院管理技术与创新硕士</p><p><strong>职责：</strong>执行副总裁兼成像事业部总经理</p><p><strong>职业经历：</strong></p><ul><li>1997年加入ST任产品设计工程师</li><li>2009年加入ST-Ericsson任产品和业务管理职位</li><li>2013年返回ST任设计经理</li><li>后升任成像分部系统与产品设计负责人</li><li>2023年1月起担任执行副总裁兼成像事业部总经理</li></ul><p><strong>对你意味着：</strong>Alexandre Balmefrezol负责图像传感器产品线，包括飞行时间传感器和全局快门图像传感器。这些产品对硅片的表面质量和洁净度要求极高。</p>'
+  },
+  cantu: {
+    name: "Stefano Cant&ugrave;",
+    title: 'EVP, Corporate Strategic Planning',
+    color: '#e17055',
+    initials: 'SC',
+    bio: '<p><strong>职责：</strong>公司战略计划办公室执行副总裁</p><p><strong>职业经历：</strong></p><ul><li>1994年加入ST专用产品部产品规划分部</li><li>2003-2004年派驻美国亚利桑那和德州制造基地主管生产控制</li><li>2005年任汽车电子产品部规划总监</li><li>2009年晋升为汽车电子产品部副总裁</li><li>2019-2023年任汽车业务副总裁</li><li>2024年10月起担任公司战略计划办公室执行副总裁</li></ul><p><strong>对你意味着：</strong>Stefano Cant&ugrave;从战略高度规划ST的业务方向。他的战略计划决定了ST未来3-5年的产能布局和技术投资方向，是预判硅片需求的先行指标。</p>'
+  }
+};
+
+// ===== 管理层简历弹窗 =====
+window.openMgmtModal = function(id){
+  var data = MGMT_BIOS[id];
+  if(!data) return;
+  var content = document.getElementById('mgmt-modal-content');
+  content.innerHTML = '<div style="display:flex;align-items:center;gap:16px;margin-bottom:16px">' +
+    '<div style="width:56px;height:56px;border-radius:50%;background:' + data.color + ';color:#fff;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700">' + data.initials + '</div>' +
+    '<div><div style="font-size:18px;font-weight:700;color:#1a1d23">' + data.name + '</div>' +
+    '<div style="font-size:13px;color:' + data.color + ';font-weight:600">' + data.title + '</div></div></div>' +
+    '<div style="font-size:13px;line-height:1.8;color:#333">' + data.bio + '</div>';
+  document.getElementById('mgmt-modal').style.display = 'flex';
+};
+window.closeMgmtModal = function(){
+  document.getElementById('mgmt-modal').style.display = 'none';
+};
+
+// ===== 辅助函数：根据pageId查找侧边栏按钮 =====
+window.q = function(pageId){
+  return document.querySelector('.lesson-item[onclick*="' + pageId + '"], .mod-header[onclick*="' + pageId + '"]');
+};
+
+// ===== 导航到指定页面（次级页面返回用） =====
+window.go = function(pageId, btn){
+  // 隐藏所有页面
+  document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active');});
+  // 显示目标页面
+  var target = document.getElementById(pageId);
+  if(target) target.classList.add('active');
+  // 更新侧边栏
+  document.querySelectorAll('.lesson-item').forEach(function(l){l.classList.remove('active');});
+  document.querySelectorAll('.mod-header').forEach(function(m){m.classList.remove('active');});
+  if(btn) btn.classList.add('active');
+  // 滚动到顶部
+  document.querySelector('.content').scrollTop = 0;
+};
+
+// ===== 显示ST管理层架构页面 =====
+window.showMgmtArch = function(){
+  document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active');});
+  document.getElementById('mgmt-arch').classList.add('active');
+  document.querySelector('.content').scrollTop = 0;
+};
+// ===== 显示ST对接窗口页面 =====
+window.showMgmtContact = function(){
+  document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active');});
+  document.getElementById('mgmt-contact').classList.add('active');
+  document.querySelector('.content').scrollTop = 0;
+};
 
 // ===== Leaflet Interactive Map =====
 (function(){
