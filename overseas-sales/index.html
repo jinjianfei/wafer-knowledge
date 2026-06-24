@@ -324,149 +324,6 @@ tr:hover td{background:#fafbfc}
     </div>
   </div>
 
-  <!-- 各工厂产能投片数据（可编辑） -->
-  <h2>各工厂产能投片与中环数据</h2>
-  <p style="font-size:13px;color:#6b7280;margin-bottom:4px">直接点击表格单元格即可编辑数据。数据自动保存在浏览器本地。</p>
-  <p style="font-size:11px;color:#a0a4ad;margin-bottom:12px">单位：千片/月（默认按照一月4周计算）</p>
-
-  <div class="table-wrap" style="margin-bottom:16px">
-    <table id="capacity-table" style="font-size:13px">
-      <thead>
-        <tr>
-          <th style="width:12%">Site</th>
-          <th style="width:7%">尺寸</th>
-          <th style="width:15%">产能</th>
-          <th style="width:15%">投片</th>
-          <th style="width:15%">中环销量</th>
-          <th style="width:12%">中环市占(%)</th>
-          <th style="width:24%">备注</th>
-        </tr>
-      </thead>
-      <tbody>
-        <!-- Crolles -->
-        <tr data-site="crolles" data-size="12" data-factor="2.25">
-          <td><strong style="color:#3b6cf6">Crolles</strong></td>
-          <td>12</td>
-          <td contenteditable="true" data-field="capacity" class="editable-cell" placeholder="-"></td>
-          <td contenteditable="true" data-field="input" class="editable-cell" placeholder="-"></td>
-          <td contenteditable="true" data-field="zl-sales" class="editable-cell" placeholder="-"></td>
-          <td contenteditable="false" data-field="zl-share" class="editable-cell" style="font-weight:600;color:#00b894;background:#f0fdf4">-</td>
-          <td contenteditable="true" data-field="note" class="editable-cell" placeholder="-"></td>
-        </tr>
-        <tr data-site="crolles" data-size="8" data-factor="1">
-          <td><strong style="color:#3b6cf6">Crolles</strong></td>
-          <td>8</td>
-          <td contenteditable="true" data-field="capacity" class="editable-cell" placeholder="-"></td>
-          <td contenteditable="true" data-field="input" class="editable-cell" placeholder="-"></td>
-          <td contenteditable="true" data-field="zl-sales" class="editable-cell" placeholder="-"></td>
-          <td contenteditable="false" data-field="zl-share" class="editable-cell" style="font-weight:600;color:#00b894;background:#f0fdf4">-</td>
-          <td contenteditable="true" data-field="note" class="editable-cell" placeholder="-"></td>
-        </tr>
-        <!-- Tours -->
-        <tr data-site="tours" data-size="6" data-factor="0.5625">
-          <td><strong style="color:#3b6cf6">Tours</strong></td>
-          <td>6</td>
-          <td contenteditable="true" data-field="capacity" class="editable-cell" placeholder="-"></td>
-          <td contenteditable="true" data-field="input" class="editable-cell" placeholder="-"></td>
-          <td contenteditable="true" data-field="zl-sales" class="editable-cell" placeholder="-"></td>
-          <td contenteditable="false" data-field="zl-share" class="editable-cell" style="font-weight:600;color:#00b894;background:#f0fdf4">-</td>
-          <td contenteditable="true" data-field="note" class="editable-cell" placeholder="-"></td>
-        </tr>
-        <tr data-site="tours" data-size="8" data-factor="1">
-          <td><strong style="color:#3b6cf6">Tours</strong></td>
-          <td>8</td>
-          <td contenteditable="true" data-field="capacity" class="editable-cell" placeholder="-"></td>
-          <td contenteditable="true" data-field="input" class="editable-cell" placeholder="-"></td>
-          <td contenteditable="true" data-field="zl-sales" class="editable-cell" placeholder="-"></td>
-          <td contenteditable="false" data-field="zl-share" class="editable-cell" style="font-weight:600;color:#00b894;background:#f0fdf4">-</td>
-          <td contenteditable="true" data-field="note" class="editable-cell" placeholder="-"></td>
-        </tr>
-        <!-- Rousset -->
-        <tr data-site="rousset" data-size="8" data-factor="1">
-          <td><strong style="color:#3b6cf6">Rousset</strong></td>
-          <td>8</td>
-          <td contenteditable="true" data-field="capacity" class="editable-cell" placeholder="-"></td>
-          <td contenteditable="true" data-field="input" class="editable-cell" placeholder="-"></td>
-          <td contenteditable="true" data-field="zl-sales" class="editable-cell" placeholder="-"></td>
-          <td contenteditable="false" data-field="zl-share" class="editable-cell" style="font-weight:600;color:#00b894;background:#f0fdf4">-</td>
-          <td contenteditable="true" data-field="note" class="editable-cell" placeholder="-"></td>
-        </tr>
-        <!-- Agrate -->
-        <tr data-site="agrate" data-size="8" data-factor="1">
-          <td><strong style="color:#e8453c">Agrate</strong></td>
-          <td>8</td>
-          <td contenteditable="true" data-field="capacity" class="editable-cell" placeholder="-"></td>
-          <td contenteditable="true" data-field="input" class="editable-cell" placeholder="-"></td>
-          <td contenteditable="true" data-field="zl-sales" class="editable-cell" placeholder="-"></td>
-          <td contenteditable="false" data-field="zl-share" class="editable-cell" style="font-weight:600;color:#00b894;background:#f0fdf4">-</td>
-          <td contenteditable="true" data-field="note" class="editable-cell" placeholder="-"></td>
-        </tr>
-        <tr data-site="agrate" data-size="12" data-factor="2.25">
-          <td><strong style="color:#e8453c">Agrate</strong></td>
-          <td>12</td>
-          <td contenteditable="true" data-field="capacity" class="editable-cell" placeholder="-"></td>
-          <td contenteditable="true" data-field="input" class="editable-cell" placeholder="-"></td>
-          <td contenteditable="true" data-field="zl-sales" class="editable-cell" placeholder="-"></td>
-          <td contenteditable="false" data-field="zl-share" class="editable-cell" style="font-weight:600;color:#00b894;background:#f0fdf4">-</td>
-          <td contenteditable="true" data-field="note" class="editable-cell" placeholder="-"></td>
-        </tr>
-        <!-- Catania -->
-        <tr data-site="catania" data-size="6" data-factor="0.5625">
-          <td><strong style="color:#e8453c">Catania</strong></td>
-          <td>6</td>
-          <td contenteditable="true" data-field="capacity" class="editable-cell" placeholder="-"></td>
-          <td contenteditable="true" data-field="input" class="editable-cell" placeholder="-"></td>
-          <td contenteditable="true" data-field="zl-sales" class="editable-cell" placeholder="-"></td>
-          <td contenteditable="false" data-field="zl-share" class="editable-cell" style="font-weight:600;color:#00b894;background:#f0fdf4">-</td>
-          <td contenteditable="true" data-field="note" class="editable-cell" placeholder="-"></td>
-        </tr>
-        <tr data-site="catania" data-size="8" data-factor="1">
-          <td><strong style="color:#e8453c">Catania</strong></td>
-          <td>8</td>
-          <td contenteditable="true" data-field="capacity" class="editable-cell" placeholder="-"></td>
-          <td contenteditable="true" data-field="input" class="editable-cell" placeholder="-"></td>
-          <td contenteditable="true" data-field="zl-sales" class="editable-cell" placeholder="-"></td>
-          <td contenteditable="false" data-field="zl-share" class="editable-cell" style="font-weight:600;color:#00b894;background:#f0fdf4">-</td>
-          <td contenteditable="true" data-field="note" class="editable-cell" placeholder="-"></td>
-        </tr>
-        <!-- AMK -->
-        <tr data-site="amk" data-size="6" data-factor="0.5625">
-          <td><strong style="color:#f5a623">AMK</strong></td>
-          <td>6</td>
-          <td contenteditable="true" data-field="capacity" class="editable-cell" placeholder="-"></td>
-          <td contenteditable="true" data-field="input" class="editable-cell" placeholder="-"></td>
-          <td contenteditable="true" data-field="zl-sales" class="editable-cell" placeholder="-"></td>
-          <td contenteditable="false" data-field="zl-share" class="editable-cell" style="font-weight:600;color:#00b894;background:#f0fdf4">-</td>
-          <td contenteditable="true" data-field="note" class="editable-cell" placeholder="-"></td>
-        </tr>
-        <tr data-site="amk" data-size="8" data-factor="1">
-          <td><strong style="color:#f5a623">AMK</strong></td>
-          <td>8</td>
-          <td contenteditable="true" data-field="capacity" class="editable-cell" placeholder="-"></td>
-          <td contenteditable="true" data-field="input" class="editable-cell" placeholder="-"></td>
-          <td contenteditable="true" data-field="zl-sales" class="editable-cell" placeholder="-"></td>
-          <td contenteditable="false" data-field="zl-share" class="editable-cell" style="font-weight:600;color:#00b894;background:#f0fdf4">-</td>
-          <td contenteditable="true" data-field="note" class="editable-cell" placeholder="-"></td>
-        </tr>
-        <!-- Sum row (折标8寸) -->
-        <tr id="sum-row" style="background:linear-gradient(135deg,#f0f4ff,#e6eeff);font-weight:600;border-top:2px solid #3b6cf6">
-          <td colspan="2" style="text-align:center;color:#3b6cf6">Sum（折标8寸）</td>
-          <td contenteditable="false" data-field="sum-capacity" style="color:#3b6cf6">-</td>
-          <td contenteditable="false" data-field="sum-input" style="color:#3b6cf6">-</td>
-          <td contenteditable="false" data-field="sum-sales" style="color:#3b6cf6">-</td>
-          <td contenteditable="false" data-field="sum-share" style="color:#00b894">-</td>
-          <td data-field="sum-note" style="font-size:11px;color:#8b919d"></td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-
-  <div style="display:flex;gap:10px;margin-bottom:20px">
-    <button onclick="saveCapacityData()" style="padding:6px 16px;background:#3b6cf6;color:#fff;border:none;border-radius:6px;font-size:13px;cursor:pointer;font-weight:500">💾 保存数据</button>
-    <button onclick="clearCapacityData()" style="padding:6px 16px;background:#f4f5f7;color:#6b7280;border:none;border-radius:6px;font-size:13px;cursor:pointer">🗑 清空数据</button>
-    <span id="save-status" style="font-size:12px;color:#00b894;align-self:center;opacity:0;transition:opacity .3s">✓ 已保存</span>
-  </div>
-
   <h2>课程目录</h2>
   <div class="lesson-grid">
     <div class="lesson-btn" onclick="showPage('st1',document.querySelector('[onclick\*=\'st1\']'))">
@@ -610,7 +467,7 @@ tr:hover td{background:#fafbfc}
   </div>
   <h1>ST全球Fab分布与技术路线</h1>
 
-  <p>ST拥有全球布局的制造基地，6个Site分布在法国、意大利和新加坡。每个Site有不同的产品侧重、技术路线和硅片需求。以下是各Site的详细卡片，点击可快速查看关键信息。</p>
+  <p>ST拥有全球布局的制造基地，6个Site分布在法国、意大利和新加坡。每个Site有不同的产品侧重、技术路线和硅片需求。</p>
 
   <h2>法国（France）— 3个Site</h2>
 
@@ -782,32 +639,154 @@ tr:hover td{background:#fafbfc}
 
   </div>
 
-  <h2>ST工厂分布概况</h2>
+  <!-- 各工厂产能投片数据（可编辑） -->
+  <h2>各工厂产能投片与中环数据</h2>
+  <p style="font-size:13px;color:#6b7280;margin-bottom:4px">直接点击表格单元格即可编辑数据。数据自动保存在浏览器本地。</p>
+  <p style="font-size:11px;color:#a0a4ad;margin-bottom:12px">单位：千片/月（默认按照一月4周计算）</p>
 
-  <div style="background:#f6f7f9;padding:12px 16px;border-radius:8px;margin-bottom:20px;font-size:13px">
-    <ul style="margin-bottom:0">
-      <li>6、8、12多尺寸Foundry，产品覆盖全面</li>
-      <li>未来通过产能转移重新调整工厂布局，提升产能利用率减少成本需求，逐步减少6寸产品需求，提高稼动率（25Q1产能利用率75%）</li>
-      <li><strong style="color:#e8453c">Catania关闭6寸，Crolles关闭8寸</strong>，并增加整体12寸产能布局，提升12寸产品需求</li>
-    </ul>
+  <div class="table-wrap" style="margin-bottom:16px">
+    <table id="capacity-table" style="font-size:13px">
+      <thead>
+        <tr>
+          <th style="width:12%">Site</th>
+          <th style="width:7%">尺寸</th>
+          <th style="width:15%">产能</th>
+          <th style="width:15%">投片</th>
+          <th style="width:15%">中环销量</th>
+          <th style="width:12%">中环市占(%)</th>
+          <th style="width:24%">备注</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Crolles -->
+        <tr data-site="crolles" data-size="12" data-factor="2.25">
+          <td><strong style="color:#3b6cf6">Crolles</strong></td>
+          <td>12</td>
+          <td contenteditable="true" data-field="capacity" class="editable-cell" placeholder="-"></td>
+          <td contenteditable="true" data-field="input" class="editable-cell" placeholder="-"></td>
+          <td contenteditable="true" data-field="zl-sales" class="editable-cell" placeholder="-"></td>
+          <td contenteditable="false" data-field="zl-share" class="editable-cell" style="font-weight:600;color:#00b894;background:#f0fdf4">-</td>
+          <td contenteditable="true" data-field="note" class="editable-cell" placeholder="-"></td>
+        </tr>
+        <tr data-site="crolles" data-size="8" data-factor="1">
+          <td><strong style="color:#3b6cf6">Crolles</strong></td>
+          <td>8</td>
+          <td contenteditable="true" data-field="capacity" class="editable-cell" placeholder="-"></td>
+          <td contenteditable="true" data-field="input" class="editable-cell" placeholder="-"></td>
+          <td contenteditable="true" data-field="zl-sales" class="editable-cell" placeholder="-"></td>
+          <td contenteditable="false" data-field="zl-share" class="editable-cell" style="font-weight:600;color:#00b894;background:#f0fdf4">-</td>
+          <td contenteditable="true" data-field="note" class="editable-cell" placeholder="-"></td>
+        </tr>
+        <!-- Tours -->
+        <tr data-site="tours" data-size="6" data-factor="0.5625">
+          <td><strong style="color:#3b6cf6">Tours</strong></td>
+          <td>6</td>
+          <td contenteditable="true" data-field="capacity" class="editable-cell" placeholder="-"></td>
+          <td contenteditable="true" data-field="input" class="editable-cell" placeholder="-"></td>
+          <td contenteditable="true" data-field="zl-sales" class="editable-cell" placeholder="-"></td>
+          <td contenteditable="false" data-field="zl-share" class="editable-cell" style="font-weight:600;color:#00b894;background:#f0fdf4">-</td>
+          <td contenteditable="true" data-field="note" class="editable-cell" placeholder="-"></td>
+        </tr>
+        <tr data-site="tours" data-size="8" data-factor="1">
+          <td><strong style="color:#3b6cf6">Tours</strong></td>
+          <td>8</td>
+          <td contenteditable="true" data-field="capacity" class="editable-cell" placeholder="-"></td>
+          <td contenteditable="true" data-field="input" class="editable-cell" placeholder="-"></td>
+          <td contenteditable="true" data-field="zl-sales" class="editable-cell" placeholder="-"></td>
+          <td contenteditable="false" data-field="zl-share" class="editable-cell" style="font-weight:600;color:#00b894;background:#f0fdf4">-</td>
+          <td contenteditable="true" data-field="note" class="editable-cell" placeholder="-"></td>
+        </tr>
+        <!-- Rousset -->
+        <tr data-site="rousset" data-size="8" data-factor="1">
+          <td><strong style="color:#3b6cf6">Rousset</strong></td>
+          <td>8</td>
+          <td contenteditable="true" data-field="capacity" class="editable-cell" placeholder="-"></td>
+          <td contenteditable="true" data-field="input" class="editable-cell" placeholder="-"></td>
+          <td contenteditable="true" data-field="zl-sales" class="editable-cell" placeholder="-"></td>
+          <td contenteditable="false" data-field="zl-share" class="editable-cell" style="font-weight:600;color:#00b894;background:#f0fdf4">-</td>
+          <td contenteditable="true" data-field="note" class="editable-cell" placeholder="-"></td>
+        </tr>
+        <!-- Agrate -->
+        <tr data-site="agrate" data-size="8" data-factor="1">
+          <td><strong style="color:#e8453c">Agrate</strong></td>
+          <td>8</td>
+          <td contenteditable="true" data-field="capacity" class="editable-cell" placeholder="-"></td>
+          <td contenteditable="true" data-field="input" class="editable-cell" placeholder="-"></td>
+          <td contenteditable="true" data-field="zl-sales" class="editable-cell" placeholder="-"></td>
+          <td contenteditable="false" data-field="zl-share" class="editable-cell" style="font-weight:600;color:#00b894;background:#f0fdf4">-</td>
+          <td contenteditable="true" data-field="note" class="editable-cell" placeholder="-"></td>
+        </tr>
+        <tr data-site="agrate" data-size="12" data-factor="2.25">
+          <td><strong style="color:#e8453c">Agrate</strong></td>
+          <td>12</td>
+          <td contenteditable="true" data-field="capacity" class="editable-cell" placeholder="-"></td>
+          <td contenteditable="true" data-field="input" class="editable-cell" placeholder="-"></td>
+          <td contenteditable="true" data-field="zl-sales" class="editable-cell" placeholder="-"></td>
+          <td contenteditable="false" data-field="zl-share" class="editable-cell" style="font-weight:600;color:#00b894;background:#f0fdf4">-</td>
+          <td contenteditable="true" data-field="note" class="editable-cell" placeholder="-"></td>
+        </tr>
+        <!-- Catania -->
+        <tr data-site="catania" data-size="6" data-factor="0.5625">
+          <td><strong style="color:#e8453c">Catania</strong></td>
+          <td>6</td>
+          <td contenteditable="true" data-field="capacity" class="editable-cell" placeholder="-"></td>
+          <td contenteditable="true" data-field="input" class="editable-cell" placeholder="-"></td>
+          <td contenteditable="true" data-field="zl-sales" class="editable-cell" placeholder="-"></td>
+          <td contenteditable="false" data-field="zl-share" class="editable-cell" style="font-weight:600;color:#00b894;background:#f0fdf4">-</td>
+          <td contenteditable="true" data-field="note" class="editable-cell" placeholder="-"></td>
+        </tr>
+        <tr data-site="catania" data-size="8" data-factor="1">
+          <td><strong style="color:#e8453c">Catania</strong></td>
+          <td>8</td>
+          <td contenteditable="true" data-field="capacity" class="editable-cell" placeholder="-"></td>
+          <td contenteditable="true" data-field="input" class="editable-cell" placeholder="-"></td>
+          <td contenteditable="true" data-field="zl-sales" class="editable-cell" placeholder="-"></td>
+          <td contenteditable="false" data-field="zl-share" class="editable-cell" style="font-weight:600;color:#00b894;background:#f0fdf4">-</td>
+          <td contenteditable="true" data-field="note" class="editable-cell" placeholder="-"></td>
+        </tr>
+        <!-- AMK -->
+        <tr data-site="amk" data-size="6" data-factor="0.5625">
+          <td><strong style="color:#f5a623">AMK</strong></td>
+          <td>6</td>
+          <td contenteditable="true" data-field="capacity" class="editable-cell" placeholder="-"></td>
+          <td contenteditable="true" data-field="input" class="editable-cell" placeholder="-"></td>
+          <td contenteditable="true" data-field="zl-sales" class="editable-cell" placeholder="-"></td>
+          <td contenteditable="false" data-field="zl-share" class="editable-cell" style="font-weight:600;color:#00b894;background:#f0fdf4">-</td>
+          <td contenteditable="true" data-field="note" class="editable-cell" placeholder="-"></td>
+        </tr>
+        <tr data-site="amk" data-size="8" data-factor="1">
+          <td><strong style="color:#f5a623">AMK</strong></td>
+          <td>8</td>
+          <td contenteditable="true" data-field="capacity" class="editable-cell" placeholder="-"></td>
+          <td contenteditable="true" data-field="input" class="editable-cell" placeholder="-"></td>
+          <td contenteditable="true" data-field="zl-sales" class="editable-cell" placeholder="-"></td>
+          <td contenteditable="false" data-field="zl-share" class="editable-cell" style="font-weight:600;color:#00b894;background:#f0fdf4">-</td>
+          <td contenteditable="true" data-field="note" class="editable-cell" placeholder="-"></td>
+        </tr>
+        <!-- Sum row (折标8寸) -->
+        <tr id="sum-row" style="background:linear-gradient(135deg,#f0f4ff,#e6eeff);font-weight:600;border-top:2px solid #3b6cf6">
+          <td colspan="2" style="text-align:center;color:#3b6cf6">Sum（折标8寸）</td>
+          <td contenteditable="false" data-field="sum-capacity" style="color:#3b6cf6">-</td>
+          <td contenteditable="false" data-field="sum-input" style="color:#3b6cf6">-</td>
+          <td contenteditable="false" data-field="sum-sales" style="color:#3b6cf6">-</td>
+          <td contenteditable="false" data-field="sum-share" style="color:#00b894">-</td>
+          <td data-field="sum-note" style="font-size:11px;color:#8b919d"></td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 
-  <h2>各Site产能变化总览</h2>
-  <div class="table-wrap"><table>
-    <thead><tr><th style="width:12%">Site</th><th style="width:12%">国家</th><th style="width:25%">产能变化</th><th style="width:51%">关键产品线</th></tr></thead>
-    <tbody>
-      <tr><td><strong>Crolles</strong></td><td>法国</td><td><span style="color:#e8453c">8寸关闭</span> / <span style="color:#3b6cf6">12寸增加</span></td><td>FD-SOI、Analog/RF、Bi-cmos、嵌入式非易失性存储器、光学传感器</td></tr>
-      <tr><td><strong>Tours</strong></td><td>法国</td><td><span style="color:#f5a623">6寸减少</span> / <span style="color:#3b6cf6">8寸增加</span></td><td>TVS、肖特基二极管、GaN、整流器、集成无源器件</td></tr>
-      <tr><td><strong>Rousset</strong></td><td>法国</td><td><span style="color:#8b919d">8寸不变</span></td><td>Analog/RF、Bi-Cmos、CIS、VIPower&trade;、嵌入式存储</td></tr>
-      <tr><td><strong>Agrate</strong></td><td>意大利</td><td><span style="color:#f5a623">8寸减少</span> / <span style="color:#8b919d">8寸不变</span> / <span style="color:#3b6cf6">12寸增加</span></td><td>BCD、MEMS、GaN power ICs、Analog Cmos、嵌入式存储</td></tr>
-      <tr><td><strong>Catania</strong></td><td>意大利</td><td><span style="color:#e8453c">6寸关闭</span> / <span style="color:#8b919d">8寸不变</span></td><td>SiC功率器件、RF GaN、先进BCD、Power mos、VIPower&trade;</td></tr>
-      <tr><td><strong>AMK</strong></td><td>新加坡</td><td><span style="color:#f5a623">6寸减少</span> / <span style="color:#3b6cf6">8寸增加</span></td><td>BCD、Bi-Cmos、Logic、Eeprom、MEMS、MCU、Power mos、SiC</td></tr>
-    </tbody>
-  </table></div>
+  <div style="display:flex;gap:10px;margin-bottom:20px">
+    <button onclick="saveCapacityData()" style="padding:6px 16px;background:#3b6cf6;color:#fff;border:none;border-radius:6px;font-size:13px;cursor:pointer;font-weight:500">💾 保存数据</button>
+    <button onclick="clearCapacityData()" style="padding:6px 16px;background:#f4f5f7;color:#6b7280;border:none;border-radius:6px;font-size:13px;cursor:pointer">🗑 清空数据</button>
+    <span id="save-status" style="font-size:12px;color:#00b894;align-self:center;opacity:0;transition:opacity .3s">✓ 已保存</span>
+  </div>
+
+
 
   <div class="checklist">
     <span class="check-item">掌握6个Site卡片信息</span>
-    <span class="check-item">了解ST工厂分布概况</span>
+    <span class="check-item">管理各工厂产能投片数据</span>
     <span class="check-item">掌握各Site Fab产能变化</span>
     <span class="check-item">识别12寸扩产机会</span>
   </div>
