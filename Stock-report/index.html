@@ -184,7 +184,12 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 <div class="factory-pills" id="fPills"><div class="select-mode"><button class="toggle-btn2 active" id="modeRadio">Single</button><button class="toggle-btn2" id="modeMulti">Multi</button></div><span style="color:#94a3b8;font-size:13px;padding:6px 0">Waiting for data...</span></div>
 <div class="chart-wrap lg" id="ftcWrap"><div class="empty-chart">Waiting for data...</div></div></div>
 
-<!-- 3. By PN Trend -->
+<!-- 3. By Size Trend -->
+<div class="chart-card fw"><div class="chart-header"><div class="chart-title">📐 Stock Trend — By Size</div><div class="chart-actions"><div class="toggle-group" id="stg"><button class="toggle-btn active" data-v="both">Show All</button><button class="toggle-btn" data-v="inv">Stock</button><button class="toggle-btn" data-v="esmi">eSMI</button></div></div></div>
+<div class="factory-pills" id="sPills"><div class="select-mode"><button class="toggle-btn2 active" id="sModeRadio">Single</button><button class="toggle-btn2" id="sModeMulti">Multi</button></div><span style="color:#94a3b8;font-size:13px;padding:6px 0">Waiting for data...</span></div>
+<div class="chart-wrap lg" id="stcWrap"><div class="empty-chart">Waiting for data...</div></div></div>
+
+<!-- 4. By PN Trend -->
 <div class="chart-card fw"><div class="chart-header"><div class="chart-title">📈 Stock Trend — By PN (Projected Weekly Stock)</div><div class="chart-actions"><div class="ms" id="pnFacFilter" style="min-width:160px"></div><div class="toggle-group" id="ttg"><button class="toggle-btn active" data-v="line">Line</button><button class="toggle-btn" data-v="bar">Bar</button></div></div></div><div class="chart-wrap lg" id="tcWrap"><div class="empty-chart">Waiting for data...</div></div></div>
 
 <!-- 4. Alerts -->
@@ -196,8 +201,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 
 <script>
 let rawData=[],filteredData=[],charts={},msYear,msFactory,msSize,msMonth,msPNFacFilter;
-let hasESMI=false,allZeroESMIFPNs=new Set(),selectedFPNs=new Set(),activeFactoryPills=new Set();
-let distrWeek='',selectMode='radio';
+let hasESMI=false,allZeroESMIFPNs=new Set(),selectedFPNs=new Set(),activeFactoryPills=new Set(),activeSizePills=new Set();
+let distrWeek='',selectMode='radio',selectSizeMode='radio';
 
 const $=s=>document.querySelector(s);
 const FAC_ABBR={'Ang Mo Kio  SG':'AMK','Agrate Brianza IT':'AG','Catania IT':'CAT','Rousset 2000  FR':'RO','Tours FR':'TO','Crolles 300':'CR 300','Crolles FR':'CR FR'};
@@ -266,7 +271,7 @@ function parseData(rows,filename){
     $('#fname').textContent=' '+filename;$('#fcount').textContent=` ${rawData.length.toLocaleString('en-US')} records, ${totalFPNs} FPNs (${totalPNs} PNs x ${new Set(rawData.map(r=>r.Factory)).size} factories), ${allZeroESMIFPNs.size} all-zero eSMI`;$('#fbar').classList.add('show');
     distrWeek=getCW().str;$('#distrWeekInp').value=distrWeek;$('#distrWeekInp').disabled=false;$('#distrWeekBtn').disabled=false;
     $('#pnInp').disabled=false;
-    initFilters();initWeekSelectors();initFactoryPills();initPNFacFilter();initPNSearch();applyFilters();
+    initFilters();initWeekSelectors();initFactoryPills();initSizePills();initPNFacFilter();initPNSearch();applyFilters();
 }
 
 function initFilters(){
@@ -306,6 +311,27 @@ function initFactoryPills(){
     mb.addEventListener('click',()=>{selectMode='multi';mb.classList.add('active');rb.classList.remove('active');});
 }
 
+function initSizePills(){
+    const sizes=[...new Set(rawData.map(r=>r.Size).filter(Boolean))].sort();
+    const container=$('#sPills');
+    container.innerHTML='';
+    const sm=document.createElement('div');sm.className='select-mode';
+    const rb=document.createElement('button');rb.className='toggle-btn2 active';rb.id='sModeRadio';rb.textContent='Single';
+    const mb=document.createElement('button');mb.className='toggle-btn2';mb.id='sModeMulti';mb.textContent='Multi';
+    sm.appendChild(rb);sm.appendChild(mb);container.appendChild(sm);
+    sizes.forEach(s=>{
+        const pill=document.createElement('span');pill.className='factory-pill active';pill.textContent=s;pill.dataset.size=s;
+        pill.addEventListener('click',()=>{
+            if(selectSizeMode==='radio'){container.querySelectorAll('.factory-pill').forEach(p=>{p.classList.remove('active');activeSizePills.delete(p.dataset.size);});pill.classList.add('active');activeSizePills.add(s);}
+            else{pill.classList.toggle('active');if(pill.classList.contains('active'))activeSizePills.add(s);else activeSizePills.delete(s);}
+            renderSizeTrendChart();
+        });
+        container.appendChild(pill);activeSizePills.add(s);
+    });
+    rb.addEventListener('click',()=>{selectSizeMode='radio';rb.classList.add('active');mb.classList.remove('active');});
+    mb.addEventListener('click',()=>{selectSizeMode='multi';mb.classList.add('active');rb.classList.remove('active');});
+}
+
 function initPNFacFilter(){const f=[...new Set(rawData.map(r=>r.Factory).filter(Boolean))].sort();const c=$('#pnFacFilter');c.innerHTML='';msPNFacFilter=replaceWithMultiSelect(c,f,'All Factories','pft');}
 
 function initPNSearch(){
@@ -325,7 +351,7 @@ function applyFilters(){
     const ys=msYear?msYear.get():[],fs=msFactory?msFactory.get():[],ss=msSize?msSize.get():[],ms=msMonth?msMonth.get():[],ws=$('#ws').value,we=$('#we').value;
     filteredData=rawData.filter(r=>{if(ys.length&&!ys.includes(String(r.Year)))return false;if(fs.length&&!fs.includes(r.Factory))return false;if(ss.length&&!ss.includes(r.Size))return false;if(ms.length&&!ms.includes(String(r.Month)))return false;if(ws&&r.Week<ws)return false;if(we&&r.Week>we)return false;if(selectedFPNs.size>0&&!selectedFPNs.has(r.FPN))return false;return true;});
     const pf=msPNFacFilter?msPNFacFilter.get():[];let td=filteredData;if(pf.length>0)td=filteredData.filter(r=>pf.includes(r.Factory));
-    renderKPIs();renderUtilizationChart();renderFactoryChart();renderFactoryTrendChart();renderTrendChart(td);renderAlerts();renderWeeklyTable();
+    renderKPIs();renderUtilizationChart();renderFactoryChart();renderFactoryTrendChart();renderSizeTrendChart();renderTrendChart(td);renderAlerts();renderWeeklyTable();
 }
 $('#rfBtn').addEventListener('click',()=>{
     if(rawData.length===0)return;const y=[...new Set(rawData.map(r=>r.Year).filter(Boolean))].sort((a,b)=>a-b);if(y.length>0)msYear.set([String(y[0])]);msFactory.set([]);msSize.set([]);
@@ -334,6 +360,7 @@ $('#rfBtn').addEventListener('click',()=>{
     selectedFPNs.clear();$('#pnInp').value='';$('#pnFloat').classList.remove('show');$('#pnSel').innerHTML='';
     if(msPNFacFilter)msPNFacFilter.set([]);
     const f=[...new Set(rawData.map(r=>r.Factory).filter(Boolean))].sort();f.forEach(fac=>{activeFactoryPills.add(fac);const p=$(`.factory-pill[data-factory="${fac}"]`);if(p)p.classList.add('active');});
+    const s=[...new Set(rawData.map(r=>r.Size).filter(Boolean))].sort();s.forEach(sz=>{activeSizePills.add(sz);const p=$(`.factory-pill[data-size="${sz}"]`);if(p)p.classList.add('active');});
     distrWeek=cw.str;$('#distrWeekInp').value=distrWeek;applyFilters();
 });
 
@@ -355,6 +382,7 @@ function renderTrendChart(trendData){
 }
 $('#ttg').querySelectorAll('.toggle-btn').forEach(b=>{b.addEventListener('click',()=>{$('#ttg').querySelectorAll('.toggle-btn').forEach(x=>x.classList.remove('active'));b.classList.add('active');applyFilters();});});
 $('#ftg').querySelectorAll('.toggle-btn').forEach(b=>{b.addEventListener('click',()=>{$('#ftg').querySelectorAll('.toggle-btn').forEach(x=>x.classList.remove('active'));b.classList.add('active');renderFactoryTrendChart();});});
+$('#stg').querySelectorAll('.toggle-btn').forEach(b=>{b.addEventListener('click',()=>{$('#stg').querySelectorAll('.toggle-btn').forEach(x=>x.classList.remove('active'));b.classList.add('active');renderSizeTrendChart();});});
 
 function renderFactoryTrendChart(){
     const wrap=$('#ftcWrap');const cvs=wrap.querySelector('canvas');if(cvs){cvs.remove();}wrap.innerHTML='';const c=document.createElement('canvas');wrap.appendChild(c);
@@ -372,6 +400,24 @@ function renderFactoryTrendChart(){
     });
     if(ds.length===0){wrap.innerHTML='<div class="empty-chart">No data</div>';return;}
     charts.factoryTrend=new Chart(c,{type:'line',data:{labels:w,datasets:ds},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{position:'top',labels:{color:'#475569',usePointStyle:false,boxWidth:25,font:{size:12},padding:15,generateLabels:ch=>ch.data.datasets.map((d,i)=>({text:d.label,fillStyle:'transparent',strokeStyle:d.borderColor,lineWidth:d.borderWidth,lineDash:d.borderDash||[],index:i}))}},tooltip:{backgroundColor:'#1e293b',titleColor:'#e2e8f0',bodyColor:'#cbd5e1',borderColor:'rgba(148,163,184,0.2)',borderWidth:1,callbacks:{label:c=>`${c.dataset.label}: ${fmt(c.raw)}`}}},scales:{x:{ticks:{color:'#64748b',font:{size:10},maxRotation:45},grid:{color:'#e2e8f0'}},y:{ticks:{color:'#64748b',callback:v=>fmt(v)},grid:{color:'#e2e8f0'},title:{display:true,text:'Quantity',color:'#64748b'}}}}});
+}
+
+function renderSizeTrendChart(){
+    const wrap=$('#stcWrap');const cvs=wrap.querySelector('canvas');if(cvs){cvs.remove();}wrap.innerHTML='';const c=document.createElement('canvas');wrap.appendChild(c);
+    if(charts.sizeTrend)charts.sizeTrend.destroy();
+    const vm=$('#stg .active').dataset.v;const af=[...activeSizePills];
+    const swm={};filteredData.forEach(r=>{const s=r.Size;if(!af.includes(s))return;const k=`${s}_${r.Week}`;if(!swm[k])swm[k]={size:s,week:r.Week,invEst:0,esmi:0};swm[k].invEst+=r.InvEst;swm[k].esmi+=r.ESMI;});
+    const w=[...new Set(filteredData.map(r=>r.Week))].sort();if(af.length===0||w.length===0){wrap.innerHTML='<div class="empty-chart">No data</div>';return;}
+    const cl=['#3b82f6','#06b6d4','#22c55e','#f59e0b','#ef4444','#8b5cf6','#ec4898'];const ds=[];
+    af.forEach((s,fi)=>{
+        const co=cl[fi%cl.length];
+        const iv=w.map(v=>{const k=`${s}_${v}`;return swm[k]?swm[k].invEst:0;});
+        const em=w.map(v=>{const k=`${s}_${v}`;return swm[k]?swm[k].esmi:0;});
+        if(vm==='both'||vm==='inv')ds.push({label:`${s} — Stock`,data:iv,borderColor:co,backgroundColor:'transparent',borderWidth:2.5,tension:0.3,pointRadius:3,pointHoverRadius:6,fill:false,order:fi*2,borderDash:[]});
+        if((vm==='both'||vm==='esmi')&&hasESMI)ds.push({label:`${s} — eSMI`,data:em,borderColor:co+'90',backgroundColor:'transparent',borderWidth:2,tension:0.3,pointRadius:0,pointHoverRadius:4,fill:false,order:fi*2+1,borderDash:[6,4]});
+    });
+    if(ds.length===0){wrap.innerHTML='<div class="empty-chart">No data</div>';return;}
+    charts.sizeTrend=new Chart(c,{type:'line',data:{labels:w,datasets:ds},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{position:'top',labels:{color:'#475569',usePointStyle:false,boxWidth:25,font:{size:12},padding:15,generateLabels:ch=>ch.data.datasets.map((d,i)=>({text:d.label,fillStyle:'transparent',strokeStyle:d.borderColor,lineWidth:d.borderWidth,lineDash:d.borderDash||[],index:i}))}},tooltip:{backgroundColor:'#1e293b',titleColor:'#e2e8f0',bodyColor:'#cbd5e1',borderColor:'rgba(148,163,184,0.2)',borderWidth:1,callbacks:{label:c=>`${c.dataset.label}: ${fmt(c.raw)}`}}},scales:{x:{ticks:{color:'#64748b',font:{size:10},maxRotation:45},grid:{color:'#e2e8f0'}},y:{ticks:{color:'#64748b',callback:v=>fmt(v)},grid:{color:'#e2e8f0'},title:{display:true,text:'Quantity',color:'#64748b'}}}}});
 }
 
 function renderUtilizationChart(){
