@@ -88,7 +88,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .kpi-sub{font-size:12px;color:var(--text-muted);margin-top:8px;padding-top:8px;border-top:1px solid #e2e8f0}
 
 /* Chart cards */
-.chart-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(480px,1fr));gap:20px;margin-bottom:24px}
+.chart-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:24px}
+@media(max-width:1200px){.chart-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:768px){.chart-grid{grid-template-columns:1fr}}
 .chart-card{background:var(--card-bg);border:1px solid var(--card-border);border-radius:14px;padding:20px;box-shadow:0 1px 3px rgba(0,0,0,0.06)}
 .chart-card.fw{grid-column:1/-1}
 .chart-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:12px}
@@ -99,8 +101,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .toggle-btn.active{background:#3b82f6;color:#fff}
 .toggle-btn2{padding:6px 14px;border-radius:8px;border:1px solid #cbd5e1;background:transparent;color:var(--text-muted);cursor:pointer;font-size:13px;transition:all .2s}
 .toggle-btn2.active{background:#3b82f6;color:#fff;border-color:#3b82f6}
-.chart-wrap{position:relative;height:300px}
-.chart-wrap.lg{height:380px}
+.chart-wrap{position:relative;height:260px}
+.chart-wrap.lg{height:360px}
 .empty-chart{display:flex;align-items:center;justify-content:center;height:100%;color:#cbd5e1;font-size:14px}
 
 /* Factory pills */
@@ -176,27 +178,30 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 <div class="kpi-card"><div class="kpi-icon p">📅</div><div class="kpi-val empty">-</div><div class="kpi-lbl">Filtered Records</div><div class="kpi-sub">--</div></div>
 </div>
 
-<!-- 1. Fulfillment Rate + Stock Distribution (MOVED UP) -->
-<div class="chart-grid"><div class="chart-card"><div class="chart-header"><div class="chart-title">📊 Fulfillment Rate (Actual Consumption / Allocation)</div></div><div class="chart-wrap" id="ucWrap"><div class="empty-chart">Waiting for data...</div></div></div><div class="chart-card"><div class="chart-header"><div class="chart-title">🏭 Stock Distribution by Factory</div><div class="week-input-inline"><input type="text" id="distrWeekInp" placeholder="202628" maxlength="6" disabled><button class="btn-sm btn-primary" id="distrWeekBtn" disabled>Go</button></div></div><div class="chart-wrap" id="fcWrap"><div class="empty-chart">Waiting for data...</div></div></div></div>
+<!-- 1. Total Stock Trend + Stock Distribution + Fulfillment Rate (3-col) -->
+<div class="chart-grid">
+<div class="chart-card"><div class="chart-header"><div class="chart-title">📈 Stock Trend — Total</div><div class="chart-actions"><button class="btn-sm btn-secondary" id="exportTotal" title="Export CSV">CSV</button></div></div><div class="chart-wrap" id="ttcWrap"><div class="empty-chart">Waiting for data...</div></div></div>
+<div class="chart-card"><div class="chart-header"><div class="chart-title">🏭 Stock Distribution by Factory</div><div class="week-input-inline"><input type="text" id="distrWeekInp" placeholder="202628" maxlength="6" disabled><button class="btn-sm btn-primary" id="distrWeekBtn" disabled>Go</button></div></div><div class="chart-wrap" id="fcWrap"><div class="empty-chart">Waiting for data...</div></div></div>
+<div class="chart-card"><div class="chart-header"><div class="chart-title">📊 Fulfillment Rate (Actual Consumption / Allocation)</div></div><div class="chart-wrap" id="ucWrap"><div class="empty-chart">Waiting for data...</div></div></div>
+</div>
 
 <!-- 2. By Factory Trend (MOVED UP before By PN) -->
-<div class="chart-card fw"><div class="chart-header"><div class="chart-title">🏭 Stock Trend — By Factory</div><div class="chart-actions"><div class="toggle-group" id="ftg"><button class="toggle-btn active" data-v="both">Show All</button><button class="toggle-btn" data-v="inv">Stock</button><button class="toggle-btn" data-v="esmi">eSMI</button></div></div></div>
+<div class="chart-card fw"><div class="chart-header"><div class="chart-title">🏭 Stock Trend — By Factory</div><div class="chart-actions"><div class="toggle-group" id="ftg"><button class="toggle-btn active" data-line="stock">Stock</button><button class="toggle-btn active" data-line="esmi">eSMI</button><button class="toggle-btn active" data-line="cons">Consumption</button></div><button class="btn-sm btn-secondary" id="exportFac" title="Export CSV">CSV</button></div></div>
 <div class="factory-pills" id="fPills"><div class="select-mode"><button class="toggle-btn2 active" id="modeRadio">Single</button><button class="toggle-btn2" id="modeMulti">Multi</button></div><span style="color:#94a3b8;font-size:13px;padding:6px 0">Waiting for data...</span></div>
 <div class="chart-wrap lg" id="ftcWrap"><div class="empty-chart">Waiting for data...</div></div></div>
 
 <!-- 3. By Size Trend -->
-<div class="chart-card fw"><div class="chart-header"><div class="chart-title">📐 Stock Trend — By Size</div><div class="chart-actions"><div class="toggle-group" id="stg"><button class="toggle-btn active" data-v="both">Show All</button><button class="toggle-btn" data-v="inv">Stock</button><button class="toggle-btn" data-v="esmi">eSMI</button></div></div></div>
+<div class="chart-card fw"><div class="chart-header"><div class="chart-title">📐 Stock Trend — By Size</div><div class="chart-actions"><div class="toggle-group" id="stg"><button class="toggle-btn active" data-line="stock">Stock</button><button class="toggle-btn active" data-line="esmi">eSMI</button><button class="toggle-btn active" data-line="cons">Consumption</button></div><button class="btn-sm btn-secondary" id="exportSize" title="Export CSV">CSV</button></div></div>
 <div class="factory-pills" id="sPills"><div class="select-mode"><button class="toggle-btn2 active" id="sModeRadio">Single</button><button class="toggle-btn2" id="sModeMulti">Multi</button></div><span style="color:#94a3b8;font-size:13px;padding:6px 0">Waiting for data...</span></div>
 <div class="chart-wrap lg" id="stcWrap"><div class="empty-chart">Waiting for data...</div></div></div>
 
 <!-- 4. By PN Trend -->
-<div class="chart-card fw"><div class="chart-header"><div class="chart-title">📈 Stock Trend — By PN (Projected Weekly Stock)</div><div class="chart-actions"><div class="ms" id="pnFacFilter" style="min-width:160px"></div><div class="toggle-group" id="ttg"><button class="toggle-btn active" data-v="line">Line</button><button class="toggle-btn" data-v="bar">Bar</button></div></div></div><div class="chart-wrap lg" id="tcWrap"><div class="empty-chart">Waiting for data...</div></div></div>
+<div class="chart-card fw"><div class="chart-header"><div class="chart-title">📈 Stock Trend — By PN (Projected Weekly Stock)</div><div class="chart-actions"><div class="ms" id="pnFacFilter" style="min-width:160px"></div><div class="toggle-group" id="ttg"><button class="toggle-btn active" data-v="line">Line</button><button class="toggle-btn" data-v="bar">Bar</button></div><button class="btn-sm btn-secondary" id="exportPN" title="Export CSV">CSV</button></div></div><div class="chart-wrap lg" id="tcWrap"><div class="empty-chart">Waiting for data...</div></div></div>
 
 <!-- 4. Alerts -->
 <div class="alert-grid"><div class="chart-card"><div class="chart-header"><div class="chart-title">⚠️ Overstock Alert (Projected Stock &gt; Max Limits)</div></div><div style="overflow-x:auto" id="hiWrap"><div style="text-align:center;padding:30px;color:#cbd5e1;font-size:14px">Waiting for data...</div></div></div><div class="chart-card"><div class="chart-header"><div class="chart-title">⚡ Stock Shortage Alert (Projected Stock &lt; Min Limits)</div></div><div style="overflow-x:auto" id="loWrap"><div style="text-align:center;padding:30px;color:#cbd5e1;font-size:14px">Waiting for data...</div></div></div></div>
 
-<!-- 5. Weekly Table -->
-<div class="table-card"><div class="chart-header"><div class="chart-title">📋 Weekly Stock Details (Target Week: <span id="tvd">--</span>)</div></div><div style="overflow-x:auto"><table class="data-table" id="wt"><thead><tr><th>PN</th><th>Factory</th><th>Size</th><th>Month</th><th>Week</th><th>Projected Stock</th><th>Min Limits</th><th>Target Limits</th><th>Max Limits</th><th>Status</th></tr></thead><tbody id="wtb"><tr><td colspan="10" style="text-align:center;padding:40px;color:#cbd5e1">Waiting for data...</td></tr></tbody></table></div></div>
+
 </div>
 
 <script>
@@ -351,7 +356,7 @@ function applyFilters(){
     const ys=msYear?msYear.get():[],fs=msFactory?msFactory.get():[],ss=msSize?msSize.get():[],ms=msMonth?msMonth.get():[],ws=$('#ws').value,we=$('#we').value;
     filteredData=rawData.filter(r=>{if(ys.length&&!ys.includes(String(r.Year)))return false;if(fs.length&&!fs.includes(r.Factory))return false;if(ss.length&&!ss.includes(r.Size))return false;if(ms.length&&!ms.includes(String(r.Month)))return false;if(ws&&r.Week<ws)return false;if(we&&r.Week>we)return false;if(selectedFPNs.size>0&&!selectedFPNs.has(r.FPN))return false;return true;});
     const pf=msPNFacFilter?msPNFacFilter.get():[];let td=filteredData;if(pf.length>0)td=filteredData.filter(r=>pf.includes(r.Factory));
-    renderKPIs();renderUtilizationChart();renderFactoryChart();renderFactoryTrendChart();renderSizeTrendChart();renderTrendChart(td);renderAlerts();renderWeeklyTable();
+    renderKPIs();renderTotalTrendChart();renderFactoryChart();renderUtilizationChart();renderFactoryTrendChart();renderSizeTrendChart();renderTrendChart(td);renderAlerts();
 }
 $('#rfBtn').addEventListener('click',()=>{
     if(rawData.length===0)return;const y=[...new Set(rawData.map(r=>r.Year).filter(Boolean))].sort((a,b)=>a-b);if(y.length>0)msYear.set([String(y[0])]);msFactory.set([]);msSize.set([]);
@@ -381,22 +386,27 @@ function renderTrendChart(trendData){
     charts.trend=new Chart(c,{type:ib?'bar':'line',data:{labels:w,datasets:ds},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{position:'top',labels:{color:'#475569',usePointStyle:true,boxWidth:8,font:{size:11}}},tooltip:{backgroundColor:'#1e293b',titleColor:'#e2e8f0',bodyColor:'#cbd5e1',borderColor:'rgba(148,163,184,0.2)',borderWidth:1,callbacks:{label:c=>`${c.dataset.label}: ${fmt(c.raw)}`}}},scales:{x:{ticks:{color:'#64748b',font:{size:11},maxRotation:45},grid:{color:'#e2e8f0'}},y:{ticks:{color:'#64748b',callback:v=>fmt(v)},grid:{color:'#e2e8f0'},title:{display:true,text:'Projected Stock',color:'#64748b'}}}}});
 }
 $('#ttg').querySelectorAll('.toggle-btn').forEach(b=>{b.addEventListener('click',()=>{$('#ttg').querySelectorAll('.toggle-btn').forEach(x=>x.classList.remove('active'));b.classList.add('active');applyFilters();});});
-$('#ftg').querySelectorAll('.toggle-btn').forEach(b=>{b.addEventListener('click',()=>{$('#ftg').querySelectorAll('.toggle-btn').forEach(x=>x.classList.remove('active'));b.classList.add('active');renderFactoryTrendChart();});});
-$('#stg').querySelectorAll('.toggle-btn').forEach(b=>{b.addEventListener('click',()=>{$('#stg').querySelectorAll('.toggle-btn').forEach(x=>x.classList.remove('active'));b.classList.add('active');renderSizeTrendChart();});});
+$('#ftg').querySelectorAll('.toggle-btn').forEach(b=>{b.addEventListener('click',()=>{b.classList.toggle('active');renderFactoryTrendChart();});});
+$('#stg').querySelectorAll('.toggle-btn').forEach(b=>{b.addEventListener('click',()=>{b.classList.toggle('active');renderSizeTrendChart();});});
 
 function renderFactoryTrendChart(){
     const wrap=$('#ftcWrap');const cvs=wrap.querySelector('canvas');if(cvs){cvs.remove();}wrap.innerHTML='';const c=document.createElement('canvas');wrap.appendChild(c);
     if(charts.factoryTrend)charts.factoryTrend.destroy();
-    const vm=$('#ftg .active').dataset.v;const af=[...activeFactoryPills];
-    const fwm={};filteredData.forEach(r=>{const f=r.Factory;if(!af.includes(f))return;const k=`${f}_${r.Week}`;if(!fwm[k])fwm[k]={factory:f,week:r.Week,invEst:0,esmi:0};fwm[k].invEst+=r.InvEst;fwm[k].esmi+=r.ESMI;});
+    const showStock=$('#ftg button[data-line="stock"]')?.classList.contains('active');
+    const showESMI=$('#ftg button[data-line="esmi"]')?.classList.contains('active');
+    const showCons=$('#ftg button[data-line="cons"]')?.classList.contains('active');
+    const af=[...activeFactoryPills];
+    const cwStr=getCW().str;const fwm={};filteredData.forEach(r=>{const f=r.Factory;if(!af.includes(f))return;const k=`${f}_${r.Week}`;if(!fwm[k])fwm[k]={factory:f,week:r.Week,invEst:0,esmi:0,cons:0};fwm[k].invEst+=r.InvEst;fwm[k].esmi+=r.ESMI;if(r.Week<=cwStr)fwm[k].cons+=r.ConsumeAct;});
     const w=[...new Set(filteredData.map(r=>r.Week))].sort();if(af.length===0||w.length===0){wrap.innerHTML='<div class="empty-chart">No data</div>';return;}
     const cl=['#3b82f6','#06b6d4','#22c55e','#f59e0b','#ef4444','#8b5cf6','#ec4898'];const ds=[];
     af.forEach((f,fi)=>{
         const co=cl[fi%cl.length];
         const iv=w.map(v=>{const k=`${f}_${v}`;return fwm[k]?fwm[k].invEst:0;});
         const em=w.map(v=>{const k=`${f}_${v}`;return fwm[k]?fwm[k].esmi:0;});
-        if(vm==='both'||vm==='inv')ds.push({label:`${abbr(f)} — Stock`,data:iv,borderColor:co,backgroundColor:'transparent',borderWidth:2.5,tension:0.3,pointRadius:3,pointHoverRadius:6,fill:false,order:fi*2,borderDash:[]});
-        if((vm==='both'||vm==='esmi')&&hasESMI)ds.push({label:`${abbr(f)} — eSMI`,data:em,borderColor:co+'90',backgroundColor:'transparent',borderWidth:2,tension:0.3,pointRadius:0,pointHoverRadius:4,fill:false,order:fi*2+1,borderDash:[6,4]});
+        const cm=w.map(v=>{if(v>cwStr)return null;const k=`${f}_${v}`;return fwm[k]?fwm[k].cons:null;});
+        if(showStock)ds.push({label:`${abbr(f)} — Stock`,data:iv,borderColor:co,backgroundColor:'transparent',borderWidth:2.5,tension:0.3,pointRadius:3,pointHoverRadius:6,fill:false,order:fi*3,borderDash:[]});
+        if(showESMI&&hasESMI)ds.push({label:`${abbr(f)} — eSMI`,data:em,borderColor:co+'90',backgroundColor:'transparent',borderWidth:2,tension:0.3,pointRadius:0,pointHoverRadius:4,fill:false,order:fi*3+1,borderDash:[6,4]});
+        if(showCons)ds.push({label:`${abbr(f)} — Consumption`,data:cm,borderColor:co+'60',backgroundColor:'transparent',borderWidth:2,tension:0.3,pointRadius:0,pointHoverRadius:3,fill:false,order:fi*3+2,borderDash:[10,5]});
     });
     if(ds.length===0){wrap.innerHTML='<div class="empty-chart">No data</div>';return;}
     charts.factoryTrend=new Chart(c,{type:'line',data:{labels:w,datasets:ds},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{position:'top',labels:{color:'#475569',usePointStyle:false,boxWidth:25,font:{size:12},padding:15,generateLabels:ch=>ch.data.datasets.map((d,i)=>({text:d.label,fillStyle:'transparent',strokeStyle:d.borderColor,lineWidth:d.borderWidth,lineDash:d.borderDash||[],index:i}))}},tooltip:{backgroundColor:'#1e293b',titleColor:'#e2e8f0',bodyColor:'#cbd5e1',borderColor:'rgba(148,163,184,0.2)',borderWidth:1,callbacks:{label:c=>`${c.dataset.label}: ${fmt(c.raw)}`}}},scales:{x:{ticks:{color:'#64748b',font:{size:10},maxRotation:45},grid:{color:'#e2e8f0'}},y:{ticks:{color:'#64748b',callback:v=>fmt(v)},grid:{color:'#e2e8f0'},title:{display:true,text:'Quantity',color:'#64748b'}}}}});
@@ -405,19 +415,38 @@ function renderFactoryTrendChart(){
 function renderSizeTrendChart(){
     const wrap=$('#stcWrap');const cvs=wrap.querySelector('canvas');if(cvs){cvs.remove();}wrap.innerHTML='';const c=document.createElement('canvas');wrap.appendChild(c);
     if(charts.sizeTrend)charts.sizeTrend.destroy();
-    const vm=$('#stg .active').dataset.v;const af=[...activeSizePills];
-    const swm={};filteredData.forEach(r=>{const s=r.Size;if(!af.includes(s))return;const k=`${s}_${r.Week}`;if(!swm[k])swm[k]={size:s,week:r.Week,invEst:0,esmi:0};swm[k].invEst+=r.InvEst;swm[k].esmi+=r.ESMI;});
+    const showStock=$('#stg button[data-line="stock"]')?.classList.contains('active');
+    const showESMI=$('#stg button[data-line="esmi"]')?.classList.contains('active');
+    const showCons=$('#stg button[data-line="cons"]')?.classList.contains('active');
+    const af=[...activeSizePills];
+    const cwStr2=getCW().str;const swm={};filteredData.forEach(r=>{const s=r.Size;if(!af.includes(s))return;const k=`${s}_${r.Week}`;if(!swm[k])swm[k]={size:s,week:r.Week,invEst:0,esmi:0,cons:0};swm[k].invEst+=r.InvEst;swm[k].esmi+=r.ESMI;if(r.Week<=cwStr2)swm[k].cons+=r.ConsumeAct;});
     const w=[...new Set(filteredData.map(r=>r.Week))].sort();if(af.length===0||w.length===0){wrap.innerHTML='<div class="empty-chart">No data</div>';return;}
     const cl=['#3b82f6','#06b6d4','#22c55e','#f59e0b','#ef4444','#8b5cf6','#ec4898'];const ds=[];
     af.forEach((s,fi)=>{
         const co=cl[fi%cl.length];
         const iv=w.map(v=>{const k=`${s}_${v}`;return swm[k]?swm[k].invEst:0;});
         const em=w.map(v=>{const k=`${s}_${v}`;return swm[k]?swm[k].esmi:0;});
-        if(vm==='both'||vm==='inv')ds.push({label:`${s} — Stock`,data:iv,borderColor:co,backgroundColor:'transparent',borderWidth:2.5,tension:0.3,pointRadius:3,pointHoverRadius:6,fill:false,order:fi*2,borderDash:[]});
-        if((vm==='both'||vm==='esmi')&&hasESMI)ds.push({label:`${s} — eSMI`,data:em,borderColor:co+'90',backgroundColor:'transparent',borderWidth:2,tension:0.3,pointRadius:0,pointHoverRadius:4,fill:false,order:fi*2+1,borderDash:[6,4]});
+        const cm=w.map(v=>{if(v>cwStr2)return null;const k=`${s}_${v}`;return swm[k]?swm[k].cons:null;});
+        if(showStock)ds.push({label:`${s} — Stock`,data:iv,borderColor:co,backgroundColor:'transparent',borderWidth:2.5,tension:0.3,pointRadius:3,pointHoverRadius:6,fill:false,order:fi*3,borderDash:[]});
+        if(showESMI&&hasESMI)ds.push({label:`${s} — eSMI`,data:em,borderColor:co+'90',backgroundColor:'transparent',borderWidth:2,tension:0.3,pointRadius:0,pointHoverRadius:4,fill:false,order:fi*3+1,borderDash:[6,4]});
+        if(showCons)ds.push({label:`${s} — Consumption`,data:cm,borderColor:co+'60',backgroundColor:'transparent',borderWidth:2,tension:0.3,pointRadius:0,pointHoverRadius:3,fill:false,order:fi*3+2,borderDash:[10,5]});
     });
     if(ds.length===0){wrap.innerHTML='<div class="empty-chart">No data</div>';return;}
     charts.sizeTrend=new Chart(c,{type:'line',data:{labels:w,datasets:ds},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{position:'top',labels:{color:'#475569',usePointStyle:false,boxWidth:25,font:{size:12},padding:15,generateLabels:ch=>ch.data.datasets.map((d,i)=>({text:d.label,fillStyle:'transparent',strokeStyle:d.borderColor,lineWidth:d.borderWidth,lineDash:d.borderDash||[],index:i}))}},tooltip:{backgroundColor:'#1e293b',titleColor:'#e2e8f0',bodyColor:'#cbd5e1',borderColor:'rgba(148,163,184,0.2)',borderWidth:1,callbacks:{label:c=>`${c.dataset.label}: ${fmt(c.raw)}`}}},scales:{x:{ticks:{color:'#64748b',font:{size:10},maxRotation:45},grid:{color:'#e2e8f0'}},y:{ticks:{color:'#64748b',callback:v=>fmt(v)},grid:{color:'#e2e8f0'},title:{display:true,text:'Quantity',color:'#64748b'}}}}});
+}
+
+function renderTotalTrendChart(){
+    const wrap=$('#ttcWrap');const cvs=wrap.querySelector('canvas');if(cvs){cvs.remove();}wrap.innerHTML='';const c=document.createElement('canvas');wrap.appendChild(c);
+    if(charts.totalTrend)charts.totalTrend.destroy();
+    const vm=$('#ftg').active?$('#ftg .active').dataset.v:'both';
+    const cwStr3=getCW().str;const wm={};filteredData.forEach(r=>{const k=r.Week;if(!wm[k])wm[k]={week:k,invEst:0,esmi:0,cons:0};wm[k].invEst+=r.InvEst;wm[k].esmi+=r.ESMI;if(r.Week<=cwStr3)wm[k].cons+=r.ConsumeAct;});
+    const w=[...new Set(filteredData.map(r=>r.Week))].sort();if(w.length===0){wrap.innerHTML='<div class="empty-chart">No data</div>';return;}
+    const iv=w.map(v=>wm[v]?wm[v].invEst:0);const em=w.map(v=>wm[v]?wm[v].esmi:0);const cm=w.map(v=>{if(v>cwStr3)return null;return wm[v]?wm[v].cons:null;});
+    const ds=[];
+    ds.push({label:'Total Stock',data:iv,borderColor:'#3b82f6',backgroundColor:'transparent',borderWidth:2.5,tension:0.3,pointRadius:3,pointHoverRadius:6,fill:false,order:0,borderDash:[]});
+    if(hasESMI)ds.push({label:'Total eSMI',data:em,borderColor:'#06b6d4',backgroundColor:'transparent',borderWidth:2,tension:0.3,pointRadius:0,pointHoverRadius:4,fill:false,order:1,borderDash:[6,4]});
+    ds.push({label:'Total Consumption',data:cm,borderColor:'#94a3b8',backgroundColor:'transparent',borderWidth:2,tension:0.3,pointRadius:0,pointHoverRadius:3,fill:false,order:2,borderDash:[10,5]});
+    charts.totalTrend=new Chart(c,{type:'line',data:{labels:w,datasets:ds},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{position:'top',labels:{color:'#475569',usePointStyle:false,boxWidth:25,font:{size:12},padding:15,generateLabels:ch=>ch.data.datasets.map((d,i)=>({text:d.label,fillStyle:'transparent',strokeStyle:d.borderColor,lineWidth:d.borderWidth,lineDash:d.borderDash||[],index:i}))}},tooltip:{backgroundColor:'#1e293b',titleColor:'#e2e8f0',bodyColor:'#cbd5e1',borderColor:'rgba(148,163,184,0.2)',borderWidth:1,callbacks:{label:c=>`${c.dataset.label}: ${fmt(c.raw)}`}}},scales:{x:{ticks:{color:'#64748b',font:{size:10},maxRotation:45},grid:{color:'#e2e8f0'}},y:{ticks:{color:'#64748b',callback:v=>fmt(v)},grid:{color:'#e2e8f0'},title:{display:true,text:'Quantity',color:'#64748b'}}}}});
 }
 
 function renderUtilizationChart(){
@@ -435,7 +464,7 @@ function renderFactoryChart(){
     const tw=distrWeek||getCW().str;const fi={};filteredData.filter(r=>r.Week===tw).forEach(r=>{const k=abbr(r.Factory)||'Unknown';if(!fi[k])fi[k]=0;fi[k]+=r.InvEst;});
     const la=Object.keys(fi);const da=Object.values(fi);if(la.length===0){wrap.innerHTML='<div class="empty-chart">No factory data</div>';return;}
     const cl=['#3b82f6','#06b6d4','#22c55e','#f59e0b','#ef4444','#8b5cf6','#ec4899'];
-    charts.factory=new Chart(c,{type:'doughnut',data:{labels:la,datasets:[{data:da,backgroundColor:cl.slice(0,la.length),borderWidth:0,hoverOffset:12,borderRadius:10,spacing:4}]},options:{responsive:true,maintainAspectRatio:false,cutout:'58%',plugins:{legend:{position:'right',labels:{color:'#475569',usePointStyle:true,padding:15,font:{size:12},generateLabels:ch=>ch.data.labels.map((l,i)=>({text:`${l}: ${fmt(ch.data.datasets[0].data[i])}`,fillStyle:ch.data.datasets[0].backgroundColor[i],strokeStyle:ch.data.datasets[0].backgroundColor[i],lineWidth:0,index:i,pointStyle:'circle'}))}},tooltip:{backgroundColor:'#1e293b',bodyColor:'#e2e8f0',borderColor:'rgba(148,163,184,0.2)',borderWidth:1,callbacks:{label:c=>`${c.label}: ${fmt(c.raw)}`}}}}});
+    charts.factory=new Chart(c,{type:'doughnut',data:{labels:la,datasets:[{data:da,backgroundColor:cl.slice(0,la.length),borderWidth:0,hoverOffset:8,borderRadius:8,spacing:3}]},options:{responsive:true,maintainAspectRatio:false,cutout:'68%',plugins:{legend:{position:'right',labels:{color:'#475569',usePointStyle:true,padding:10,font:{size:10},boxWidth:8,generateLabels:ch=>ch.data.labels.map((l,i)=>({text:`${l}: ${fmt(ch.data.datasets[0].data[i])}`,fillStyle:ch.data.datasets[0].backgroundColor[i],strokeStyle:ch.data.datasets[0].backgroundColor[i],lineWidth:0,index:i,pointStyle:'circle'}))}},tooltip:{backgroundColor:'#1e293b',bodyColor:'#e2e8f0',borderColor:'rgba(148,163,184,0.2)',borderWidth:1,callbacks:{label:c=>`${c.label}: ${fmt(c.raw)}`}}}}});
 }
 $('#distrWeekBtn').addEventListener('click',()=>{const v=$('#distrWeekInp').value.trim();if(/^\d{6}$/.test(v)){distrWeek=v;renderFactoryChart();}else{alert('Format: 202628');}});
 
@@ -444,11 +473,38 @@ function renderAlerts(){
     const rt=(map,type)=>{if(map.size===0)return'<div style="text-align:center;padding:30px;color:#94a3b8;font-size:14px">✅ No abnormal data</div>';let h='<table class="data-table"><thead><tr><th>PN</th><th>Factory</th><th>Size</th><th>Week</th><th>Projected Stock</th><th>Limits</th><th>Gap</th></tr></thead><tbody>';const s=[...map.entries()].sort((a,b)=>{const ad=type==='high'?Math.max(...a[1].map(r=>r.InvEst-r.MaxLimit)):Math.max(...a[1].map(r=>r.MinLimit-r.InvEst));const bd=type==='high'?Math.max(...b[1].map(r=>r.InvEst-r.MaxLimit)):Math.max(...b[1].map(r=>r.MinLimit-r.InvEst));return bd-ad;});s.slice(0,50).forEach(([fpn,rows])=>{const pn=fpn.split('::')[1];const w=rows.reduce((x,r)=>{const d=type==='high'?r.InvEst-r.MaxLimit:r.MinLimit-r.InvEst;const xd=type==='high'?x.InvEst-x.MaxLimit:x.MinLimit-x.InvEst;return d>xd?r:x;},rows[0]);const df=type==='high'?w.InvEst-w.MaxLimit:w.MinLimit-w.InvEst;const lt=type==='high'?w.MaxLimit:w.MinLimit;h+=`<tr><td><strong>${pn}</strong></td><td>${abbr(w.Factory)||'-'}</td><td>${w.Size||'-'}</td><td>${w.Week}</td><td>${fmt(w.InvEst)}</td><td>${fmt(lt)}</td><td><span class="badge ${type==='high'?'bd':'bw'}">+${fmt(df)}</span></td></tr>`;});h+='</tbody></table>';if(map.size>50)h+=`<div style="text-align:center;padding:10px;color:#94a3b8;font-size:12px">${map.size-50} more items hidden</div>`;return h;};
     $('#hiWrap').innerHTML=rt(hm,'high');$('#loWrap').innerHTML=rt(lm,'low');
 }
-function renderWeeklyTable(){
-    const tw=$('#we').value||getCW().str;const wd=filteredData.filter(r=>r.Week===tw);$('#tvd').textContent=tw;if(wd.length===0){$('#wtb').innerHTML='<tr><td colspan="10" style="text-align:center;padding:40px;color:#94a3b8">No data for current filter</td></tr>';return;}
-    wd.sort((a,b)=>{const as=a.MaxLimit>0&&a.InvEst>a.MaxLimit?2:a.MinLimit>0&&a.InvEst<a.MinLimit?0:1;const bs=b.MaxLimit>0&&b.InvEst>b.MaxLimit?2:b.MinLimit>0&&b.InvEst<b.MinLimit?0:1;return bs-as;});
-    let h='';wd.forEach(r=>{let s='<span class="badge bg2">OK</span>';if(r.MaxLimit>0&&r.InvEst>r.MaxLimit)s='<span class="badge bd">Over</span>';else if(r.MinLimit>0&&r.InvEst<r.MinLimit)s='<span class="badge bw">Low</span>';h+=`<tr><td><strong>${r.PN}</strong></td><td>${abbr(r.Factory)||'-'}</td><td>${r.Size||'-'}</td><td>${r.Month||'-'}</td><td>${r.Week}</td><td>${fmt(r.InvEst)}</td><td>${fmt(r.MinLimit)}</td><td>${fmt(r.TargetLimit)}</td><td>${fmt(r.MaxLimit)}</td><td>${s}</td></tr>`;});$('#wtb').innerHTML=h;
+
+// ============ CSV Export ============
+function downloadCSV(filename,rows){
+    if(rows.length===0)return;
+    const headers=Object.keys(rows[0]);
+    const csv=[headers.join(','),...rows.map(r=>headers.map(h=>{const v=r[h];return v===null||v===undefined?'':String(v).replace(/,/g,' ');}).join(','))].join('\n');
+    const blob=new Blob([csv],{type:'text/csv;charset=utf-8;'});
+    const link=document.createElement('a');link.href=URL.createObjectURL(blob);link.download=filename;link.click();URL.revokeObjectURL(link.href);
 }
+$('#exportTotal').addEventListener('click',()=>{
+    if(filteredData.length===0)return;const cwStr=getCW().str;const wm={};filteredData.forEach(r=>{if(!wm[r.Week])wm[r.Week]={Week:r.Week,Stock:0,ESMI:0,Consumption:0};wm[r.Week].Stock+=r.InvEst;wm[r.Week].ESMI+=r.ESMI;if(r.Week<=cwStr)wm[r.Week].Consumption+=r.ConsumeAct;});
+    const rows=Object.values(wm).sort((a,b)=>a.Week.localeCompare(b.Week));rows.forEach(r=>{r.Stock=Math.round(r.Stock);r.ESMI=Math.round(r.ESMI);r.Consumption=Math.round(r.Consumption);});
+    downloadCSV('stock_trend_total.csv',rows);
+});
+$('#exportFac').addEventListener('click',()=>{
+    if(filteredData.length===0)return;const cwStr=getCW().str;const fwm={};filteredData.forEach(r=>{const f=r.Factory;if(!activeFactoryPills.has(f))return;const k=`${f}_${r.Week}`;if(!fwm[k])fwm[k]={Week:r.Week,Factory:abbr(f),Stock:0,ESMI:0,Consumption:0};fwm[k].Stock+=r.InvEst;fwm[k].ESMI+=r.ESMI;if(r.Week<=cwStr)fwm[k].Consumption+=r.ConsumeAct;});
+    const rows=Object.values(fwm).sort((a,b)=>a.Week.localeCompare(b.Week)||a.Factory.localeCompare(b.Factory));rows.forEach(r=>{r.Stock=Math.round(r.Stock);r.ESMI=Math.round(r.ESMI);r.Consumption=Math.round(r.Consumption);});
+    downloadCSV('stock_trend_factory.csv',rows);
+});
+$('#exportSize').addEventListener('click',()=>{
+    if(filteredData.length===0)return;const cwStr=getCW().str;const swm={};filteredData.forEach(r=>{const s=r.Size;if(!activeSizePills.has(s))return;const k=`${s}_${r.Week}`;if(!swm[k])swm[k]={Week:r.Week,Size:s,Stock:0,ESMI:0,Consumption:0};swm[k].Stock+=r.InvEst;swm[k].ESMI+=r.ESMI;if(r.Week<=cwStr)swm[k].Consumption+=r.ConsumeAct;});
+    const rows=Object.values(swm).sort((a,b)=>a.Week.localeCompare(b.Week)||a.Size.localeCompare(b.Size));rows.forEach(r=>{r.Stock=Math.round(r.Stock);r.ESMI=Math.round(r.ESMI);r.Consumption=Math.round(r.Consumption);});
+    downloadCSV('stock_trend_size.csv',rows);
+});
+$('#exportPN').addEventListener('click',()=>{
+    if(filteredData.length===0)return;const cwStr=getCW().str;const pf=msPNFacFilter?msPNFacFilter.get():[];
+    let td=filteredData;if(pf.length>0)td=td.filter(r=>pf.includes(r.Factory));
+    td=td.filter(r=>!allZeroESMIFPNs.has(r.FPN));
+    const rows=td.map(r=>({Week:r.Week,PN:r.PN,Factory:abbr(r.Factory),Stock:Math.round(r.InvEst),ESMI:Math.round(r.ESMI),Consumption:r.Week<=cwStr?Math.round(r.ConsumeAct):'',Delivery:Math.round(r.ArrivalEst)}));
+    rows.sort((a,b)=>a.Week.localeCompare(b.Week)||a.PN.localeCompare(b.PN));
+    downloadCSV('stock_trend_pn.csv',rows);
+});
 const cw=getCW();$('#cwb').textContent=`Current Week: ${cw.str} (Sunday-based)`;
 </script>
 </body>
