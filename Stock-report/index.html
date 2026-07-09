@@ -519,20 +519,11 @@ function renderUtilizationChart(){
     const wm={};filteredData.forEach(r=>{if(r.Allocate>0){if(!wm[r.Week])wm[r.Week]={week:r.Week,est:0,alloc:0};wm[r.Week].est+=r.ConsumeEst;wm[r.Week].alloc+=r.Allocate;}});
     const w=[...new Set(filteredData.map(r=>r.Week))].sort();
     const rates=w.map(v=>{const d=wm[v];return d?(d.est/d.alloc*100):0;});
-    // 累计达成率：基于当前筛选条件（除 Week Range 外），从 202601 到上周
-    const ys2=msYear?msYear.get():[],fs2=msFactory?msFactory.get():[],ss2=msSize?msSize.get():[];
-    const lw2=getLastWeek().str;
+    // 区间达成率：基于当前筛选范围（filteredData）
     let totalEst=0,totalAlloc=0;
-    rawData.forEach(r=>{
-        if(ys2.length&&!ys2.includes(String(r.Year)))return;
-        if(fs2.length&&!fs2.includes(r.Factory))return;
-        if(ss2.length&&!ss2.includes(r.Size))return;
-        if(selectedFPNs.size>0&&!selectedFPNs.has(r.FPN))return;
-        if(r.Week>lw2)return;
-        if(r.Allocate>0){totalEst+=r.ConsumeEst;totalAlloc+=r.Allocate;}
-    });
+    filteredData.forEach(r=>{if(r.Allocate>0){totalEst+=r.ConsumeEst;totalAlloc+=r.Allocate;}});
     const overallRate=totalAlloc>0?(totalEst/totalAlloc*100):0;
-    const badge=$('#utilRateBadge');if(badge){badge.textContent=`达成率: ${overallRate.toFixed(1)}%`;badge.style.color=overallRate>=100?'#16a34a':overallRate>=80?'#2563eb':'#d97706';badge.style.background=overallRate>=100?'#dcfce7':overallRate>=80?'#dbeafe':'#fef3c7';badge.style.borderColor=overallRate>=100?'#86efac':overallRate>=80?'#93c5fd':'#fcd34d';}
+    const badge=$('#utilRateBadge');if(badge){badge.textContent=`区间达成率: ${overallRate.toFixed(1)}%`;badge.style.color=overallRate>=100?'#16a34a':overallRate>=80?'#2563eb':'#d97706';badge.style.background=overallRate>=100?'#dcfce7':overallRate>=80?'#dbeafe':'#fef3c7';badge.style.borderColor=overallRate>=100?'#86efac':overallRate>=80?'#93c5fd':'#fcd34d';}
     if(w.length===0){wrap.innerHTML='<div class="empty-chart">No allocation data</div>';return;}
     charts.util=new Chart(c,{type:'line',data:{labels:w,datasets:[{label:'Fulfillment Rate (%)',data:rates,borderColor:'#3b82f6',backgroundColor:'rgba(59,130,246,0.1)',borderWidth:2.5,tension:0.3,pointRadius:3,pointHoverRadius:6,fill:true}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{backgroundColor:'#1e293b',titleColor:'#e2e8f0',bodyColor:'#cbd5e1',borderColor:'rgba(148,163,184,0.2)',borderWidth:1,callbacks:{label:c=>`${c.raw.toFixed(1)}%`}}},scales:{x:{ticks:{color:'#64748b',font:{size:10},maxRotation:45},grid:{color:'#e2e8f0'}},y:{ticks:{color:'#64748b',callback:v=>v.toFixed(1)+'%'},grid:{color:'#e2e8f0'},title:{display:true,text:'Fulfillment Rate (%)',color:'#64748b'},min:0}}}});
 }
