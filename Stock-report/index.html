@@ -157,8 +157,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 <div class="sf-group"><label class="sf-label">Factory</label><div class="ms" id="ff"><div class="sf-trigger disabled" id="ft">--</div></div></div>
 <div class="sf-group"><label class="sf-label">Size</label><div class="ms" id="sf"><div class="sf-trigger disabled" id="st">--</div></div></div>
 <div class="sf-group" style="position:relative"><label class="sf-label">PN Search</label><input type="text" class="sf-input" id="pnInp" placeholder="Enter PN..." disabled><div class="pn-float" id="pnFloat"></div><div class="pn-selected" id="pnSel"></div></div>
-<div class="sf-group"><label class="sf-label">Month</label><div class="ms" id="mf"><div class="sf-trigger disabled" id="mt">--</div></div></div>
-<div class="sf-group"><label class="sf-label">Week Range</label><div class="week-range-inline"><select class="sf-select" id="ws" disabled></select><span class="sep">~</span><select class="sf-select" id="we" disabled></select></div></div>
+
+<div class="sf-group" style="position:relative"><label class="sf-label">Week Range</label><div class="week-range-inline"><div style="position:relative"><input type="text" class="sf-input" id="ws" placeholder="202628" disabled style="width:90px;text-align:center"><div class="pn-float" id="wkFloat1" style="min-width:120px"></div></div><span class="sep">~</span><div style="position:relative"><input type="text" class="sf-input" id="we" placeholder="202628" disabled style="width:90px;text-align:center"><div class="pn-float" id="wkFloat2" style="min-width:120px"></div></div><button class="btn-sm btn-primary" id="btn13w" title="Auto select next 13 weeks" disabled>13W</button></div></div>
 </div>
 </div>
 </div>
@@ -174,7 +174,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 <div class="kpi-card"><div class="kpi-icon c">📊</div><div class="kpi-val empty">-</div><div class="kpi-lbl">Total Projected Stock</div><div class="kpi-sub">--</div></div>
 <div class="kpi-card"><div class="kpi-icon r">🔺</div><div class="kpi-val empty" style="color:#dc2626">-</div><div class="kpi-lbl">Overstock Alerts</div><div class="kpi-sub">Projected &gt; Max Limits</div></div>
 <div class="kpi-card"><div class="kpi-icon o">🔻</div><div class="kpi-val empty" style="color:#d97706">-</div><div class="kpi-lbl">Stock Shortage Alerts</div><div class="kpi-sub">Projected &lt; Min Limits</div></div>
-<div class="kpi-card"><div class="kpi-icon g">✅</div><div class="kpi-val empty" style="color:#16a34a">-</div><div class="kpi-lbl">Avg Fulfillment Rate</div><div class="kpi-sub">Actual Consumption / Allocation</div></div>
+<div class="kpi-card"><div class="kpi-icon g">✅</div><div class="kpi-val empty" style="color:#16a34a">-</div><div class="kpi-lbl">Cumulative Fulfillment Rate</div><div class="kpi-sub">Projected Cons. / Alloc (Cumulative)</div></div>
 <div class="kpi-card"><div class="kpi-icon p">📅</div><div class="kpi-val empty">-</div><div class="kpi-lbl">Filtered Records</div><div class="kpi-sub">--</div></div>
 </div>
 
@@ -182,7 +182,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 <div class="chart-grid">
 <div class="chart-card"><div class="chart-header"><div class="chart-title">📈 Stock Trend — Total</div><div class="chart-actions"><button class="btn-sm btn-secondary" id="exportTotal" title="Export CSV">CSV</button></div></div><div class="chart-wrap" id="ttcWrap"><div class="empty-chart">Waiting for data...</div></div></div>
 <div class="chart-card"><div class="chart-header"><div class="chart-title">🏭 Stock Distribution by Factory</div><div class="week-input-inline"><input type="text" id="distrWeekInp" placeholder="202628" maxlength="6" disabled><button class="btn-sm btn-primary" id="distrWeekBtn" disabled>Go</button></div></div><div class="chart-wrap" id="fcWrap"><div class="empty-chart">Waiting for data...</div></div></div>
-<div class="chart-card"><div class="chart-header"><div class="chart-title">📊 Fulfillment Rate (Actual Consumption / Allocation)</div></div><div class="chart-wrap" id="ucWrap"><div class="empty-chart">Waiting for data...</div></div></div>
+<div class="chart-card"><div class="chart-header"><div class="chart-title">📊 Fulfillment Rate (Projected Cons./ Alloc)</div><div id="utilRateBadge" style="font-size:12px;color:#64748b;background:#f1f5f9;padding:4px 10px;border-radius:6px;border:1px solid #e2e8f0">达成率: --</div></div><div class="chart-wrap" id="ucWrap"><div class="empty-chart">Waiting for data...</div></div></div>
 </div>
 
 <!-- 2. By Factory Trend (MOVED UP before By PN) -->
@@ -196,7 +196,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 <div class="chart-wrap lg" id="stcWrap"><div class="empty-chart">Waiting for data...</div></div></div>
 
 <!-- 4. By PN Trend -->
-<div class="chart-card fw"><div class="chart-header"><div class="chart-title">📈 Stock Trend — By PN (Projected Weekly Stock)</div><div class="chart-actions"><div class="ms" id="pnFacFilter" style="min-width:160px"></div><div class="toggle-group" id="ttg"><button class="toggle-btn active" data-v="line">Line</button><button class="toggle-btn" data-v="bar">Bar</button></div><button class="btn-sm btn-secondary" id="exportPN" title="Export CSV">CSV</button></div></div><div class="chart-wrap lg" id="tcWrap"><div class="empty-chart">Waiting for data...</div></div></div>
+<div class="chart-card fw"><div class="chart-header"><div class="chart-title">📈 Stock Trend — By PN (Projected Weekly Stock)</div><div class="chart-actions"><div style="position:relative;width:160px">
+<input type="text" class="sf-input" id="pnLocalSearch" placeholder="Search PN..." style="width:160px">
+<div class="pn-float" id="pnLocalFloat"></div>
+<div class="pn-selected" id="pnLocalSel"></div>
+</div><div class="ms" id="pnFacFilter" style="min-width:160px"></div><div class="toggle-group" id="ttg"><button class="toggle-btn active" data-line="stock">Stock</button><button class="toggle-btn active" data-line="esmi">eSMI</button><button class="toggle-btn active" data-line="cons">Consumption</button></div><button class="btn-sm btn-secondary" id="exportPN" title="Export CSV">CSV</button></div></div><div class="chart-wrap lg" id="tcWrap"><div class="empty-chart">Waiting for data...</div></div></div>
 
 <!-- 4. Alerts -->
 <div class="alert-grid"><div class="chart-card"><div class="chart-header"><div class="chart-title">⚠️ Overstock Alert (Projected Stock &gt; Max Limits)</div></div><div style="overflow-x:auto" id="hiWrap"><div style="text-align:center;padding:30px;color:#cbd5e1;font-size:14px">Waiting for data...</div></div></div><div class="chart-card"><div class="chart-header"><div class="chart-title">⚡ Stock Shortage Alert (Projected Stock &lt; Min Limits)</div></div><div style="overflow-x:auto" id="loWrap"><div style="text-align:center;padding:30px;color:#cbd5e1;font-size:14px">Waiting for data...</div></div></div></div>
@@ -205,7 +209,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 </div>
 
 <script>
-let rawData=[],filteredData=[],charts={},msYear,msFactory,msSize,msMonth,msPNFacFilter;
+let rawData=[],filteredData=[],charts={},msYear,msFactory,msSize,msPNFacFilter;
+let localSelectedFPNs=new Set();
 let hasESMI=false,allZeroESMIFPNs=new Set(),selectedFPNs=new Set(),activeFactoryPills=new Set(),activeSizePills=new Set();
 let distrWeek='',selectMode='radio',selectSizeMode='radio';
 
@@ -213,6 +218,7 @@ const $=s=>document.querySelector(s);
 const FAC_ABBR={'Ang Mo Kio  SG':'AMK','Agrate Brianza IT':'AG','Catania IT':'CAT','Rousset 2000  FR':'RO','Tours FR':'TO','Crolles 300':'CR 300','Crolles FR':'CR FR'};
 const abbr=name=>FAC_ABBR[name]||name;
 const getCW=()=>{const d=new Date();const sun=new Date(d);sun.setDate(d.getDate()-d.getDay());const jan1=new Date(sun.getFullYear(),0,1);const days=Math.floor((sun-jan1)/86400000);const wn=Math.ceil((days+jan1.getDay()+1)/7);return{year:sun.getFullYear(),month:sun.getMonth()+1,week:wn,str:`${sun.getFullYear()}${String(wn).padStart(2,'0')}`}};
+const getLastWeek=()=>{const d=new Date();d.setDate(d.getDate()-7);const sun=new Date(d);sun.setDate(d.getDate()-d.getDay());const jan1=new Date(sun.getFullYear(),0,1);const days=Math.floor((sun-jan1)/86400000);const wn=Math.ceil((days+jan1.getDay()+1)/7);return{year:sun.getFullYear(),week:wn,str:`${sun.getFullYear()}${String(wn).padStart(2,'0')}`}};
 const fmt=n=>n===undefined||n===null||isNaN(n)?'-':Number(n).toLocaleString('en-US',{maximumFractionDigits:0});
 
 // Replace a disabled trigger with a working multi-select
@@ -276,23 +282,36 @@ function parseData(rows,filename){
     $('#fname').textContent=' '+filename;$('#fcount').textContent=` ${rawData.length.toLocaleString('en-US')} records, ${totalFPNs} FPNs (${totalPNs} PNs x ${new Set(rawData.map(r=>r.Factory)).size} factories), ${allZeroESMIFPNs.size} all-zero eSMI`;$('#fbar').classList.add('show');
     distrWeek=getCW().str;$('#distrWeekInp').value=distrWeek;$('#distrWeekInp').disabled=false;$('#distrWeekBtn').disabled=false;
     $('#pnInp').disabled=false;
-    initFilters();initWeekSelectors();initFactoryPills();initSizePills();initPNFacFilter();initPNSearch();applyFilters();
+    initFilters();initWeekSelectors();initFactoryPills();initSizePills();initPNFacFilter();initPNSearch();initPNLocalSearch();applyFilters();
 }
 
 function initFilters(){
     const y=[...new Set(rawData.map(r=>r.Year).filter(Boolean))].sort((a,b)=>a-b);
     const f=[...new Set(rawData.map(r=>r.Factory).filter(Boolean))].sort();
     const s=[...new Set(rawData.map(r=>r.Size).filter(Boolean))].sort();
-    const m=[...new Set(rawData.map(r=>r.Month).filter(Boolean))].sort((a,b)=>a-b);
     msYear=replaceWithMultiSelect($('#yf'),y.map(String),'Select Year','yt');
     msFactory=replaceWithMultiSelect($('#ff'),f,'Select Factory','ft');
     msSize=replaceWithMultiSelect($('#sf'),s,'Select Size','st');
-    msMonth=replaceWithMultiSelect($('#mf'),m.map(String),'Select Month','mt');
-    if(y.length>0)msYear.set([String(y[0])]);msMonth.set(m.map(String));
+    if(y.length>0)msYear.set([String(y[0])]);
 }
 function initWeekSelectors(){
-    const ws=$('#ws'),we=$('#we');ws.disabled=false;we.disabled=false;
-    const wk=[...new Set(rawData.map(r=>r.Week))].sort();ws.innerHTML='';we.innerHTML='';const cw=getCW();wk.forEach(w=>{ws.add(new Option(w,w));we.add(new Option(w,w));});if(wk.includes(cw.str)){ws.value=cw.str;we.value=cw.str;}else if(wk.length>0){ws.value=wk[0];we.value=wk[wk.length-1];}ws.onchange=()=>{if(ws.value>we.value)we.value=ws.value;applyFilters();};we.onchange=()=>{if(we.value<ws.value)ws.value=we.value;applyFilters();};
+    const ws=$('#ws'),we=$('#we'),btn=$('#btn13w'),f1=$('#wkFloat1'),f2=$('#wkFloat2');
+    ws.disabled=false;we.disabled=false;btn.disabled=false;
+    const wk=[...new Set(rawData.map(r=>r.Week))].sort();
+    const cw=getCW();
+    if(wk.includes(cw.str)){ws.value=cw.str;we.value=cw.str;}else if(wk.length>0){ws.value=wk[0];we.value=wk[wk.length-1];}
+    const renderFloat=(inp,float,otherInp)=>{
+        const v=inp.value.trim().toLowerCase();if(v.length<2){float.classList.remove('show');return;}
+        const m=wk.filter(w=>w.toLowerCase().includes(v)).slice(0,15);if(m.length===0){float.classList.remove('show');return;}
+        float.innerHTML=m.map(w=>`<div class="pn-float-item" data-w="${w}" style="justify-content:flex-start"><span class="pn-tag">${w}</span></div>`).join('');float.classList.add('show');
+        float.querySelectorAll('.pn-float-item').forEach(el=>{el.addEventListener('click',()=>{inp.value=el.dataset.w;float.classList.remove('show');if(inp.value>otherInp.value)otherInp.value=inp.value;applyFilters();});});
+    };
+    ws.addEventListener('input',()=>renderFloat(ws,f1,we));ws.addEventListener('focus',()=>renderFloat(ws,f1,we));
+    we.addEventListener('input',()=>renderFloat(we,f2,ws));we.addEventListener('focus',()=>renderFloat(we,f2,ws));
+    const validate=()=>{const sv=ws.value.trim(),ev=we.value.trim();if(sv&&!wk.includes(sv))ws.value=wk.find(w=>w>=sv)||wk[wk.length-1];if(ev&&!wk.includes(ev))we.value=wk.find(w=>w>=ev)||wk[wk.length-1];if(ws.value>we.value)we.value=ws.value;applyFilters();};
+    ws.addEventListener('change',validate);we.addEventListener('change',validate);
+    btn.addEventListener('click',()=>{const cw2=getCW().str;const idx=wk.findIndex(w=>w>=cw2);if(idx<0)return;const si=idx;const ei=Math.min(idx+12,wk.length-1);ws.value=wk[si];we.value=wk[ei];applyFilters();});
+    document.addEventListener('click',e=>{if(!ws.parentElement.contains(e.target)&&!f1.contains(e.target))f1.classList.remove('show');if(!we.parentElement.contains(e.target)&&!f2.contains(e.target))f2.classList.remove('show');});
 }
 
 function initFactoryPills(){
@@ -352,17 +371,29 @@ function initPNSearch(){
     document.addEventListener('click',e=>{if(!$('.sf-group').contains(e.target)&&!$('#pnFloat').contains(e.target))float.classList.remove('show');});
 }
 
+function initPNLocalSearch(){
+    const inp=$('#pnLocalSearch'),float=$('#pnLocalFloat'),sel=$('#pnLocalSel');
+    const allFPNs=[...new Set(rawData.map(r=>r.FPN))].sort();
+    function updateChips(){if(localSelectedFPNs.size===0){sel.innerHTML='';return;}sel.innerHTML=[...localSelectedFPNs].map(fpn=>{const p=fpn.split('::');return`<span class="pn-chip">${p[1]} (${abbr(p[0])})<span class="x" data-fpn="${fpn}">×</span></span>`;}).join('');sel.querySelectorAll('.x').forEach(x=>{x.addEventListener('click',()=>{localSelectedFPNs.delete(x.dataset.fpn);updateChips();renderTrendChart(filteredData);});});}
+    inp.addEventListener('input',()=>{
+        const v=inp.value.trim().toLowerCase();if(v.length<2){float.classList.remove('show');return;}
+        const m=allFPNs.filter(f=>f.toLowerCase().includes(v)).slice(0,20);if(m.length===0){float.classList.remove('show');return;}
+        float.innerHTML=m.map(fpn=>{const p=fpn.split('::');const is=localSelectedFPNs.has(fpn);return`<div class="pn-float-item" data-fpn="${fpn}"><span><span class="pn-tag">${p[1]}</span> <span class="pn-fac">${abbr(p[0])}</span></span><span style="color:${is?'#2563eb':'#94a3b8'};font-size:11px">${is?'✓ Selected':'Click'}</span></div>`;}).join('');float.classList.add('show');
+        float.querySelectorAll('.pn-float-item').forEach(el=>{el.addEventListener('click',()=>{const f=el.dataset.fpn;if(localSelectedFPNs.has(f))localSelectedFPNs.delete(f);else localSelectedFPNs.add(f);el.querySelector('span:last-child').textContent=localSelectedFPNs.has(f)?'✓ Selected':'Click';el.querySelector('span:last-child').style.color=localSelectedFPNs.has(f)?'#2563eb':'#94a3b8';updateChips();renderTrendChart(filteredData);});});
+    });
+    document.addEventListener('click',e=>{if(!inp.parentElement.contains(e.target))float.classList.remove('show');});
+}
+
 function applyFilters(){
-    const ys=msYear?msYear.get():[],fs=msFactory?msFactory.get():[],ss=msSize?msSize.get():[],ms=msMonth?msMonth.get():[],ws=$('#ws').value,we=$('#we').value;
-    filteredData=rawData.filter(r=>{if(ys.length&&!ys.includes(String(r.Year)))return false;if(fs.length&&!fs.includes(r.Factory))return false;if(ss.length&&!ss.includes(r.Size))return false;if(ms.length&&!ms.includes(String(r.Month)))return false;if(ws&&r.Week<ws)return false;if(we&&r.Week>we)return false;if(selectedFPNs.size>0&&!selectedFPNs.has(r.FPN))return false;return true;});
+    const ys=msYear?msYear.get():[],fs=msFactory?msFactory.get():[],ss=msSize?msSize.get():[],ws=$('#ws').value,we=$('#we').value;
+    filteredData=rawData.filter(r=>{if(ys.length&&!ys.includes(String(r.Year)))return false;if(fs.length&&!fs.includes(r.Factory))return false;if(ss.length&&!ss.includes(r.Size))return false;if(ws&&r.Week<ws)return false;if(we&&r.Week>we)return false;if(selectedFPNs.size>0&&!selectedFPNs.has(r.FPN))return false;return true;});
     const pf=msPNFacFilter?msPNFacFilter.get():[];let td=filteredData;if(pf.length>0)td=filteredData.filter(r=>pf.includes(r.Factory));
     renderKPIs();renderTotalTrendChart();renderFactoryChart();renderUtilizationChart();renderFactoryTrendChart();renderSizeTrendChart();renderTrendChart(td);renderAlerts();
 }
 $('#rfBtn').addEventListener('click',()=>{
     if(rawData.length===0)return;const y=[...new Set(rawData.map(r=>r.Year).filter(Boolean))].sort((a,b)=>a-b);if(y.length>0)msYear.set([String(y[0])]);msFactory.set([]);msSize.set([]);
-    const m=[...new Set(rawData.map(r=>r.Month).filter(Boolean))].sort((a,b)=>a-b);msMonth.set(m.map(String));
     const w=[...new Set(rawData.map(r=>r.Week))].sort();const cw=getCW();if(w.includes(cw.str)){$('#ws').value=cw.str;$('#we').value=cw.str;}else if(w.length>0){$('#ws').value=w[0];$('#we').value=w[w.length-1];}
-    selectedFPNs.clear();$('#pnInp').value='';$('#pnFloat').classList.remove('show');$('#pnSel').innerHTML='';
+    selectedFPNs.clear();$('#pnInp').value='';$('#pnFloat').classList.remove('show');$('#pnSel').innerHTML='';localSelectedFPNs.clear();$('#pnLocalSearch').value='';$('#pnLocalFloat').classList.remove('show');$('#pnLocalSel').innerHTML='';
     if(msPNFacFilter)msPNFacFilter.set([]);
     const f=[...new Set(rawData.map(r=>r.Factory).filter(Boolean))].sort();f.forEach(fac=>{activeFactoryPills.add(fac);const p=$(`.factory-pill[data-factory="${fac}"]`);if(p)p.classList.add('active');});
     const s=[...new Set(rawData.map(r=>r.Size).filter(Boolean))].sort();s.forEach(sz=>{activeSizePills.add(sz);const p=$(`.factory-pill[data-size="${sz}"]`);if(p)p.classList.add('active');});
@@ -372,20 +403,52 @@ $('#rfBtn').addEventListener('click',()=>{
 function renderKPIs(){
     const tw=$('#we').value||getCW().str;const td=filteredData.filter(r=>r.Week===tw);const uf=[...new Set(filteredData.map(r=>r.FPN))];const ti=td.reduce((s,r)=>s+r.InvEst,0);
     const ha=new Set(),la=new Set();filteredData.forEach(r=>{if(r.MaxLimit>0&&r.InvEst>r.MaxLimit)ha.add(r.FPN);if(r.MinLimit>0&&r.InvEst<r.MinLimit)la.add(r.FPN);});
-    const ud=filteredData.filter(r=>r.Allocate>0);const ar=ud.length>0?(ud.reduce((s,r)=>s+(r.ConsumeAct/r.Allocate),0)/ud.length*100):0;
-    $('#kg').innerHTML=`<div class="kpi-card"><div class="kpi-icon b">📦</div><div class="kpi-val">${uf.length}</div><div class="kpi-lbl">Filtered PNs</div><div class="kpi-sub">Factory+PN combos</div></div><div class="kpi-card"><div class="kpi-icon c">📊</div><div class="kpi-val">${fmt(ti)}</div><div class="kpi-lbl">Total Projected Stock</div><div class="kpi-sub">Week ${tw}</div></div><div class="kpi-card"><div class="kpi-icon r">🔺</div><div class="kpi-val" style="color:#dc2626">${ha.size}</div><div class="kpi-lbl">Overstock Alerts</div><div class="kpi-sub">Projected > Max Limits</div></div><div class="kpi-card"><div class="kpi-icon o">🔻</div><div class="kpi-val" style="color:#d97706">${la.size}</div><div class="kpi-lbl">Stock Shortage Alerts</div><div class="kpi-sub">Projected < Min Limits</div></div><div class="kpi-card"><div class="kpi-icon g">✅</div><div class="kpi-val" style="color:#16a34a">${ar.toFixed(1)}%</div><div class="kpi-lbl">Avg Fulfillment Rate</div><div class="kpi-sub">Actual Consumption / Allocation</div></div><div class="kpi-card"><div class="kpi-icon p">📅</div><div class="kpi-val">${filteredData.length}</div><div class="kpi-lbl">Filtered Records</div><div class="kpi-sub">Week: ${$('#ws').value} ~ ${$('#we').value}</div></div>`;
+    // 累计达成率：基于当前筛选条件（除 Week Range 外），从 202601 到上周的累计
+    const ys=msYear?msYear.get():[],fs=msFactory?msFactory.get():[],ss=msSize?msSize.get():[];
+    const lw=getLastWeek().str;
+    let kpiEst=0,kpiAlloc=0;
+    rawData.forEach(r=>{
+        if(ys.length&&!ys.includes(String(r.Year)))return;
+        if(fs.length&&!fs.includes(r.Factory))return;
+        if(ss.length&&!ss.includes(r.Size))return;
+        if(selectedFPNs.size>0&&!selectedFPNs.has(r.FPN))return;
+        if(r.Week>lw)return;
+        if(r.Allocate>0){kpiEst+=r.ConsumeEst;kpiAlloc+=r.Allocate;}
+    });
+    const cr=kpiAlloc>0?(kpiEst/kpiAlloc*100):0;
+    const crColor=cr>=100?'#16a34a':cr>=80?'#2563eb':'#d97706';
+    $('#kg').innerHTML=`<div class="kpi-card"><div class="kpi-icon b">📦</div><div class="kpi-val">${uf.length}</div><div class="kpi-lbl">Filtered PNs</div><div class="kpi-sub">Factory+PN combos</div></div><div class="kpi-card"><div class="kpi-icon c">📊</div><div class="kpi-val">${fmt(ti)}</div><div class="kpi-lbl">Total Projected Stock</div><div class="kpi-sub">Week ${tw}</div></div><div class="kpi-card"><div class="kpi-icon r">🔺</div><div class="kpi-val" style="color:#dc2626">${ha.size}</div><div class="kpi-lbl">Overstock Alerts</div><div class="kpi-sub">Projected > Max Limits</div></div><div class="kpi-card"><div class="kpi-icon o">🔻</div><div class="kpi-val" style="color:#d97706">${la.size}</div><div class="kpi-lbl">Stock Shortage Alerts</div><div class="kpi-sub">Projected < Min Limits</div></div><div class="kpi-card"><div class="kpi-icon g">✅</div><div class="kpi-val" style="color:${crColor}">${cr.toFixed(1)}%</div><div class="kpi-lbl">Cumulative Fulfillment Rate</div><div class="kpi-sub">202601 ~ ${getLastWeek().str}</div></div><div class="kpi-card"><div class="kpi-icon p">📅</div><div class="kpi-val">${filteredData.length}</div><div class="kpi-lbl">Filtered Records</div><div class="kpi-sub">Week: ${$('#ws').value} ~ ${$('#we').value}</div></div>`;
 }
 
 function renderTrendChart(trendData){
     const wrap=$('#tcWrap');const cvs=wrap.querySelector('canvas');if(cvs){cvs.remove();}wrap.innerHTML='';const c=document.createElement('canvas');wrap.appendChild(c);
     if(charts.trend)charts.trend.destroy();
-    const vd=trendData.filter(r=>!allZeroESMIFPNs.has(r.FPN));const g={};vd.forEach(r=>{if(!g[r.FPN])g[r.FPN]=[];g[r.FPN].push(r);});
+    const showStock=$('#ttg button[data-line="stock"]')?.classList.contains('active');
+    const showESMI=$('#ttg button[data-line="esmi"]')?.classList.contains('active');
+    const showCons=$('#ttg button[data-line="cons"]')?.classList.contains('active');
+    // 使用 localSelectedFPNs 进行过滤（只影响By PN图表）
+    let vd=trendData.filter(r=>!allZeroESMIFPNs.has(r.FPN));
+    if(localSelectedFPNs.size>0){vd=vd.filter(r=>localSelectedFPNs.has(r.FPN));}
+    const g={};vd.forEach(r=>{if(!g[r.FPN])g[r.FPN]=[];g[r.FPN].push(r);});
     const w=[...new Set(vd.map(r=>r.Week))].sort();if(w.length===0){wrap.innerHTML='<div class="empty-chart">No data</div>';return;}
-    const ds=Object.keys(g).slice(0,15).map((fpn,i)=>{const cl=['#3b82f6','#06b6d4','#22c55e','#f59e0b','#ef4444','#8b5cf6','#ec4899','#14b8a6','#f97316','#6366f1','#84cc16','#d946ef','#0ea5e9','#e11d48','#a855f7'];const d=w.map(v=>{const r=g[fpn].find(x=>x.Week===v);return r?r.InvEst:null;});return{label:fpn.split('::')[1]+' ('+abbr(fpn.split('::')[0])+')',data:d,borderColor:cl[i%cl.length],backgroundColor:cl[i%cl.length]+'20',borderWidth:2,tension:0.3,pointRadius:2,pointHoverRadius:5,fill:false};});
-    const ib=$('#ttg .active').dataset.v==='bar';if(ib)ds.forEach(d=>{d.backgroundColor=d.borderColor+'80';});
-    charts.trend=new Chart(c,{type:ib?'bar':'line',data:{labels:w,datasets:ds},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{position:'top',labels:{color:'#475569',usePointStyle:true,boxWidth:8,font:{size:11}}},tooltip:{backgroundColor:'#1e293b',titleColor:'#e2e8f0',bodyColor:'#cbd5e1',borderColor:'rgba(148,163,184,0.2)',borderWidth:1,callbacks:{label:c=>`${c.dataset.label}: ${fmt(c.raw)}`}}},scales:{x:{ticks:{color:'#64748b',font:{size:11},maxRotation:45},grid:{color:'#e2e8f0'}},y:{ticks:{color:'#64748b',callback:v=>fmt(v)},grid:{color:'#e2e8f0'},title:{display:true,text:'Projected Stock',color:'#64748b'}}}}});
-}
-$('#ttg').querySelectorAll('.toggle-btn').forEach(b=>{b.addEventListener('click',()=>{$('#ttg').querySelectorAll('.toggle-btn').forEach(x=>x.classList.remove('active'));b.classList.add('active');applyFilters();});});
+    const cl=['#3b82f6','#06b6d4','#22c55e','#f59e0b','#ef4444','#8b5cf6','#ec4899','#14b8a6','#f97316','#6366f1','#84cc16','#d946ef','#0ea5e9','#e11d48','#a855f7'];
+    const cwStr=getCW().str;const ds=[];
+    Object.keys(g).forEach((fpn,i)=>{
+        const co=cl[i%cl.length];
+        const iv=w.map(v=>{const r=g[fpn].find(x=>x.Week===v);return r?r.InvEst:null;});
+        const em=w.map(v=>{const r=g[fpn].find(x=>x.Week===v);return r?r.ESMI:null;});
+        const cm=w.map(v=>{if(v>cwStr)return null;const r=g[fpn].find(x=>x.Week===v);return r?r.ConsumeAct:null;});
+        if(showStock)ds.push({label:fpn.split('::')[1]+' ('+abbr(fpn.split('::')[0])+')',data:iv,borderColor:co,backgroundColor:'transparent',borderWidth:2.5,tension:0.3,pointRadius:2,pointHoverRadius:5,fill:false,order:i*3,borderDash:[],_type:'stock'});
+        if(showESMI&&hasESMI)ds.push({label:fpn.split('::')[1]+' ('+abbr(fpn.split('::')[0])+')',data:em,borderColor:co+'90',backgroundColor:'transparent',borderWidth:2,tension:0.3,pointRadius:0,pointHoverRadius:4,fill:false,order:i*3+1,borderDash:[6,4],_type:'esmi'});
+        if(showCons)ds.push({label:fpn.split('::')[1]+' ('+abbr(fpn.split('::')[0])+')',data:cm,borderColor:co+'60',backgroundColor:'transparent',borderWidth:2,tension:0.3,pointRadius:0,pointHoverRadius:3,fill:false,order:i*3+2,borderDash:[10,5],_type:'cons'});
+    });
+    if(ds.length===0){wrap.innerHTML='<div class="empty-chart">No data</div>';return;}
+    // 图例只显示3个通用项
+    const legendItems=[];
+    if(showStock)legendItems.push({text:'Stock',strokeStyle:'#3b82f6',lineWidth:2.5,lineDash:[]});
+    if(showESMI&&hasESMI)legendItems.push({text:'eSMI',strokeStyle:'#06b6d4',lineWidth:2,lineDash:[6,4]});
+    if(showCons)legendItems.push({text:'Consumption',strokeStyle:'#94a3b8',lineWidth:2,lineDash:[10,5]});
+    charts.trend=new Chart(c,{type:'line',data:{labels:w,datasets:ds},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{position:'top',labels:{color:'#475569',usePointStyle:false,boxWidth:25,font:{size:12},padding:15,generateLabels:ch=>legendItems.map((item,i)=>({text:item.text,fillStyle:'transparent',strokeStyle:item.strokeStyle,lineWidth:item.lineWidth,lineDash:item.lineDash,index:i}))}},tooltip:{backgroundColor:'#1e293b',titleColor:'#e2e8f0',bodyColor:'#cbd5e1',borderColor:'rgba(148,163,184,0.2)',borderWidth:1,callbacks:{label:c=>`${c.dataset.label}: ${fmt(c.raw)}`}}},scales:{x:{ticks:{color:'#64748b',font:{size:11},maxRotation:45},grid:{color:'#e2e8f0'}},y:{ticks:{color:'#64748b',callback:v=>fmt(v)},grid:{color:'#e2e8f0'},title:{display:true,text:'Quantity',color:'#64748b'}}}}});}$('#ttg').querySelectorAll('.toggle-btn').forEach(b=>{b.addEventListener('click',()=>{b.classList.toggle('active');renderTrendChart(filteredData);});});
 $('#ftg').querySelectorAll('.toggle-btn').forEach(b=>{b.addEventListener('click',()=>{b.classList.toggle('active');renderFactoryTrendChart();});});
 $('#stg').querySelectorAll('.toggle-btn').forEach(b=>{b.addEventListener('click',()=>{b.classList.toggle('active');renderSizeTrendChart();});});
 
@@ -452,16 +515,42 @@ function renderTotalTrendChart(){
 function renderUtilizationChart(){
     const wrap=$('#ucWrap');const cvs=wrap.querySelector('canvas');if(cvs){cvs.remove();}wrap.innerHTML='';const c=document.createElement('canvas');wrap.appendChild(c);
     if(charts.util)charts.util.destroy();
-    const u={};filteredData.forEach(r=>{if(r.Allocate>0){if(!u[r.FPN])u[r.FPN]={act:0,alloc:0};u[r.FPN].act+=r.ConsumeAct;u[r.FPN].alloc+=r.Allocate;}});
-    const it=Object.entries(u).map(([fpn,v])=>{const pn=fpn.split('::')[1];return{fpn,pn,rate:(v.act/v.alloc*100)};}).sort((a,b)=>b.rate-a.rate).slice(0,20);
-    if(it.length===0){wrap.innerHTML='<div class="empty-chart">No allocation data</div>';return;}
-    charts.util=new Chart(c,{type:'bar',data:{labels:it.map(i=>i.pn),datasets:[{label:'Fulfillment Rate (%)',data:it.map(i=>i.rate.toFixed(1)),backgroundColor:it.map(i=>i.rate>=100?'rgba(34,197,94,0.7)':i.rate>=80?'rgba(59,130,246,0.7)':'rgba(245,158,11,0.7)'),borderRadius:6}]},options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',plugins:{legend:{display:false},tooltip:{backgroundColor:'#1e293b',titleColor:'#e2e8f0',bodyColor:'#cbd5e1',borderColor:'rgba(148,163,184,0.2)',borderWidth:1,callbacks:{label:c=>`${c.raw}%`}}},scales:{x:{max:Math.max(...it.map(i=>i.rate))*1.2,ticks:{color:'#64748b',callback:v=>v+'%'},grid:{color:'#e2e8f0'}},y:{ticks:{color:'#475569',font:{size:10}},grid:{display:false}}}}});
+    // 按周汇总：预计领用 / 分配量
+    const wm={};filteredData.forEach(r=>{if(r.Allocate>0){if(!wm[r.Week])wm[r.Week]={week:r.Week,est:0,alloc:0};wm[r.Week].est+=r.ConsumeEst;wm[r.Week].alloc+=r.Allocate;}});
+    const w=[...new Set(filteredData.map(r=>r.Week))].sort();
+    const rates=w.map(v=>{const d=wm[v];return d?(d.est/d.alloc*100):0;});
+    // 累计达成率：基于当前筛选条件（除 Week Range 外），从 202601 到上周
+    const ys2=msYear?msYear.get():[],fs2=msFactory?msFactory.get():[],ss2=msSize?msSize.get():[];
+    const lw2=getLastWeek().str;
+    let totalEst=0,totalAlloc=0;
+    rawData.forEach(r=>{
+        if(ys2.length&&!ys2.includes(String(r.Year)))return;
+        if(fs2.length&&!fs2.includes(r.Factory))return;
+        if(ss2.length&&!ss2.includes(r.Size))return;
+        if(selectedFPNs.size>0&&!selectedFPNs.has(r.FPN))return;
+        if(r.Week>lw2)return;
+        if(r.Allocate>0){totalEst+=r.ConsumeEst;totalAlloc+=r.Allocate;}
+    });
+    const overallRate=totalAlloc>0?(totalEst/totalAlloc*100):0;
+    const badge=$('#utilRateBadge');if(badge){badge.textContent=`达成率: ${overallRate.toFixed(1)}%`;badge.style.color=overallRate>=100?'#16a34a':overallRate>=80?'#2563eb':'#d97706';badge.style.background=overallRate>=100?'#dcfce7':overallRate>=80?'#dbeafe':'#fef3c7';badge.style.borderColor=overallRate>=100?'#86efac':overallRate>=80?'#93c5fd':'#fcd34d';}
+    if(w.length===0){wrap.innerHTML='<div class="empty-chart">No allocation data</div>';return;}
+    charts.util=new Chart(c,{type:'line',data:{labels:w,datasets:[{label:'Fulfillment Rate (%)',data:rates,borderColor:'#3b82f6',backgroundColor:'rgba(59,130,246,0.1)',borderWidth:2.5,tension:0.3,pointRadius:3,pointHoverRadius:6,fill:true}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{backgroundColor:'#1e293b',titleColor:'#e2e8f0',bodyColor:'#cbd5e1',borderColor:'rgba(148,163,184,0.2)',borderWidth:1,callbacks:{label:c=>`${c.raw.toFixed(1)}%`}}},scales:{x:{ticks:{color:'#64748b',font:{size:10},maxRotation:45},grid:{color:'#e2e8f0'}},y:{ticks:{color:'#64748b',callback:v=>v.toFixed(1)+'%'},grid:{color:'#e2e8f0'},title:{display:true,text:'Fulfillment Rate (%)',color:'#64748b'},min:0}}}});
 }
 
 function renderFactoryChart(){
     const wrap=$('#fcWrap');const cvs=wrap.querySelector('canvas');if(cvs){cvs.remove();}wrap.innerHTML='';const c=document.createElement('canvas');wrap.appendChild(c);
     if(charts.factory)charts.factory.destroy();
-    const tw=distrWeek||getCW().str;const fi={};filteredData.filter(r=>r.Week===tw).forEach(r=>{const k=abbr(r.Factory)||'Unknown';if(!fi[k])fi[k]=0;fi[k]+=r.InvEst;});
+    const tw=distrWeek||getCW().str;
+    // 使用不受Week Range限制的数据，保留其他筛选条件
+    const ys=msYear?msYear.get():[],fs=msFactory?msFactory.get():[],ss=msSize?msSize.get():[];
+    let baseData=rawData.filter(r=>{
+        if(ys.length&&!ys.includes(String(r.Year)))return false;
+        if(fs.length&&!fs.includes(r.Factory))return false;
+        if(ss.length&&!ss.includes(r.Size))return false;
+        if(selectedFPNs.size>0&&!selectedFPNs.has(r.FPN))return false;
+        return true;
+    });
+    const fi={};baseData.filter(r=>r.Week===tw).forEach(r=>{const k=abbr(r.Factory)||'Unknown';if(!fi[k])fi[k]=0;fi[k]+=r.InvEst;});
     const la=Object.keys(fi);const da=Object.values(fi);if(la.length===0){wrap.innerHTML='<div class="empty-chart">No factory data</div>';return;}
     const cl=['#3b82f6','#06b6d4','#22c55e','#f59e0b','#ef4444','#8b5cf6','#ec4899'];
     charts.factory=new Chart(c,{type:'doughnut',data:{labels:la,datasets:[{data:da,backgroundColor:cl.slice(0,la.length),borderWidth:0,hoverOffset:8,borderRadius:8,spacing:3}]},options:{responsive:true,maintainAspectRatio:false,cutout:'68%',plugins:{legend:{position:'right',labels:{color:'#475569',usePointStyle:true,padding:10,font:{size:10},boxWidth:8,generateLabels:ch=>ch.data.labels.map((l,i)=>({text:`${l}: ${fmt(ch.data.datasets[0].data[i])}`,fillStyle:ch.data.datasets[0].backgroundColor[i],strokeStyle:ch.data.datasets[0].backgroundColor[i],lineWidth:0,index:i,pointStyle:'circle'}))}},tooltip:{backgroundColor:'#1e293b',bodyColor:'#e2e8f0',borderColor:'rgba(148,163,184,0.2)',borderWidth:1,callbacks:{label:c=>`${c.label}: ${fmt(c.raw)}`}}}}});
