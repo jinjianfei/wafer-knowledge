@@ -40,7 +40,6 @@ body {
 @keyframes ballAppear { 0%{transform:scale(0) rotate(-180deg);opacity:0} 100%{transform:scale(1) rotate(0);opacity:1} }
 .plus-sign { font-size: 24px; color: #ffd93d; font-weight: bold; margin: 0 4px; }
 .plus-text { color: #ffd93d; font-size: 13px; display: block; margin-bottom: 8px; }
-.target-period { color: #4d96ff; font-size: 14px; margin-bottom: 12px; display: block; font-weight: 500; }
 .shake-btn { padding: 16px 50px; font-size: 18px; border: none; border-radius: 50px; background: linear-gradient(135deg, #ff6b6b, #ee5a5a, #ff8a8a); color: #fff; cursor: pointer; font-weight: bold; letter-spacing: 4px; box-shadow: 0 8px 30px rgba(255,107,107,0.4); transition: all 0.3s; outline: none; margin-top: 8px; }
 .shake-btn:hover { transform: translateY(-2px) scale(1.03); }
 .shake-btn:active { transform: translateY(0) scale(0.98); }
@@ -98,26 +97,14 @@ body {
 .clear-btn { padding: 6px 16px; background: rgba(255,255,255,0.08); color: #ff6b6b; border: 1px solid rgba(255,255,255,0.15); border-radius: 20px; font-size: 13px; cursor: pointer; outline: none; transition: all 0.3s; }
 .clear-btn:hover { background: rgba(255,107,107,0.2); }
 .history-list { display: flex; flex-direction: column; gap: 10px; }
-.history-item { background: rgba(0,0,0,0.2); border-radius: 14px; padding: 14px; border: 1px solid rgba(255,255,255,0.05); transition: all 0.3s; }
+.history-item { background: rgba(0,0,0,0.2); border-radius: 14px; padding: 14px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; border: 1px solid rgba(255,255,255,0.05); transition: all 0.3s; }
 .history-item:hover { background: rgba(0,0,0,0.3); transform: translateX(3px); }
-.item-header { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
-.item-time { color: #888; font-size: 12px; display: block; }
-.item-target { color: #4d96ff; font-size: 13px; font-weight: bold; display: block; margin-top: 2px; }
-.item-balls { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; margin-bottom: 10px; }
+.item-time { color: #888; font-size: 12px; display: block; margin-bottom: 8px; }
+.item-balls { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
 .mini-ball { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: bold; color: #fff; box-shadow: 0 2px 6px rgba(0,0,0,0.3); }
 .mini-ball.red { background: linear-gradient(135deg, #e74c3c, #c0392b); }
 .mini-ball.blue { background: linear-gradient(135deg, #3498db, #2980b9); }
 .plus { color: #ffd93d; font-weight: bold; font-size: 16px; margin: 0 2px; }
-.item-status { margin-bottom: 10px; }
-.status-badge { display: inline-block; padding: 4px 12px; border-radius: 12px; font-size: 13px; font-weight: bold; }
-.status-badge.pending { background: rgba(77,150,255,0.15); color: #4d96ff; border: 1px solid rgba(77,150,255,0.3); }
-.status-badge.lost { background: rgba(255,255,255,0.06); color: #888; border: 1px solid rgba(255,255,255,0.1); }
-.status-badge.won.gold { background: linear-gradient(135deg, rgba(255,215,0,0.2), rgba(255,165,0,0.2)); color: #ffd700; border: 1px solid rgba(255,215,0,0.4); }
-.status-badge.won.purple { background: rgba(155,89,182,0.2); color: #d2b3e6; border: 1px solid rgba(155,89,182,0.4); }
-.status-badge.won.red { background: rgba(231,76,60,0.2); color: #ff8a8a; border: 1px solid rgba(231,76,60,0.4); }
-.status-badge.won.orange { background: rgba(230,126,34,0.2); color: #f5b041; border: 1px solid rgba(230,126,34,0.4); }
-.status-badge.won.blue { background: rgba(52,152,219,0.2); color: #74b9ff; border: 1px solid rgba(52,152,219,0.4); }
-.status-badge.won.green { background: rgba(46,204,113,0.2); color: #58d68d; border: 1px solid rgba(46,204,113,0.4); }
 .item-actions { display: flex; gap: 6px; }
 .action-btn { padding: 5px 12px; border-radius: 8px; border: none; cursor: pointer; font-size: 12px; transition: all 0.3s; outline: none; }
 .action-btn.copy { background: rgba(77,150,255,0.15); color: #4d96ff; border: 1px solid rgba(77,150,255,0.3); }
@@ -146,22 +133,6 @@ body {
 .tip-area { text-align: center; margin-top: 30px; }
 .tip-text { color: #555; font-size: 12px; }
 
-
-/* 定蓝球功能 */
-.fixed-blue-section { margin: 16px auto 0; max-width: 320px; }
-.fixed-blue-toggle { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 12px; }
-.toggle-label { color: #aaa; font-size: 14px; }
-.toggle-switch { position: relative; width: 48px; height: 26px; background: rgba(255,255,255,0.1); border-radius: 13px; cursor: pointer; transition: all 0.3s; border: 1px solid rgba(255,255,255,0.15); }
-.toggle-switch.active { background: linear-gradient(135deg, #3498db, #2980b9); border-color: #3498db; }
-.toggle-switch::after { content: ''; position: absolute; top: 2px; left: 2px; width: 20px; height: 20px; background: #fff; border-radius: 50%; transition: all 0.3s; box-shadow: 0 2px 4px rgba(0,0,0,0.3); }
-.toggle-switch.active::after { left: 24px; }
-.blue-selector { display: none; grid-template-columns: repeat(8, 1fr); gap: 6px; padding: 12px; background: rgba(0,0,0,0.15); border-radius: 14px; border: 1px solid rgba(255,255,255,0.05); }
-.blue-selector.show { display: grid; }
-.blue-num-btn { width: 100%; aspect-ratio: 1; border-radius: 50%; border: 1.5px solid rgba(77,150,255,0.3); background: rgba(77,150,255,0.08); color: #74b9ff; font-size: 14px; font-weight: bold; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; outline: none; }
-.blue-num-btn:hover { background: rgba(77,150,255,0.2); transform: scale(1.1); }
-.blue-num-btn.selected { background: linear-gradient(135deg, #3498db, #2980b9); color: #fff; border-color: #4d96ff; box-shadow: 0 0 12px rgba(77,150,255,0.4); }
-.fixed-hint { color: #4d96ff; font-size: 12px; text-align: center; margin-top: 8px; display: none; }
-.fixed-hint.show { display: block; }
 @media (max-width: 400px) {
   .ball { width: 48px; height: 48px; font-size: 16px; }
   .analysis-cards { grid-template-columns: repeat(2, 1fr); }
@@ -201,32 +172,6 @@ body {
         <div class="ball blue" id="b6">?</div>
       </div>
       <span class="plus-text" id="plusText">6个红球 + 1个蓝球</span>
-      <div class="fixed-blue-section">
-        <div class="fixed-blue-toggle">
-          <span class="toggle-label">定蓝球</span>
-          <div class="toggle-switch" id="toggleSwitch" onclick="toggleFixedBlue()"></div>
-        </div>
-        <div class="blue-selector" id="blueSelector">
-          <button class="blue-num-btn" onclick="selectBlueNum(1)">1</button>
-          <button class="blue-num-btn" onclick="selectBlueNum(2)">2</button>
-          <button class="blue-num-btn" onclick="selectBlueNum(3)">3</button>
-          <button class="blue-num-btn" onclick="selectBlueNum(4)">4</button>
-          <button class="blue-num-btn" onclick="selectBlueNum(5)">5</button>
-          <button class="blue-num-btn" onclick="selectBlueNum(6)">6</button>
-          <button class="blue-num-btn" onclick="selectBlueNum(7)">7</button>
-          <button class="blue-num-btn" onclick="selectBlueNum(8)">8</button>
-          <button class="blue-num-btn" onclick="selectBlueNum(9)">9</button>
-          <button class="blue-num-btn" onclick="selectBlueNum(10)">10</button>
-          <button class="blue-num-btn" onclick="selectBlueNum(11)">11</button>
-          <button class="blue-num-btn" onclick="selectBlueNum(12)">12</button>
-          <button class="blue-num-btn" onclick="selectBlueNum(13)">13</button>
-          <button class="blue-num-btn" onclick="selectBlueNum(14)">14</button>
-          <button class="blue-num-btn" onclick="selectBlueNum(15)">15</button>
-          <button class="blue-num-btn" onclick="selectBlueNum(16)">16</button>
-        </div>
-        <span class="fixed-hint" id="fixedHint">已锁定蓝球，红球随机生成</span>
-      </div>
-      <span class="target-period" id="targetPeriod">目标期号：计算中...</span>
       <button class="shake-btn" id="shakeBtn" onclick="shakeBalls()">一键摇球</button>
       <div class="analysis-cards" id="analysisCards" style="display:none;">
         <div class="card"><span class="label">红球和值</span><span class="value" id="aSum">-</span></div>
@@ -307,9 +252,9 @@ body {
 <div class="toast" id="toast"></div>
 
 <script>
-// ==================== 内置初始数据（含2026082期） ====================
+// ==================== 内置初始数据（含2026081期） ====================
 const INITIAL_DATA = [
-  { period: "2026082", red: [5,7,10,14,21,28], blue: 4 },
+  { period: "2026083", red: [7,14,15,23,28,33], blue: 3 },
   { period: "2026081", red: [6,10,12,15,24,27], blue: 12 },
   { period: "2026080", red: [4,5,11,19,27,32], blue: 1 },
   { period: "2026079", red: [1,11,17,22,24,29], blue: 4 },
@@ -393,8 +338,8 @@ const INITIAL_DATA = [
   { period: "2026001", red: [1,6,11,17,23,30], blue: 8 }
 ];
 
-const STORAGE_KEY = 'ssq_data_v5';
-const RECORDS_KEY = 'ssq_records_v5';
+const STORAGE_KEY = 'ssq_data_v4';
+const RECORDS_KEY = 'ssq_records_v4';
 
 function getData() {
   try {
@@ -415,6 +360,7 @@ function initData() {
     saveData([...INITIAL_DATA]);
     return { lastUpdate: formatDate(), records: [...INITIAL_DATA] };
   }
+  // 检查内置数据是否有更新（比本地数据更新的期号）
   const localPeriods = new Set(existing.records.map(r => r.period));
   const newRecords = INITIAL_DATA.filter(r => !localPeriods.has(r.period));
   if (newRecords.length > 0) {
@@ -427,104 +373,11 @@ function initData() {
 }
 
 function getRecords() {
-  try { 
-    const raw = localStorage.getItem(RECORDS_KEY); 
-    if (!raw) return [];
-    const records = JSON.parse(raw);
-    // 迁移旧数据字段
-    records.forEach(rec => {
-      if (!rec.targetPeriod) rec.targetPeriod = null;
-      if (!rec.status) rec.status = 'pending';
-    });
-    return records;
-  } catch { return []; }
+  try { const raw = localStorage.getItem(RECORDS_KEY); return raw ? JSON.parse(raw) : []; }
+  catch { return []; }
 }
 function saveRecords(records) { localStorage.setItem(RECORDS_KEY, JSON.stringify(records)); }
 function formatDate() { const now = new Date(); const pad = n => n < 10 ? '0' + n : n; return `${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())} ${pad(now.getHours())}:${pad(now.getMinutes())}`; }
-
-// ==================== 期号工具 ====================
-function getLatestPeriod() {
-  const data = getData();
-  if (!data || !data.records || data.records.length === 0) return null;
-  return data.records[0].period;
-}
-
-function getNextPeriod(currentPeriod) {
-  if (!currentPeriod) return null;
-  const year = parseInt(currentPeriod.toString().substring(0, 4));
-  const num = parseInt(currentPeriod.toString().substring(4));
-  // 双色球每年约153期（周二四日开奖）
-  if (num >= 153) {
-    return (year + 1) + '001';
-  }
-  return year + String(num + 1).padStart(3, '0');
-}
-
-function updateTargetPeriodDisplay() {
-  const latest = getLatestPeriod();
-  const next = getNextPeriod(latest);
-  const el = document.getElementById('targetPeriod');
-  if (el) {
-    el.textContent = next ? `目标期号：第${next}期` : '目标期号：暂无数据';
-  }
-}
-
-// ==================== 中奖判断 ====================
-function checkPrize(myRed, myBlue, actualRed, actualBlue) {
-  const matchedRed = myRed.filter(n => actualRed.includes(n)).length;
-  const matchedBlue = myBlue === actualBlue ? 1 : 0;
-
-  if (matchedRed === 6 && matchedBlue === 1) {
-    return { level: 1, name: "一等奖", money: "浮动(最高500万)", matchedRed, matchedBlue };
-  }
-  if (matchedRed === 6 && matchedBlue === 0) {
-    return { level: 2, name: "二等奖", money: "浮动(最高500万)", matchedRed, matchedBlue };
-  }
-  if (matchedRed === 5 && matchedBlue === 1) {
-    return { level: 3, name: "三等奖", money: 3000, matchedRed, matchedBlue };
-  }
-  if ((matchedRed === 5 && matchedBlue === 0) || (matchedRed === 4 && matchedBlue === 1)) {
-    return { level: 4, name: "四等奖", money: 200, matchedRed, matchedBlue };
-  }
-  if ((matchedRed === 4 && matchedBlue === 0) || (matchedRed === 3 && matchedBlue === 1)) {
-    return { level: 5, name: "五等奖", money: 10, matchedRed, matchedBlue };
-  }
-  if (matchedBlue === 1 && matchedRed <= 2) {
-    return { level: 6, name: "六等奖", money: 5, matchedRed, matchedBlue };
-  }
-  return { level: 0, name: "未中奖", money: 0, matchedRed, matchedBlue };
-}
-
-// 自动兑奖：遍历所有pending记录，如果目标期号已有开奖数据，自动比对
-function autoCheckPrizes() {
-  const data = getData();
-  if (!data || !data.records || data.records.length === 0) return;
-  const records = getRecords();
-  let changed = false;
-  let winCount = 0;
-
-  records.forEach(rec => {
-    if (rec.status === 'pending' && rec.targetPeriod) {
-      const actual = data.records.find(r => r.period === rec.targetPeriod);
-      if (actual) {
-        const result = checkPrize(rec.red, rec.blue, actual.red, actual.blue);
-        rec.status = result.level > 0 ? 'won' : 'lost';
-        rec.prizeLevel = result.level;
-        rec.prizeName = result.name;
-        rec.prizeMoney = result.money;
-        rec.matchedRed = result.matchedRed;
-        rec.matchedBlue = result.matchedBlue;
-        changed = true;
-        if (result.level > 0) winCount++;
-      }
-    }
-  });
-
-  if (changed) {
-    saveRecords(records);
-    if (winCount > 0) showToast(`🎉 恭喜！有${winCount}条记录中奖了！`);
-  }
-}
 
 // ==================== 标签切换 ====================
 function switchTab(tab) {
@@ -538,39 +391,6 @@ function switchTab(tab) {
 
 // ==================== 摇球 ====================
 let isShaking = false;
-let fixedBlueEnabled = false;
-let fixedBlueNum = 3;
-
-function toggleFixedBlue() {
-  fixedBlueEnabled = !fixedBlueEnabled;
-  const toggle = document.getElementById('toggleSwitch');
-  const selector = document.getElementById('blueSelector');
-  const hint = document.getElementById('fixedHint');
-  if (fixedBlueEnabled) {
-    toggle.classList.add('active');
-    selector.classList.add('show');
-    hint.classList.add('show');
-    // Auto-select first if none selected
-    if (!fixedBlueNum) selectBlueNum(3);
-    showToast(`已启用定蓝球：${fixedBlueNum}号`);
-  } else {
-    toggle.classList.remove('active');
-    selector.classList.remove('show');
-    hint.classList.remove('show');
-    showToast('已取消定蓝球，蓝球随机生成');
-  }
-}
-
-function selectBlueNum(num) {
-  fixedBlueNum = num;
-  document.querySelectorAll('.blue-num-btn').forEach(btn => {
-    btn.classList.remove('selected');
-    if (parseInt(btn.textContent) === num) btn.classList.add('selected');
-  });
-  if (fixedBlueEnabled) {
-    showToast(`蓝球已锁定为 ${num} 号`);
-  }
-}
 function shakeBalls() {
   if (isShaking) return;
   isShaking = true;
@@ -578,7 +398,6 @@ function shakeBalls() {
   btn.disabled = true; btn.textContent = '摇球中...';
   document.getElementById('analysisCards').style.display = 'none';
   document.getElementById('plusText').style.display = 'none';
-  document.getElementById('targetPeriod').style.display = 'none';
   for (let i = 0; i < 7; i++) { const el = document.getElementById('b' + i); el.classList.add('shaking'); el.textContent = '?'; }
   let elapsed = 0;
   const timer = setInterval(() => {
@@ -608,24 +427,9 @@ function finalizeBalls() {
       document.getElementById('aCon').textContent = a.consecutive;
       document.getElementById('analysisCards').style.display = 'grid';
       document.getElementById('plusText').style.display = 'block';
-      document.getElementById('targetPeriod').style.display = 'block';
-
-      // 计算目标期号并保存记录
-      const latestPeriod = getLatestPeriod();
-      const targetPeriod = getNextPeriod(latestPeriod);
       const recs = getRecords();
-      recs.unshift({ 
-        time: formatDate(), 
-        red, 
-        blue,
-        targetPeriod,
-        status: 'pending'
-      });
+      recs.unshift({ time: formatDate(), red, blue });
       saveRecords(recs.slice(0, 100));
-
-      // 立即尝试自动兑奖
-      autoCheckPrizes();
-
       document.getElementById('shakeBtn').disabled = false;
       document.getElementById('shakeBtn').textContent = '再摇一次';
       isShaking = false;
@@ -635,12 +439,7 @@ function finalizeBalls() {
   reveal();
 }
 function generateRed() { const pool = Array.from({length:33},(_,i)=>i+1); const nums=[]; for(let i=0;i<6;i++){const r=Math.floor(Math.random()*pool.length);nums.push(pool.splice(r,1)[0]);} return nums.sort((a,b)=>a-b); }
-function generateBlue() { 
-  if (fixedBlueEnabled && fixedBlueNum >= 1 && fixedBlueNum <= 16) {
-    return fixedBlueNum;
-  }
-  return Math.floor(Math.random()*16)+1; 
-}
+function generateBlue() { return Math.floor(Math.random()*16)+1; }
 function analyzeNumbers(red, blue) {
   const sum = red.reduce((a,b)=>a+b,0);
   const odd = red.filter(n=>n%2===1).length;
@@ -654,17 +453,19 @@ function analyzeNumbers(red, blue) {
   return { sum, oddEven:`${odd}:${6-odd}`, bigSmall:`${big}:${6-big}`, span, zone:`${z1}:${z2}:${z3}`, consecutive: consecutive.length?consecutive.join(', '):'无' };
 }
 
-// ==================== 联网获取数据 ====================
+// ==================== 联网获取数据（使用CORS代理） ====================
 async function fetchData() {
   const btn = document.getElementById('updateBtn');
   btn.disabled = true; btn.textContent = '更新中...';
 
+  // CORS代理列表
   const corsProxies = [
     'https://api.allorigins.win/get?url=',
     'https://corsproxy.io/?',
     'https://api.codetabs.com/v1/proxy?quest='
   ];
 
+  // 数据源列表
   const dataSources = [
     {
       name: '体彩中心',
@@ -726,8 +527,6 @@ async function fetchData() {
         if (records && records.length > 0) {
           records.sort((a, b) => parseInt(b.period) - parseInt(a.period));
           saveData(records);
-          // 获取新数据后自动兑奖
-          autoCheckPrizes();
           renderStats();
           showToast(`✅ ${source.name}更新成功！共${records.length}期`);
           success = true;
@@ -752,11 +551,12 @@ async function fetchData() {
   btn.textContent = '获取最新数据';
 }
 
-// ==================== 热球判断 ====================
+// ==================== 热球判断（新规则） ====================
 function getHotNumbers(records) {
   const hotSet = new Set();
   const total = records.length;
 
+  // 规则1：50期内出现≥8次
   const last50 = records.slice(0, Math.min(50, total));
   const count50 = {};
   for (let i = 1; i <= 33; i++) count50[i] = 0;
@@ -765,6 +565,7 @@ function getHotNumbers(records) {
     if (count50[i] >= 8) hotSet.add(i);
   }
 
+  // 规则2：近5期内出现≥4次（含连续4期）
   const last5 = records.slice(0, Math.min(5, total));
   const count5 = {};
   for (let i = 1; i <= 33; i++) count5[i] = 0;
@@ -773,6 +574,7 @@ function getHotNumbers(records) {
     if (count5[i] >= 4) hotSet.add(i);
   }
 
+  // 规则3：连续4期都出现
   if (total >= 4) {
     const last4 = records.slice(0, 4);
     for (let num = 1; num <= 33; num++) {
@@ -816,6 +618,7 @@ function renderStats() {
   const maxRed = Math.max(...Object.values(redCounts)) || 1;
   const maxBlue = Math.max(...Object.values(blueCounts)) || 1;
 
+  // 红球柱状图（使用新热球规则）
   let redHtml = '';
   for (let i = 1; i <= 33; i++) {
     const count = redCounts[i];
@@ -827,6 +630,7 @@ function renderStats() {
   }
   document.getElementById('redChart').innerHTML = redHtml;
 
+  // 蓝球柱状图
   let blueHtml = '';
   for (let i = 1; i <= 16; i++) {
     const count = blueCounts[i];
@@ -835,6 +639,7 @@ function renderStats() {
   }
   document.getElementById('blueChart').innerHTML = blueHtml;
 
+  // TOP10表格
   const topRed = Object.entries(redCounts).sort((a,b)=>b[1]-a[1]).slice(0,10).map(([n,c])=>({num:n,count:c}));
   const topBlue = Object.entries(blueCounts).sort((a,b)=>b[1]-a[1]).slice(0,10).map(([n,c])=>({num:n,count:c}));
   let tbody = '';
@@ -862,12 +667,7 @@ function confirmManualAdd() {
   const idx = data.records.findIndex(r => r.period === period);
   if (idx >= 0) data.records[idx] = newRec;
   else data.records.unshift(newRec);
-  data.records.sort((a, b) => parseInt(b.period) - parseInt(a.period));
   saveData(data.records);
-
-  // 手动添加后自动兑奖
-  autoCheckPrizes();
-
   hideModal();
   document.getElementById('mPeriod').value = '';
   document.getElementById('mRed').value = '';
@@ -884,74 +684,23 @@ function renderHistory() {
     list.innerHTML = `<div class="empty-state"><span class="empty-icon">🎱</span><span class="empty-text">还没有摇球记录</span><span class="empty-desc">快去试试手气吧！</span></div>`;
     return;
   }
-
-  const badgeColors = ['', 'gold', 'purple', 'red', 'orange', 'blue', 'green'];
-
   let html = '';
   records.forEach((rec, idx) => {
     const balls = rec.red.map(n => `<div class="mini-ball red">${n}</div>`).join('') + `<span class="plus">+</span><div class="mini-ball blue">${rec.blue}</div>`;
-
-    let statusHtml = '';
-    if (rec.status === 'pending') {
-      statusHtml = `<span class="status-badge pending">⏳ 第${rec.targetPeriod || '未知'}期 · 待开奖</span>`;
-    } else if (rec.status === 'won') {
-      const colorClass = badgeColors[rec.prizeLevel] || 'green';
-      statusHtml = `<span class="status-badge won ${colorClass}">🎉 ${rec.prizeName} · ${rec.prizeMoney}元 · 命中${rec.matchedRed}红+${rec.matchedBlue}蓝</span>`;
-    } else {
-      statusHtml = `<span class="status-badge lost">❌ 第${rec.targetPeriod || '未知'}期 · 未中奖 · 命中${rec.matchedRed}红+${rec.matchedBlue}蓝</span>`;
-    }
-
-    html += `<div class="history-item">
-      <div class="item-header">
-        <div>
-          <span class="item-time">${rec.time}</span>
-          <span class="item-target">🎯 目标期号：第${rec.targetPeriod || '未指定'}期</span>
-        </div>
-        <div class="item-actions">
-          <button class="action-btn copy" onclick="copyRecord(${idx})">复制</button>
-          <button class="action-btn del" onclick="deleteRecord(${idx})">删除</button>
-        </div>
-      </div>
-      <div class="item-balls">${balls}</div>
-      <div class="item-status">${statusHtml}</div>
-    </div>`;
+    html += `<div class="history-item"><div class="item-info"><span class="item-time">${rec.time}</span><div class="item-balls">${balls}</div></div><div class="item-actions"><button class="action-btn copy" onclick="copyRecord(${idx})">复制</button><button class="action-btn del" onclick="deleteRecord(${idx})">删除</button></div></div>`;
   });
   list.innerHTML = html;
 }
-
-function copyRecord(idx) { 
-  const rec = getRecords()[idx]; 
-  const text = rec.red.join(' ') + ' + ' + rec.blue; 
-  navigator.clipboard.writeText(text).then(() => showToast('号码已复制！')); 
-}
-function deleteRecord(idx) { 
-  if (!confirm('确定删除这条记录吗？')) return; 
-  const records = getRecords(); 
-  records.splice(idx, 1); 
-  saveRecords(records); 
-  renderHistory(); 
-  showToast('已删除'); 
-}
-function clearHistory() { 
-  if (!confirm('确定清空所有记录吗？')) return; 
-  saveRecords([]); 
-  renderHistory(); 
-  showToast('记录已清空'); 
-}
+function copyRecord(idx) { const rec = getRecords()[idx]; const text = rec.red.join(' ') + ' + ' + rec.blue; navigator.clipboard.writeText(text).then(() => showToast('号码已复制！')); }
+function deleteRecord(idx) { if (!confirm('确定删除这条记录吗？')) return; const records = getRecords(); records.splice(idx, 1); saveRecords(records); renderHistory(); showToast('已删除'); }
+function clearHistory() { if (!confirm('确定清空所有记录吗？')) return; saveRecords([]); renderHistory(); showToast('记录已清空'); }
 
 // ==================== Toast ====================
-function showToast(msg) { 
-  const t = document.getElementById('toast'); 
-  t.textContent = msg; 
-  t.classList.add('show'); 
-  setTimeout(() => t.classList.remove('show'), 2500); 
-}
+function showToast(msg) { const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 2500); }
 
 // ==================== 初始化 ====================
 document.addEventListener('DOMContentLoaded', () => {
   initData();
-  updateTargetPeriodDisplay();
-  autoCheckPrizes(); // 页面加载时自动兑奖
   renderHistory();
 });
 </script>
