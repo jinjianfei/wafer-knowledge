@@ -25,31 +25,30 @@
   }
   .top-bar h1 { font-size: 18px; font-weight: 600; }
   .top-bar .date { font-size: 12px; opacity: 0.85; }
-  .upload-wrap {
-    padding: 20px 24px;
-    background: white;
-    border-bottom: 1px solid #ddd;
-  }
-  .upload-box {
-    border: 2px dashed #1F4E79;
-    border-radius: 8px;
-    padding: 32px;
-    text-align: center;
-    background: #f8fafc;
+  .upload-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    background: rgba(255,255,255,0.15);
+    border: 1px dashed rgba(255,255,255,0.5);
+    border-radius: 6px;
+    color: white;
+    font-size: 13px;
     cursor: pointer;
     transition: all 0.2s;
+    user-select: none;
   }
-  .upload-box:hover { background: #e8f0fe; }
-  .upload-box.dragover { background: #d6e4f7; border-color: #1565c0; }
-  .upload-box input { display: none; }
-  .upload-box .icon { font-size: 32px; margin-bottom: 8px; }
-  .upload-box h3 { color: #1F4E79; font-size: 15px; margin-bottom: 4px; }
-  .upload-box p { color: #666; font-size: 12px; }
+  .upload-btn:hover {
+    background: rgba(255,255,255,0.25);
+    border-style: solid;
+  }
+  .upload-btn input { display: none; }
   .alert-banner {
     background: #fff3cd;
-    border: 1px solid #ffc107;
+    border-bottom: 1px solid #ffc107;
     color: #856404;
-    padding: 10px 24px;
+    padding: 8px 24px;
     font-size: 12px;
     display: none;
     align-items: center;
@@ -195,17 +194,14 @@
 <body>
 
 <div class="top-bar">
-  <h1>📦 寄售库库存库龄分析驾驶舱</h1>
-  <div class="date">分析日期: <span id="analysisDate">--</span></div>
-</div>
-
-<div class="upload-wrap">
-  <div class="upload-box" id="dropZone" onclick="document.getElementById('fileInput').click()">
-    <div class="icon">📁</div>
-    <h3>点击或拖拽上传 SAP 库存导出文件</h3>
-    <p>支持 .xlsx / .xls 格式，自动识别寄售库库存并分析库龄</p>
-    <input type="file" id="fileInput" accept=".xlsx,.xls" onchange="handleFile(this.files[0])">
+  <div style="display:flex;align-items:center;gap:12px;">
+    <h1>📦 寄售库库存库龄分析驾驶舱</h1>
+    <div class="upload-btn" id="dropZone" onclick="document.getElementById('fileInput').click()">
+      <span>📁 上传文件</span>
+      <input type="file" id="fileInput" accept=".xlsx,.xls" onchange="handleFile(this.files[0])">
+    </div>
   </div>
+  <div class="date">分析日期: <span id="analysisDate">--</span></div>
 </div>
 
 <div id="alertBanner" class="alert-banner">
@@ -352,14 +348,9 @@ let missingPartNumbers = new Set();
 
 document.getElementById('dropZone').addEventListener('dragover', e => {
   e.preventDefault();
-  document.getElementById('dropZone').classList.add('dragover');
-});
-document.getElementById('dropZone').addEventListener('dragleave', () => {
-  document.getElementById('dropZone').classList.remove('dragover');
 });
 document.getElementById('dropZone').addEventListener('drop', e => {
   e.preventDefault();
-  document.getElementById('dropZone').classList.remove('dragover');
   if (e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]);
 });
 
