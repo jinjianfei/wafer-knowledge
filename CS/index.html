@@ -1,1 +1,1005 @@
-1
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>寄售库库存库龄分析驾驶舱</title>
+<script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/exceljs@4.4.0/dist/exceljs.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: "Microsoft YaHei", "微软雅黑", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    background: #f5f5f5;
+    color: #1a1a1a;
+    font-size: 13px;
+    line-height: 1.5;
+  }
+  .top-bar {
+    background: #1F4E79;
+    color: white;
+    padding: 16px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .top-bar h1 { font-size: 18px; font-weight: 600; }
+  .top-bar .date { font-size: 12px; opacity: 0.85; }
+  .upload-wrap {
+    padding: 20px 24px;
+    background: white;
+    border-bottom: 1px solid #ddd;
+  }
+  .upload-box {
+    border: 2px dashed #1F4E79;
+    border-radius: 8px;
+    padding: 32px;
+    text-align: center;
+    background: #f8fafc;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .upload-box:hover { background: #e8f0fe; }
+  .upload-box.dragover { background: #d6e4f7; border-color: #1565c0; }
+  .upload-box input { display: none; }
+  .upload-box .icon { font-size: 32px; margin-bottom: 8px; }
+  .upload-box h3 { color: #1F4E79; font-size: 15px; margin-bottom: 4px; }
+  .upload-box p { color: #666; font-size: 12px; }
+  .alert-banner {
+    background: #fff3cd;
+    border: 1px solid #ffc107;
+    color: #856404;
+    padding: 10px 24px;
+    font-size: 12px;
+    display: none;
+    align-items: center;
+    gap: 8px;
+  }
+  .alert-banner.show { display: flex; }
+  .alert-banner .alert-icon { font-size: 16px; }
+  .filter-bar {
+    padding: 12px 24px;
+    background: #eef2f7;
+    border-bottom: 1px solid #ccc;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .filter-bar label { font-size: 12px; color: #333; font-weight: 600; }
+  .filter-bar select, .filter-bar input {
+    padding: 5px 10px;
+    border: 1px solid #bbb;
+    border-radius: 3px;
+    font-size: 12px;
+    font-family: inherit;
+    min-width: 120px;
+  }
+  .filter-bar button {
+    padding: 6px 16px;
+    background: #1F4E79;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    font-size: 12px;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .filter-bar button:hover { background: #163d5f; }
+  .table-wrap {
+    padding: 0 24px 24px;
+    overflow-x: auto;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+    background: white;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  }
+  thead th {
+    background: #1F4E79;
+    color: white;
+    font-weight: 600;
+    padding: 8px 10px;
+    text-align: center;
+    border: 1px solid #163d5f;
+    white-space: nowrap;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  tbody td {
+    padding: 6px 10px;
+    border: 1px solid #d0d0d0;
+    white-space: nowrap;
+  }
+  tbody tr:nth-child(even) { background: #fafafa; }
+  tbody tr:hover { background: #e8f0fe; }
+  .col-left { text-align: left; }
+  .col-center { text-align: center; }
+  .col-right { text-align: right; }
+  .money { font-family: "Segoe UI", "Microsoft YaHei", sans-serif; }
+  .age-30 { background: #E2EFDA !important; color: #2e7d32; font-weight: 600; }
+  .age-60 { background: #FFF2CC !important; color: #f57f17; font-weight: 600; }
+  .age-120 { background: #FCE4D6 !important; color: #e65100; font-weight: 600; }
+  .age-180 { background: #F8CBAD !important; color: #bf360c; font-weight: 600; }
+  .age-over { background: #F4B084 !important; color: #870000; font-weight: 700; }
+  tr.subtotal td {
+    background: #D6DCE4 !important;
+    color: #1F4E79;
+    font-weight: 700;
+    border-top: 2px solid #1F4E79;
+    border-bottom: 2px solid #1F4E79;
+  }
+  tr.total td {
+    background: #1F4E79 !important;
+    color: white;
+    font-weight: 700;
+    border-top: 2px solid #0f2d47;
+  }
+  tr.total td.age-30, tr.total td.age-60, tr.total td.age-120,
+  tr.total td.age-180, tr.total td.age-over {
+    background: #1F4E79 !important;
+    color: white !important;
+  }
+  .hidden { display: none; }
+  .loading {
+    text-align: center;
+    padding: 40px;
+    color: #666;
+  }
+  .loading .spinner {
+    width: 32px; height: 32px;
+    border: 3px solid #ddd;
+    border-top-color: #1F4E79;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin: 0 auto 12px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: #999;
+  }
+  .empty-state .big-icon { font-size: 48px; margin-bottom: 12px; }
+  .badge {
+    display: inline-block;
+    padding: 1px 8px;
+    border-radius: 10px;
+    font-size: 11px;
+    font-weight: 600;
+  }
+  .badge-dsv { background: #e3f2fd; color: #1565c0; }
+  .badge-evershine { background: #e8f5e9; color: #2e7d32; }
+  .badge-femar { background: #fce4ec; color: #c2185b; }
+  .missing-input {
+    border: 1px solid #ff9800;
+    background: #fff8e1;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 11px;
+    width: 120px;
+    font-family: inherit;
+  }
+  /* 合并单元格样式 */
+  td[rowspan] {
+    vertical-align: middle;
+    background: #f8f9ff;
+    font-weight: 600;
+  }
+</style>
+<base target="_blank">
+</head>
+<body>
+
+<div class="top-bar">
+  <h1>📦 寄售库库存库龄分析驾驶舱</h1>
+  <div class="date">分析日期: <span id="analysisDate">--</span></div>
+</div>
+
+<div class="upload-wrap">
+  <div class="upload-box" id="dropZone" onclick="document.getElementById('fileInput').click()">
+    <div class="icon">📁</div>
+    <h3>点击或拖拽上传 SAP 库存导出文件</h3>
+    <p>支持 .xlsx / .xls 格式，自动识别寄售库库存并分析库龄</p>
+    <input type="file" id="fileInput" accept=".xlsx,.xls" onchange="handleFile(this.files[0])">
+  </div>
+</div>
+
+<div id="alertBanner" class="alert-banner">
+  <span class="alert-icon">⚠️</span>
+  <span id="alertText"></span>
+</div>
+
+<div id="dashboard" class="hidden">
+  <div class="filter-bar">
+    <label>寄售库:</label>
+    <select id="filterWh" onchange="renderTable()"><option value="">全部</option></select>
+    <label>ST工厂:</label>
+    <select id="filterFactory" onchange="renderTable()"><option value="">全部</option></select>
+    <label>搜索:</label>
+    <input type="text" id="filterSearch" placeholder="客户料号 / 内部料号 / 产品类型" oninput="renderTable()">
+    <button onclick="exportExcel()">📥 导出 Excel</button>
+  </div>
+  <div class="table-wrap">
+    <table id="resultTable">
+      <thead>
+        <tr>
+          <th>寄售库</th>
+          <th>ST工厂</th>
+          <th>客户料号</th>
+          <th style="min-width:200px">产品类型</th>
+          <th>内部料号</th>
+          <th>单价(26H2)</th>
+          <th>Amount</th>
+          <th>Total pcs</th>
+          <th>Total Amount</th>
+          <th>1-30days</th>
+          <th>31-60days</th>
+          <th>61-120days</th>
+          <th>121-180days</th>
+          <th>>180days</th>
+          <th>Total</th>
+        </tr>
+      </thead>
+      <tbody id="tableBody"></tbody>
+    </table>
+  </div>
+</div>
+
+<div id="loading" class="loading hidden">
+  <div class="spinner"></div>
+  <p>正在分析数据...</p>
+</div>
+
+<div id="emptyState" class="empty-state">
+  <div class="big-icon">📂</div>
+  <p>请上传库存导出文件以开始分析</p>
+</div>
+
+<script>
+const today = new Date();
+const todayStr = today.toISOString().split('T')[0];
+document.getElementById('analysisDate').textContent = todayStr;
+
+const PART_MAP = {
+    "6TNC4005": "SI D150 NPTW",
+    "6BNP0120": "SI D200 AS",
+    "6BNP4029": "SI D200 AS",
+    "6BNP7074": "SI D200 AS",
+    "6BNP8019": "SI D200 AS",
+    "6SMP1025": "SI D200 NPW",
+    "6SMP2071": "SI D200 NPW",
+    "6SMP6038": "SI D200 NPW",
+    "6SMP9028": "SI D200 NPW",
+    "6SMP0052": "SI D200 PW",
+    "6SMP5029": "SI D200 PW",
+    "6SMP7022": "SI D200 PW",
+    "6BNP6009": "SI D200 RED PHOS",
+    "6BNP9006": "SI D200 RED PHOS",
+    "6TPP1051": "SI D200 TW",
+    "6TPP2075": "SI D200 TW",
+    "6SMP8042": "SI D300 PW",
+    "6TPP1031": "SI D300 TW",
+    "6BNP1024": "SI D150 AS",
+    "6BNP1073": "SI D150 AS",
+    "6BNP1658": "SI D150 AS",
+    "6BNP1731": "SI D150 AS",
+    "6BQP9005": "SI D150 AS",
+    "6BQP0118": "SI D150 AS",
+    "6SMP0592": "SI D150 AW",
+    "6SQE0682": "SI D150 NPW",
+    "6SQE0684": "SI D150 NPW",
+    "6SQE0692": "SI D150 NPW",
+    "6SQE1716": "SI D150 NPW",
+    "6SQE1718": "SI D150 NPW",
+    "6SQE1719": "SI D150 NPW",
+    "6SQE2755": "SI D150 NPW",
+    "6SQE2782": "SI D150 NPW",
+    "6SQE4025": "SI D150 NPW",
+    "6SQE7029": "SI D150 NPW",
+    "6SQE7032": "SI D150 NPW",
+    "6BKP1624": "SI D150 PW",
+    "6BKP1625": "SI D150 PW",
+    "6BKP8011": "SI D150 PW",
+    "6BKP8028": "SI D150 PW",
+    "6SMP0413": "SI D150 PW",
+    "6SMP7041": "SI D150 PW",
+    "6SMP9578": "SI D150 PW",
+    "6TNP1476": "SI D150 TW",
+    "6TPP1477": "SI D150 TW",
+    "6TNP9579": "SI D150 TW",
+    "6TPP9580": "SI D150 TW",
+    "6BNP9060": "SI D200 AS",
+    "6BNP0065": "SI D200 AS EW",
+    "6BNP9004": "SI D200 AS EW",
+    "6SMP0063": "SI D200 PW",
+    "6BNP7062": "SI D200 RED PHOS",
+    "6TPP1434": "SI D200 TW",
+    "6TPP3101": "SI D200 TW",
+    "6TPP4000": "SI D200 TW",
+    "6TNP1423": "SI D200 TW",
+    "6SMP8021": "SI D200 TW",
+    "6EMB2747": "SI D300 EW",
+    "6SQP0689": "SI D150 PW",
+    "6SQP0690": "SI D150 PW",
+    "6SQP0691": "SI D200 PW",
+    "6SQP7045": "SI D200 PW",
+    "6SQP0095": "SI D200 PW",
+    "6SQP0096": "SI D200 PW",
+    "6BKP1626": "SI D150 PW",
+    "6BPP0113": "SI D150 PW",
+    "6BPP3109": "SI D150 PW",
+    "6BNP2128": "SI D150 AS",
+    "6BNP5036": "SI D150 AS",
+    "6SMP0601": "SI D150 PW",
+    "6BPP1102": "SI D150 PW",
+    "6BPP2074": "SI D150 PW",
+    "6BPP8084": "SI D150 PW",
+    "6EMB0047": "SI D200 EW",
+    "6EMB3036": "SI D200 EW",
+    "6TPP1026": "SI D200 PW",
+    "6EMB1130": "SI D300 EW",
+    "6EMB3083": "SI D300 PW"
+};
+
+let rawData = [];
+let analyzedData = [];
+let summaryRows = [];
+let missingPartNumbers = new Set();
+
+document.getElementById('dropZone').addEventListener('dragover', e => {
+  e.preventDefault();
+  document.getElementById('dropZone').classList.add('dragover');
+});
+document.getElementById('dropZone').addEventListener('dragleave', () => {
+  document.getElementById('dropZone').classList.remove('dragover');
+});
+document.getElementById('dropZone').addEventListener('drop', e => {
+  e.preventDefault();
+  document.getElementById('dropZone').classList.remove('dragover');
+  if (e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]);
+});
+
+function handleFile(file) {
+  if (!file) return;
+  document.getElementById('loading').classList.remove('hidden');
+  document.getElementById('emptyState').classList.add('hidden');
+  document.getElementById('dashboard').classList.add('hidden');
+  document.getElementById('alertBanner').classList.remove('show');
+  missingPartNumbers.clear();
+
+  const reader = new FileReader();
+  reader.onload = e => {
+    try {
+      const data = new Uint8Array(e.target.result);
+      const workbook = XLSX.read(data, { type: 'array', cellDates: true });
+      const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+      rawData = XLSX.utils.sheet_to_json(firstSheet, { header: 1, raw: false });
+      processData();
+    } catch (err) {
+      alert('文件解析失败: ' + err.message);
+      document.getElementById('loading').classList.add('hidden');
+    }
+  };
+  reader.readAsArrayBuffer(file);
+}
+
+function getHeaderIndex(headers, keywords) {
+  for (let i = 0; i < headers.length; i++) {
+    const h = String(headers[i] || '').trim();
+    for (const kw of keywords) {
+      if (h.includes(kw)) return i;
+    }
+  }
+  return -1;
+}
+
+function excelDateToJSDate(serial) {
+  if (!serial) return null;
+  if (serial instanceof Date) return serial;
+  const n = Number(serial);
+  if (isNaN(n)) {
+    const d = new Date(serial);
+    return isNaN(d.getTime()) ? null : d;
+  }
+  const epoch = new Date(1899, 11, 30);
+  return new Date(epoch.getTime() + n * 86400000);
+}
+
+function extractPartNumber(customerPN) {
+  let s = String(customerPN || '');
+  // 去掉 0N/0n 前缀后再匹配映射表
+  if (s.toUpperCase().startsWith('0N')) {
+    s = s.substring(2);
+  }
+  return s;
+}
+
+function getProductType(customerPN) {
+  const pn = extractPartNumber(customerPN);
+  if (PART_MAP[pn]) return PART_MAP[pn];
+  missingPartNumbers.add(customerPN);
+  return '';
+}
+
+function processData() {
+  if (rawData.length < 2) {
+    alert('数据为空或格式不正确');
+    document.getElementById('loading').classList.add('hidden');
+    return;
+  }
+
+  const headers = rawData[0];
+  const idx = {
+    customer: getHeaderIndex(headers, ['客户']),
+    material: getHeaderIndex(headers, ['物料']),
+    qty: getHeaderIndex(headers, ['非限制使用的库存']),
+    price: getHeaderIndex(headers, ['含税价']),
+    shipDate: getHeaderIndex(headers, ['寄售补货发货时间']),
+    useDate: getHeaderIndex(headers, ['领用日期']),
+    customerPN: getHeaderIndex(headers, ['客户料号'])
+  };
+
+  const missing = Object.entries(idx).filter(([k,v]) => v === -1).map(([k]) => k);
+  if (missing.length > 0) {
+    alert('缺少必要列: ' + missing.join(', ') + '\n请检查表头名称');
+    document.getElementById('loading').classList.add('hidden');
+    return;
+  }
+
+  analyzedData = [];
+
+  for (let i = 1; i < rawData.length; i++) {
+    const row = rawData[i];
+    if (!row || row.length === 0) continue;
+
+    const useDateVal = row[idx.useDate];
+    if (useDateVal !== undefined && useDateVal !== null && String(useDateVal).trim() !== '') continue;
+
+    const customer = parseInt(row[idx.customer]) || 0;
+    const material = String(row[idx.material] || '');
+    const qty = parseFloat(row[idx.qty]) || 0;
+    const price = parseFloat(row[idx.price]) || 0;
+    const shipDateVal = row[idx.shipDate];
+    const customerPN = String(row[idx.customerPN] || '');
+
+    let factory = 'Unknown';
+    const matPrefix = material.substring(0, 8);
+    if (matPrefix.includes('1200')) factory = 'AMK';
+    else if (matPrefix.includes('4972')) factory = 'Catania';
+    else if (matPrefix.includes('4970')) factory = 'Tours';
+    else if (matPrefix.includes('4971')) factory = 'Rousset';
+    else if (matPrefix.includes('2690')) factory = 'Agrate';
+    else if (matPrefix.includes('9987')) factory = 'Crolles';
+    else {
+      if (material.toUpperCase().startsWith('L') || material.substring(0,2).toUpperCase().includes('L')) {
+        if (customer === 12690) factory = 'Agrate';
+        else if (customer === 19987) factory = 'Crolles';
+      }
+      if (factory === 'Unknown') {
+        if (customer === 11200) factory = 'AMK';
+        else if (customer === 12690) factory = 'Agrate';
+        else if (customer === 19987) factory = 'Crolles';
+      }
+    }
+
+    let wh = 'DSV';
+    if (factory === 'AMK' && customer === 11200) wh = 'Evershine';
+    else if (factory === 'Catania') wh = 'Femar';
+
+    const shipDate = excelDateToJSDate(shipDateVal);
+    let ageDays = null;
+    if (shipDate) {
+      ageDays = Math.floor((today - shipDate) / 86400000);
+    }
+
+    let ageBucket = 'Unknown';
+    if (ageDays !== null) {
+      if (ageDays <= 30) ageBucket = '1-30days';
+      else if (ageDays <= 60) ageBucket = '31-60days';
+      else if (ageDays <= 120) ageBucket = '61-120days';
+      else if (ageDays <= 180) ageBucket = '121-180days';
+      else ageBucket = '>180days';
+    }
+
+    const productType = getProductType(customerPN);
+
+    analyzedData.push({
+      wh, factory, customerPN, productType,
+      internalPN: material,
+      price,
+      qty,
+      amount: qty * price,
+      ageDays,
+      ageBucket
+    });
+  }
+
+  if (missingPartNumbers.size > 0) {
+    const list = Array.from(missingPartNumbers).slice(0, 10).join('、');
+    const more = missingPartNumbers.size > 10 ? ' 等共' + missingPartNumbers.size + '条' : '';
+    document.getElementById('alertText').textContent = 
+      '以下客户料号未在映射表中找到对应产品类型，请联系管理员更新料号匹配表：' + list + more;
+    document.getElementById('alertBanner').classList.add('show');
+  }
+
+  buildSummary();
+  updateFilters();
+  renderTable();
+
+  document.getElementById('loading').classList.add('hidden');
+  document.getElementById('dashboard').classList.remove('hidden');
+}
+
+function buildSummary() {
+  const groups = {};
+  for (const r of analyzedData) {
+    const key = r.wh + '\x00' + r.factory + '\x00' + r.customerPN;
+    if (!groups[key]) {
+      groups[key] = {
+        wh: r.wh, factory: r.factory, customerPN: r.customerPN,
+        productType: r.productType,
+        internalPN: r.internalPN,
+        price: r.price,
+        qty: 0, amount: 0,
+        '1-30days': 0, '31-60days': 0, '61-120days': 0, '121-180days': 0, '>180days': 0
+      };
+    }
+    groups[key].qty += r.qty;
+    groups[key].amount += r.amount;
+    if (groups[key][r.ageBucket] !== undefined) {
+      groups[key][r.ageBucket] += r.qty;
+    }
+    if (!groups[key].productType && r.productType) groups[key].productType = r.productType;
+  }
+
+  let detailGroups = Object.values(groups);
+  // 提取产品类型中的 D150/D200/D300 用于排序
+  function getSizeSort(productType) {
+    const s = String(productType || '');
+    if (s.includes('D150')) return 0;
+    if (s.includes('D200')) return 1;
+    if (s.includes('D300')) return 2;
+    return 3; // 其他放最后
+  }
+
+  detailGroups.sort((a, b) => {
+    const whOrder = { 'Evershine': 0, 'DSV': 1, 'Femar': 2 };
+    if (whOrder[a.wh] !== whOrder[b.wh]) return whOrder[a.wh] - whOrder[b.wh];
+    // 按产品类型 D150/D200/D300 排序
+    const sizeA = getSizeSort(a.productType);
+    const sizeB = getSizeSort(b.productType);
+    if (sizeA !== sizeB) return sizeA - sizeB;
+    // 相同产品类型按工厂排序
+    if (a.factory !== b.factory) return a.factory.localeCompare(b.factory);
+    return a.customerPN.localeCompare(b.customerPN);
+  });
+
+  summaryRows = [];
+  const whTotals = {};
+  const grandTotal = { qty: 0, amount: 0, '1-30days': 0, '31-60days': 0, '61-120days': 0, '121-180days': 0, '>180days': 0 };
+
+  for (const r of detailGroups) {
+    if (!whTotals[r.wh]) {
+      whTotals[r.wh] = { qty: 0, amount: 0, '1-30days': 0, '31-60days': 0, '61-120days': 0, '121-180days': 0, '>180days': 0 };
+    }
+    whTotals[r.wh].qty += r.qty;
+    whTotals[r.wh].amount += r.amount;
+    whTotals[r.wh]['1-30days'] += r['1-30days'];
+    whTotals[r.wh]['31-60days'] += r['31-60days'];
+    whTotals[r.wh]['61-120days'] += r['61-120days'];
+    whTotals[r.wh]['121-180days'] += r['121-180days'];
+    whTotals[r.wh]['>180days'] += r['>180days'];
+
+    grandTotal.qty += r.qty;
+    grandTotal.amount += r.amount;
+    grandTotal['1-30days'] += r['1-30days'];
+    grandTotal['31-60days'] += r['31-60days'];
+    grandTotal['61-120days'] += r['61-120days'];
+    grandTotal['121-180days'] += r['121-180days'];
+    grandTotal['>180days'] += r['>180days'];
+  }
+
+  let currentWh = null;
+  for (const r of detailGroups) {
+    if (r.wh !== currentWh) currentWh = r.wh;
+    summaryRows.push({...r, type: 'detail'});
+  }
+
+  for (const wh of ['DSV', 'Evershine', 'Femar']) {
+    if (whTotals[wh]) {
+      summaryRows.push({
+        wh: wh + ' 小计', factory: '', customerPN: '', productType: '', internalPN: '', price: '',
+        qty: whTotals[wh].qty, amount: whTotals[wh].amount,
+        '1-30days': whTotals[wh]['1-30days'], '31-60days': whTotals[wh]['31-60days'],
+        '61-120days': whTotals[wh]['61-120days'], '121-180days': whTotals[wh]['121-180days'],
+        '>180days': whTotals[wh]['>180days'],
+        type: 'subtotal'
+      });
+    }
+  }
+
+  summaryRows.push({
+    wh: '总计', factory: '', customerPN: '', productType: '', internalPN: '', price: '',
+    qty: grandTotal.qty, amount: grandTotal.amount,
+    '1-30days': grandTotal['1-30days'], '31-60days': grandTotal['31-60days'],
+    '61-120days': grandTotal['61-120days'], '121-180days': grandTotal['121-180days'],
+    '>180days': grandTotal['>180days'],
+    type: 'total'
+  });
+}
+
+function updateFilters() {
+  const whSet = new Set();
+  const factorySet = new Set();
+  for (const r of analyzedData) {
+    whSet.add(r.wh);
+    factorySet.add(r.factory);
+  }
+  const whSel = document.getElementById('filterWh');
+  whSel.innerHTML = '<option value="">全部</option>';
+  for (const w of Array.from(whSet).sort()) {
+    whSel.innerHTML += `<option value="${w}">${w}</option>`;
+  }
+  const facSel = document.getElementById('filterFactory');
+  facSel.innerHTML = '<option value="">全部</option>';
+  for (const f of Array.from(factorySet).sort()) {
+    facSel.innerHTML += `<option value="${f}">${f}</option>`;
+  }
+}
+
+function isVisible(r) {
+  const whFilter = document.getElementById('filterWh').value;
+  const facFilter = document.getElementById('filterFactory').value;
+  const search = document.getElementById('filterSearch').value.trim().toLowerCase();
+
+  if (whFilter && r.wh !== whFilter) return false;
+  if (facFilter && r.factory !== facFilter) return false;
+  if (search) {
+    const s = (r.customerPN + ' ' + r.internalPN + ' ' + r.productType).toLowerCase();
+    if (!s.includes(search)) return false;
+  }
+  return true;
+}
+
+function fmtMoney(v) {
+  if (v === '' || v === undefined || v === null) return '';
+  return '$' + v.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+}
+function fmtNum(v) {
+  if (v === '' || v === undefined || v === null) return '';
+  return v.toLocaleString();
+}
+
+function renderTable() {
+  const tbody = document.getElementById('tableBody');
+  tbody.innerHTML = '';
+
+  // 按寄售库分组，计算每组的可见行数
+  const whGroups = {};
+  for (const r of summaryRows) {
+    if (r.type === 'total') continue;
+    if (r.type === 'subtotal') continue;
+    if (!isVisible(r)) continue;
+    if (!whGroups[r.wh]) whGroups[r.wh] = [];
+    whGroups[r.wh].push(r);
+  }
+
+  // 渲染明细行（带合并单元格）
+  for (const wh of ['DSV', 'Evershine', 'Femar']) {
+    const group = whGroups[wh];
+    if (!group || group.length === 0) continue;
+
+    for (let i = 0; i < group.length; i++) {
+      const r = group[i];
+      const totalAge = r['1-30days'] + r['31-60days'] + r['61-120days'] + r['121-180days'] + r['>180days'];
+      const badgeClass = r.wh === 'DSV' ? 'badge-dsv' : r.wh === 'Evershine' ? 'badge-evershine' : 'badge-femar';
+
+      const productTypeCell = r.productType 
+        ? `<td class="col-left" title="${r.productType}">${r.productType}</td>`
+        : `<td class="col-left"><input type="text" class="missing-input" placeholder="手动输入产品类型" onblur="updateProductType('${r.customerPN}', this.value)"></td>`;
+
+      // 第一行显示寄售库（带rowspan），后续行省略
+      const whCell = i === 0 
+        ? `<td class="col-center" rowspan="${group.length}"><span class="badge ${badgeClass}">${r.wh}</span></td>`
+        : '';
+
+      tbody.innerHTML += `
+        <tr>
+          ${whCell}
+          <td class="col-center">${r.factory}</td>
+          <td class="col-center">${r.customerPN}</td>
+          ${productTypeCell}
+          <td class="col-center">${r.internalPN}</td>
+          <td class="col-right money">${fmtMoney(r.price)}</td>
+          <td class="col-right money">${fmtMoney(r.qty * r.price)}</td>
+          <td class="col-right">${fmtNum(r.qty)}</td>
+          <td class="col-right money">${fmtMoney(r.amount)}</td>
+          <td class="col-right age-30">${fmtNum(r['1-30days'])}</td>
+          <td class="col-right age-60">${fmtNum(r['31-60days'])}</td>
+          <td class="col-right age-120">${fmtNum(r['61-120days'])}</td>
+          <td class="col-right age-180">${fmtNum(r['121-180days'])}</td>
+          <td class="col-right age-over">${fmtNum(r['>180days'])}</td>
+          <td class="col-right">${fmtNum(totalAge)}</td>
+        </tr>`;
+    }
+
+    // 小计行
+    const sub = summaryRows.find(r => r.type === 'subtotal' && r.wh === wh + ' 小计');
+    if (sub) {
+      const totalAge = sub['1-30days'] + sub['31-60days'] + sub['61-120days'] + sub['121-180days'] + sub['>180days'];
+      tbody.innerHTML += `
+        <tr class="subtotal">
+          <td class="col-center" colspan="5">${sub.wh}</td>
+          <td class="col-right">-</td>
+          <td class="col-right">-</td>
+          <td class="col-right">${fmtNum(sub.qty)}</td>
+          <td class="col-right money">${fmtMoney(sub.amount)}</td>
+          <td class="col-right age-30">${fmtNum(sub['1-30days'])}</td>
+          <td class="col-right age-60">${fmtNum(sub['31-60days'])}</td>
+          <td class="col-right age-120">${fmtNum(sub['61-120days'])}</td>
+          <td class="col-right age-180">${fmtNum(sub['121-180days'])}</td>
+          <td class="col-right age-over">${fmtNum(sub['>180days'])}</td>
+          <td class="col-right">${fmtNum(totalAge)}</td>
+        </tr>`;
+    }
+  }
+
+  // 总计行
+  const total = summaryRows.find(r => r.type === 'total');
+  if (total) {
+    const totalAge = total['1-30days'] + total['31-60days'] + total['61-120days'] + total['121-180days'] + total['>180days'];
+    tbody.innerHTML += `
+      <tr class="total">
+        <td class="col-center" colspan="5">总计</td>
+        <td class="col-right">-</td>
+        <td class="col-right">-</td>
+        <td class="col-right">${fmtNum(total.qty)}</td>
+        <td class="col-right money">${fmtMoney(total.amount)}</td>
+        <td class="col-right age-30">${fmtNum(total['1-30days'])}</td>
+        <td class="col-right age-60">${fmtNum(total['31-60days'])}</td>
+        <td class="col-right age-120">${fmtNum(total['61-120days'])}</td>
+        <td class="col-right age-180">${fmtNum(total['121-180days'])}</td>
+        <td class="col-right age-over">${fmtNum(total['>180days'])}</td>
+        <td class="col-right">${fmtNum(totalAge)}</td>
+      </tr>`;
+  }
+}
+
+function updateProductType(customerPN, value) {
+  if (!value.trim()) return;
+  for (const r of summaryRows) {
+    if (r.customerPN === customerPN && r.type === 'detail') {
+      r.productType = value.trim();
+    }
+  }
+  for (const r of analyzedData) {
+    if (r.customerPN === customerPN) {
+      r.productType = value.trim();
+    }
+  }
+}
+
+// ===== 导出带样式的Excel（使用ExcelJS）=====
+async function exportExcel() {
+  if (typeof ExcelJS === 'undefined') {
+    // fallback: 使用普通xlsx导出
+    exportPlainExcel();
+    return;
+  }
+
+  const workbook = new ExcelJS.Workbook();
+  const ws = workbook.addWorksheet('库存库龄分析');
+
+  // 列定义
+  const cols = [
+    { key: 'wh', header: '寄售库', width: 12 },
+    { key: 'factory', header: 'ST工厂', width: 12 },
+    { key: 'customerPN', header: '客户料号', width: 14 },
+    { key: 'productType', header: '产品类型', width: 28 },
+    { key: 'internalPN', header: '内部料号', width: 20 },
+    { key: 'price', header: '单价(26H2)', width: 12 },
+    { key: 'amount', header: 'Amount', width: 14 },
+    { key: 'qty', header: 'Total pcs', width: 10 },
+    { key: 'totalAmt', header: 'Total Amount', width: 14 },
+    { key: 'd30', header: '1-30days', width: 10 },
+    { key: 'd60', header: '31-60days', width: 10 },
+    { key: 'd120', header: '61-120days', width: 11 },
+    { key: 'd180', header: '121-180days', width: 12 },
+    { key: 'over', header: '>180days', width: 10 },
+    { key: 'total', header: 'Total', width: 10 },
+  ];
+  ws.columns = cols;
+
+  // 表头样式
+  const headerFill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF1F4E79' } };
+  const headerFont = { color: { argb: 'FFFFFFFF' }, bold: true, size: 10, name: '微软雅黑' };
+  const thinBorder = { style: 'thin', color: { argb: 'FFB4B4B4' } };
+  const headerBorder = { top: thinBorder, left: thinBorder, bottom: thinBorder, right: thinBorder };
+
+  ws.getRow(1).eachCell(cell => {
+    cell.fill = headerFill;
+    cell.font = headerFont;
+    cell.alignment = { horizontal: 'center', vertical: 'middle', wrapText: true };
+    cell.border = headerBorder;
+  });
+  ws.getRow(1).height = 28;
+
+  // 库龄列颜色
+  const ageFills = {
+    d30: { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFE2EFDA' } },
+    d60: { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFFFF2CC' } },
+    d120: { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFFCE4D6' } },
+    d180: { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFF8CBAD' } },
+    over: { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFF4B084' } },
+  };
+  const ageFonts = {
+    d30: { color: { argb: 'FF2e7d32' }, bold: true },
+    d60: { color: { argb: 'FFf57f17' }, bold: true },
+    d120: { color: { argb: 'FFe65100' }, bold: true },
+    d180: { color: { argb: 'FFbf360c' }, bold: true },
+    over: { color: { argb: 'FF870000' }, bold: true },
+  };
+
+  // 按寄售库分组写入数据
+  let rowNum = 2;
+  const mergeRanges = [];
+
+  for (const wh of ['DSV', 'Evershine', 'Femar']) {
+    const group = [];
+    for (const r of summaryRows) {
+      if (r.type === 'detail' && r.wh === wh && isVisible(r)) {
+        group.push(r);
+      }
+    }
+    if (group.length === 0) continue;
+
+    const startRow = rowNum;
+    for (const r of group) {
+      const totalAge = r['1-30days'] + r['31-60days'] + r['61-120days'] + r['121-180days'] + r['>180days'];
+      const row = ws.getRow(rowNum);
+      row.values = [
+        r.wh, r.factory, r.customerPN, r.productType, r.internalPN,
+        r.price, r.qty * r.price, r.qty, r.amount,
+        r['1-30days'], r['31-60days'], r['61-120days'], r['121-180days'], r['>180days'],
+        totalAge
+      ];
+
+      // 金额格式
+      row.getCell(6).numFmt = '$#,##0.00';   // 单价
+      row.getCell(7).numFmt = '$#,##0.00';   // Amount
+      row.getCell(9).numFmt = '$#,##0.00';   // Total Amount
+      // 数量格式
+      row.getCell(8).numFmt = '#,##0';       // Total pcs
+      row.getCell(10).numFmt = '#,##0';
+      row.getCell(11).numFmt = '#,##0';
+      row.getCell(12).numFmt = '#,##0';
+      row.getCell(13).numFmt = '#,##0';
+      row.getCell(14).numFmt = '#,##0';
+      row.getCell(15).numFmt = '#,##0';
+
+      // 库龄列样式
+      ['d30','d60','d120','d180','over'].forEach((key, idx) => {
+        const cell = row.getCell(10 + idx);
+        cell.fill = ageFills[key];
+        cell.font = ageFonts[key];
+      });
+
+      // 边框
+      row.eachCell(cell => {
+        cell.border = { top: thinBorder, left: thinBorder, bottom: thinBorder, right: thinBorder };
+      });
+
+      row.height = 20;
+      rowNum++;
+    }
+    const endRow = rowNum - 1;
+    if (endRow > startRow) {
+      mergeRanges.push({ start: startRow, end: endRow });
+    }
+
+    // 小计行
+    const sub = summaryRows.find(r => r.type === 'subtotal' && r.wh === wh + ' 小计');
+    if (sub) {
+      const totalAge = sub['1-30days'] + sub['31-60days'] + sub['61-120days'] + sub['121-180days'] + sub['>180days'];
+      const row = ws.getRow(rowNum);
+      row.values = [sub.wh, '', '', '', '', '', '', sub.qty, sub.amount,
+        sub['1-30days'], sub['31-60days'], sub['61-120days'], sub['121-180days'], sub['>180days'], totalAge];
+
+      const subFill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFD6DCE4' } };
+      const subFont = { color: { argb: 'FF1F4E79' }, bold: true, size: 10 };
+      row.eachCell((cell, colNumber) => {
+        cell.fill = subFill;
+        cell.font = subFont;
+        cell.border = { top: { style: 'medium', color: { argb: 'FF1F4E79' } }, 
+                        bottom: { style: 'medium', color: { argb: 'FF1F4E79' } },
+                        left: thinBorder, right: thinBorder };
+        if (colNumber >= 10) {
+          const key = ['d30','d60','d120','d180','over'][colNumber - 10];
+          if (key) {
+            cell.fill = ageFills[key];
+            cell.font = ageFonts[key];
+          }
+        }
+      });
+      // 数量格式
+      row.getCell(8).numFmt = '#,##0';
+      row.getCell(9).numFmt = '$#,##0.00';
+      for (let c = 10; c <= 15; c++) row.getCell(c).numFmt = '#,##0';
+
+      row.height = 22;
+      rowNum++;
+    }
+  }
+
+  // 合并寄售库列
+  mergeRanges.forEach(range => {
+    ws.mergeCells(range.start, 1, range.end, 1);
+    ws.getCell(range.start, 1).alignment = { horizontal: 'center', vertical: 'middle' };
+  });
+
+  // 总计行
+  const total = summaryRows.find(r => r.type === 'total');
+  if (total) {
+    const totalAge = total['1-30days'] + total['31-60days'] + total['61-120days'] + total['121-180days'] + total['>180days'];
+    const row = ws.getRow(rowNum);
+    row.values = ['总计', '', '', '', '', '', '', total.qty, total.amount,
+      total['1-30days'], total['31-60days'], total['61-120days'], total['121-180days'], total['>180days'], totalAge];
+
+    const totalFill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF1F4E79' } };
+    const totalFont = { color: { argb: 'FFFFFFFF' }, bold: true, size: 10 };
+    row.eachCell((cell, colNumber) => {
+      cell.fill = totalFill;
+      cell.font = totalFont;
+      cell.border = { top: { style: 'medium', color: { argb: 'FF0f2d47' } },
+                      left: thinBorder, right: thinBorder, bottom: thinBorder };
+    });
+    row.getCell(8).numFmt = '#,##0';
+    row.getCell(9).numFmt = '$#,##0.00';
+    for (let c = 10; c <= 15; c++) row.getCell(c).numFmt = '#,##0';
+    row.height = 24;
+  }
+
+  // 冻结首行
+  ws.views = [{ state: 'frozen', ySplit: 1 }];
+
+  // 导出
+  const buffer = await workbook.xlsx.writeBuffer();
+  const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `寄售库库存库龄分析_${todayStr}.xlsx`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+// fallback 普通导出
+function exportPlainExcel() {
+  const exportData = [];
+  exportData.push(['寄售库','ST工厂','客户料号','产品类型','内部料号','单价(26H2)','Amount','Total pcs','Total Amount','1-30days','31-60days','61-120days','121-180days','>180days','Total']);
+
+  for (const r of summaryRows) {
+    const totalAge = r['1-30days'] + r['31-60days'] + r['61-120days'] + r['121-180days'] + r['>180days'];
+    exportData.push([
+      r.wh, r.factory, r.customerPN, r.productType, r.internalPN,
+      r.price, r.qty * r.price, r.qty, r.amount,
+      r['1-30days'], r['31-60days'], r['61-120days'], r['121-180days'], r['>180days'],
+      totalAge
+    ]);
+  }
+
+  const ws = XLSX.utils.aoa_to_sheet(exportData);
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, '库存库龄分析');
+  XLSX.writeFile(wb, `寄售库库存库龄分析_${todayStr}.xlsx`);
+}
+</script>
+
+</body>
+</html>
