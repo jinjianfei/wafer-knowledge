@@ -146,6 +146,27 @@ body {
 .tip-area { text-align: center; margin-top: 30px; }
 .tip-text { color: #555; font-size: 12px; }
 
+/* 累计统计卡片 */
+.summary-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 16px; }
+.summary-card { background: rgba(0,0,0,0.2); border-radius: 16px; padding: 16px 8px; text-align: center; border: 1px solid rgba(255,255,255,0.08); transition: all 0.3s; }
+.summary-card:hover { transform: translateY(-2px); }
+.summary-card.expense { border-left: 3px solid #ff6b6b; }
+.summary-card.income { border-left: 3px solid #2ecc71; }
+.summary-card.net { border-left: 3px solid #ffd93d; }
+.summary-icon { font-size: 22px; display: block; margin-bottom: 4px; }
+.summary-label { color: #aaa; font-size: 12px; display: block; margin-bottom: 4px; }
+.summary-value { font-size: 22px; font-weight: bold; display: inline; }
+.summary-card.expense .summary-value { color: #ff6b6b; }
+.summary-card.income .summary-value { color: #2ecc71; }
+.summary-card.net .summary-value { color: #ffd93d; }
+.summary-unit { font-size: 12px; color: #888; }
+@media (max-width: 400px) {
+  .summary-cards { grid-template-columns: repeat(3, 1fr); gap: 6px; }
+  .summary-card { padding: 12px 4px; }
+  .summary-value { font-size: 18px; }
+  .summary-icon { font-size: 18px; }
+}
+
 
 /* 定蓝球功能 */
 .fixed-blue-section { margin: 16px auto 0; max-width: 320px; }
@@ -169,6 +190,7 @@ body {
   .brand-slogan { font-size: 18px; }
 }
 </style>
+<base target="_blank">
 <base target="_blank">
 <base target="_blank">
 <base target="_blank">
@@ -282,6 +304,26 @@ body {
 
   <!-- 记录页 -->
   <div id="tab-history" class="content-section">
+    <div class="summary-cards" id="summaryCards">
+      <div class="summary-card expense">
+        <span class="summary-icon">💰</span>
+        <span class="summary-label">累计支出</span>
+        <span class="summary-value" id="totalExpense">0</span>
+        <span class="summary-unit">元</span>
+      </div>
+      <div class="summary-card income">
+        <span class="summary-icon">🎉</span>
+        <span class="summary-label">累计中奖</span>
+        <span class="summary-value" id="totalIncome">0</span>
+        <span class="summary-unit">元</span>
+      </div>
+      <div class="summary-card net">
+        <span class="summary-icon">📊</span>
+        <span class="summary-label">净盈亏</span>
+        <span class="summary-value" id="netProfit">0</span>
+        <span class="summary-unit">元</span>
+      </div>
+    </div>
     <div class="history-header">
       <span class="history-title">我的摇球记录</span>
       <button class="clear-btn" onclick="clearHistory()">清空记录</button>
@@ -883,6 +925,7 @@ function confirmManualAdd() {
 // ==================== 记录 ====================
 function renderHistory() {
   const records = getRecords();
+  updateSummary(records);
   const list = document.getElementById('historyList');
   if (records.length === 0) {
     list.innerHTML = `<div class="empty-state"><span class="empty-icon">🎱</span><span class="empty-text">还没有摇球记录</span><span class="empty-desc">快去试试手气吧！</span></div>`;
@@ -943,6 +986,34 @@ function clearHistory() {
   showToast('记录已清空'); 
 }
 
+// 更新累计统计
+function updateSummary(records) {
+  const totalExpense = records.length * 2;
+  let totalIncome = 0;
+  records.forEach(rec => {
+    if (rec.status === 'won' && rec.prizeMoney) {
+      // 处理浮动奖金的情况
+      const money = rec.prizeMoney;
+      if (typeof money === 'number') {
+        totalIncome += money;
+      } else if (typeof money === 'string') {
+        // 尝试提取数字
+        const match = money.toString().match(/(\\d+)/);
+        if (match) {
+          totalIncome += parseInt(match[1]);
+        }
+      }
+    }
+  });
+  const netProfit = totalIncome - totalExpense;
+
+  document.getElementById('totalExpense').textContent = totalExpense;
+  document.getElementById('totalIncome').textContent = totalIncome;
+  const netEl = document.getElementById('netProfit');
+  netEl.textContent = (netProfit >= 0 ? '+' : '') + netProfit;
+  netEl.style.color = netProfit >= 0 ? '#2ecc71' : '#ff6b6b';
+}
+
 // ==================== Toast ====================
 function showToast(msg) { 
   const t = document.getElementById('toast'); 
@@ -957,6 +1028,8 @@ document.addEventListener('DOMContentLoaded', () => {
   updateTargetPeriodDisplay();
   autoCheckPrizes(); // 页面加载时自动兑奖
   renderHistory();
+  // 初始化统计卡片
+  updateSummary(getRecords());
 });
 </script>
 </body>
