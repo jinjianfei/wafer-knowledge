@@ -465,8 +465,8 @@ function getNextPeriod(currentPeriod) {
 }
 
 function updateTargetPeriodDisplay() {
-  const latest = getLatestPeriod();
-  const next = getNextPeriod(latest);
+  const builtInLatest = INITIAL_DATA[0].period;
+  const next = getNextPeriod(builtInLatest);
   const el = document.getElementById('targetPeriod');
   if (el) {
     el.textContent = next ? `目标期号：第${next}期` : '目标期号：暂无数据';
@@ -615,8 +615,8 @@ function finalizeBalls() {
       document.getElementById('targetPeriod').style.display = 'block';
 
       // 计算目标期号并保存记录
-      const latestPeriod = getLatestPeriod();
-      const targetPeriod = getNextPeriod(latestPeriod);
+      const builtInLatest = INITIAL_DATA[0].period;
+      const targetPeriod = getNextPeriod(builtInLatest);
       const recs = getRecords();
       recs.unshift({ 
         time: formatDate(), 
