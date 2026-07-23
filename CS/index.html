@@ -560,12 +560,14 @@ function buildSummary() {
   detailGroups.sort((a, b) => {
     const whOrder = { 'Evershine': 0, 'DSV': 1, 'Femar': 2 };
     if (whOrder[a.wh] !== whOrder[b.wh]) return whOrder[a.wh] - whOrder[b.wh];
-    // 按产品类型 D150/D200/D300 排序
+    // 1. 先按工厂排序
+    if (a.factory !== b.factory) return a.factory.localeCompare(b.factory);
+    // 2. 再按 D150/D200/D300 排序
     const sizeA = getSizeSort(a.productType);
     const sizeB = getSizeSort(b.productType);
     if (sizeA !== sizeB) return sizeA - sizeB;
-    // 相同产品类型按工厂排序
-    if (a.factory !== b.factory) return a.factory.localeCompare(b.factory);
+    // 3. 再按产品类型排序
+    if (a.productType !== b.productType) return a.productType.localeCompare(b.productType);
     return a.customerPN.localeCompare(b.customerPN);
   });
 
