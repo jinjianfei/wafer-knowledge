@@ -182,6 +182,38 @@
     width: 120px;
     font-family: inherit;
   }
+  /* 库龄列 tooltip 样式 */
+  td[title] {
+    cursor: help;
+    position: relative;
+  }
+  td[title]:hover::after {
+    content: attr(title);
+    position: absolute;
+    left: 50%;
+    bottom: 100%;
+    transform: translateX(-50%);
+    background: #333;
+    color: #fff;
+    padding: 6px 10px;
+    border-radius: 4px;
+    font-size: 11px;
+    white-space: pre;
+    z-index: 100;
+    pointer-events: none;
+    line-height: 1.6;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  }
+  td[title]:hover::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: calc(100% - 4px);
+    transform: translateX(-50%);
+    border: 5px solid transparent;
+    border-top-color: #333;
+    z-index: 100;
+  }
   /* 合并单元格样式 */
   td[rowspan] {
     vertical-align: middle;
@@ -536,13 +568,22 @@ function buildSummary() {
         internalPN: r.internalPN,
         price: r.price,
         qty: 0, amount: 0,
-        '1-30days': 0, '31-60days': 0, '61-120days': 0, '121-180days': 0, '>180days': 0
+        '1-30days': 0, '31-60days': 0, '61-120days': 0, '121-180days': 0, '>180days': 0,
+        // 记录每个库龄段的具体天数分布
+        ageDist: {
+          '1-30days': {}, '31-60days': {}, '61-120days': {}, '121-180days': {}, '>180days': {}
+        }
       };
     }
     groups[key].qty += r.qty;
     groups[key].amount += r.amount;
     if (groups[key][r.ageBucket] !== undefined) {
       groups[key][r.ageBucket] += r.qty;
+    }
+    // 记录具体天数分布
+    if (r.ageDays !== null && groups[key].ageDist[r.ageBucket] !== undefined) {
+      const dayKey = r.ageDays + '天';
+      groups[key].ageDist[r.ageBucket][dayKey] = (groups[key].ageDist[r.ageBucket][dayKey] || 0) + r.qty;
     }
     if (!groups[key].productType && r.productType) groups[key].productType = r.productType;
   }
@@ -700,6 +741,18 @@ function renderTable() {
         ? `<td class="col-center" rowspan="${group.length}"><span class="badge ${badgeClass}">${r.wh}</span></td>`
         : '';
 
+      // 生成库龄列的 tooltip 文本
+      function makeTooltip(dist) {
+        if (!dist || Object.keys(dist).length === 0) return '';
+        const entries = Object.entries(dist).sort((a,b) => parseInt(a[0]) - parseInt(b[0]));
+        return entries.map(e => e[0] + ': ' + e[1] + 'pcs').join('\n');
+      }
+      const t30 = makeTooltip(r.ageDist && r.ageDist['1-30days']);
+      const t60 = makeTooltip(r.ageDist && r.ageDist['31-60days']);
+      const t120 = makeTooltip(r.ageDist && r.ageDist['61-120days']);
+      const t180 = makeTooltip(r.ageDist && r.ageDist['121-180days']);
+      const tover = makeTooltip(r.ageDist && r.ageDist['>180days']);
+
       tbody.innerHTML += `
         <tr>
           ${whCell}
@@ -711,11 +764,11 @@ function renderTable() {
           <td class="col-right money">${fmtMoney(r.qty * r.price)}</td>
           <td class="col-right">${fmtNum(r.qty)}</td>
           <td class="col-right money">${fmtMoney(r.amount)}</td>
-          <td class="col-right age-30">${fmtNum(r['1-30days'])}</td>
-          <td class="col-right age-60">${fmtNum(r['31-60days'])}</td>
-          <td class="col-right age-120">${fmtNum(r['61-120days'])}</td>
-          <td class="col-right age-180">${fmtNum(r['121-180days'])}</td>
-          <td class="col-right age-over">${fmtNum(r['>180days'])}</td>
+          <td class="col-right age-30" title="${t30}">${fmtNum(r['1-30days'])}</td>
+          <td class="col-right age-60" title="${t60}">${fmtNum(r['31-60days'])}</td>
+          <td class="col-right age-120" title="${t120}">${fmtNum(r['61-120days'])}</td>
+          <td class="col-right age-180" title="${t180}">${fmtNum(r['121-180days'])}</td>
+          <td class="col-right age-over" title="${tover}">${fmtNum(r['>180days'])}</td>
           <td class="col-right">${fmtNum(totalAge)}</td>
         </tr>`;
     }
