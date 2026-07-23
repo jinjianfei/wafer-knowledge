@@ -223,21 +223,21 @@
     <table id="resultTable">
       <thead>
         <tr>
-          <th>寄售库</th>
-          <th>ST工厂</th>
-          <th>客户料号</th>
-          <th style="min-width:200px">产品类型</th>
-          <th>内部料号</th>
-          <th>单价(26H2)</th>
-          <th>Amount</th>
-          <th>Total pcs</th>
-          <th>Total Amount</th>
-          <th>1-30days</th>
-          <th>31-60days</th>
-          <th>61-120days</th>
-          <th>121-180days</th>
-          <th>>180days</th>
-          <th>Total</th>
+          <th style="min-width:48px">寄售库</th>
+          <th style="min-width:48px">ST工厂</th>
+          <th style="min-width:85px">客户料号</th>
+          <th style="min-width:68px">产品类型</th>
+          <th style="min-width:85px">内部料号</th>
+          <th style="min-width:65px">单价(26H2)</th>
+          <th style="min-width:65px">Amount</th>
+          <th style="min-width:55px">Total pcs</th>
+          <th style="min-width:75px">Total Amount</th>
+          <th style="min-width:55px">1-30days</th>
+          <th style="min-width:55px">31-60days</th>
+          <th style="min-width:60px">61-120days</th>
+          <th style="min-width:60px">121-180days</th>
+          <th style="min-width:55px">>180days</th>
+          <th style="min-width:50px">Total</th>
         </tr>
       </thead>
       <tbody id="tableBody"></tbody>
@@ -789,21 +789,21 @@ async function exportExcel() {
 
   // 列定义
   const cols = [
-    { key: 'wh', header: '寄售库', width: 12 },
-    { key: 'factory', header: 'ST工厂', width: 12 },
-    { key: 'customerPN', header: '客户料号', width: 14 },
-    { key: 'productType', header: '产品类型', width: 28 },
-    { key: 'internalPN', header: '内部料号', width: 20 },
-    { key: 'price', header: '单价(26H2)', width: 12 },
-    { key: 'amount', header: 'Amount', width: 14 },
+    { key: 'wh', header: '寄售库', width: 9 },
+    { key: 'factory', header: 'ST工厂', width: 9 },
+    { key: 'customerPN', header: '客户料号', width: 13 },
+    { key: 'productType', header: '产品类型', width: 13 },
+    { key: 'internalPN', header: '内部料号', width: 14 },
+    { key: 'price', header: '单价(26H2)', width: 10 },
+    { key: 'amount', header: 'Amount', width: 11 },
     { key: 'qty', header: 'Total pcs', width: 10 },
-    { key: 'totalAmt', header: 'Total Amount', width: 14 },
+    { key: 'totalAmt', header: 'Total Amount', width: 12 },
     { key: 'd30', header: '1-30days', width: 10 },
     { key: 'd60', header: '31-60days', width: 10 },
     { key: 'd120', header: '61-120days', width: 11 },
-    { key: 'd180', header: '121-180days', width: 12 },
+    { key: 'd180', header: '121-180days', width: 11 },
     { key: 'over', header: '>180days', width: 10 },
-    { key: 'total', header: 'Total', width: 10 },
+    { key: 'total', header: 'Total', width: 9 },
   ];
   ws.columns = cols;
 
