@@ -112,12 +112,102 @@ body {
 .status-badge { display: inline-block; padding: 4px 12px; border-radius: 12px; font-size: 13px; font-weight: bold; }
 .status-badge.pending { background: rgba(77,150,255,0.15); color: #4d96ff; border: 1px solid rgba(77,150,255,0.3); }
 .status-badge.lost { background: rgba(255,255,255,0.06); color: #888; border: 1px solid rgba(255,255,255,0.1); }
-.status-badge.won.gold { background: linear-gradient(135deg, rgba(255,215,0,0.2), rgba(255,165,0,0.2)); color: #ffd700; border: 1px solid rgba(255,215,0,0.4); }
-.status-badge.won.purple { background: rgba(155,89,182,0.2); color: #d2b3e6; border: 1px solid rgba(155,89,182,0.4); }
-.status-badge.won.red { background: rgba(231,76,60,0.2); color: #ff8a8a; border: 1px solid rgba(231,76,60,0.4); }
-.status-badge.won.orange { background: rgba(230,126,34,0.2); color: #f5b041; border: 1px solid rgba(230,126,34,0.4); }
-.status-badge.won.blue { background: rgba(52,152,219,0.2); color: #74b9ff; border: 1px solid rgba(52,152,219,0.4); }
-.status-badge.won.green { background: rgba(46,204,113,0.2); color: #58d68d; border: 1px solid rgba(46,204,113,0.4); }
+/* 一等奖 - 金色玫瑰 */
+.status-badge.won.level-1 {
+  background: linear-gradient(135deg, rgba(255,215,0,0.15), rgba(255,165,0,0.15));
+  color: #ffd700;
+  border: 1.5px solid rgba(255,215,0,0.5);
+  position: relative;
+  padding-left: 26px;
+  box-shadow: 0 0 12px rgba(255,215,0,0.15);
+}
+.status-badge.won.level-1::before { content: "✦"; position: absolute; left: 8px; font-size: 13px; }
+
+/* 二等奖 - 紫水晶 */
+.status-badge.won.level-2 {
+  background: linear-gradient(135deg, rgba(155,89,182,0.15), rgba(142,68,173,0.15));
+  color: #d2b3e6;
+  border: 1.5px solid rgba(155,89,182,0.5);
+  position: relative;
+  padding-left: 26px;
+  box-shadow: 0 0 12px rgba(155,89,182,0.15);
+}
+.status-badge.won.level-2::before { content: "✧"; position: absolute; left: 8px; font-size: 13px; }
+
+/* 三等奖 - 红玫瑰 */
+.status-badge.won.level-3 {
+  background: linear-gradient(135deg, rgba(231,76,60,0.15), rgba(192,57,43,0.15));
+  color: #ff8a8a;
+  border: 1.5px solid rgba(231,76,60,0.5);
+  position: relative;
+  padding-left: 26px;
+  box-shadow: 0 0 12px rgba(231,76,60,0.15);
+}
+.status-badge.won.level-3::before { content: "❀"; position: absolute; left: 8px; font-size: 13px; }
+
+/* 四等奖 - 向日葵 */
+.status-badge.won.level-4 {
+  background: linear-gradient(135deg, rgba(230,126,34,0.15), rgba(211,84,0,0.15));
+  color: #f5b041;
+  border: 1.5px solid rgba(230,126,34,0.5);
+  position: relative;
+  padding-left: 26px;
+  box-shadow: 0 0 12px rgba(230,126,34,0.15);
+}
+.status-badge.won.level-4::before { content: "✿"; position: absolute; left: 8px; font-size: 13px; }
+
+/* 五等奖 - 满天星 */
+.status-badge.won.level-5 {
+  background: linear-gradient(135deg, rgba(52,152,219,0.15), rgba(41,128,185,0.15));
+  color: #74b9ff;
+  border: 1.5px solid rgba(52,152,219,0.5);
+  position: relative;
+  padding-left: 26px;
+  box-shadow: 0 0 12px rgba(52,152,219,0.15);
+}
+.status-badge.won.level-5::before { content: "✾"; position: absolute; left: 8px; font-size: 13px; }
+
+/* 六等奖 - 小雏菊 */
+.status-badge.won.level-6 {
+  background: linear-gradient(135deg, rgba(46,204,113,0.15), rgba(39,174,96,0.15));
+  color: #58d68d;
+  border: 1.5px solid rgba(46,204,113,0.5);
+  position: relative;
+  padding-left: 26px;
+  box-shadow: 0 0 12px rgba(46,204,113,0.15);
+}
+.status-badge.won.level-6::before { content: "❁"; position: absolute; left: 8px; font-size: 13px; }
+
+/* 中奖记录卡片装饰 */
+.history-item.won-card {
+  border-left: 3px solid rgba(255,215,0,0.4);
+  background: linear-gradient(90deg, rgba(255,215,0,0.04), rgba(0,0,0,0.2));
+}
+.history-item.won-card.level-1 { border-left-color: rgba(255,215,0,0.6); }
+.history-item.won-card.level-2 { border-left-color: rgba(155,89,182,0.6); }
+.history-item.won-card.level-3 { border-left-color: rgba(231,76,60,0.6); }
+.history-item.won-card.level-4 { border-left-color: rgba(230,126,34,0.6); }
+.history-item.won-card.level-5 { border-left-color: rgba(52,152,219,0.6); }
+.history-item.won-card.level-6 { border-left-color: rgba(46,204,113,0.6); }
+
+/* 待开奖和未中奖优化 */
+.status-badge.pending {
+  background: rgba(77,150,255,0.08);
+  color: #4d96ff;
+  border: 1px solid rgba(77,150,255,0.25);
+  position: relative;
+  padding-left: 26px;
+}
+.status-badge.pending::before { content: "◌"; position: absolute; left: 9px; font-size: 12px; }
+
+.status-badge.lost {
+  background: rgba(255,255,255,0.04);
+  color: #777;
+  border: 1px solid rgba(255,255,255,0.08);
+  position: relative;
+  padding-left: 26px;
+}
+.status-badge.lost::before { content: "✕"; position: absolute; left: 9px; font-size: 11px; }
 .item-actions { display: flex; gap: 6px; }
 .action-btn { padding: 5px 12px; border-radius: 8px; border: none; cursor: pointer; font-size: 12px; transition: all 0.3s; outline: none; }
 .action-btn.copy { background: rgba(77,150,255,0.15); color: #4d96ff; border: 1px solid rgba(77,150,255,0.3); }
@@ -189,7 +279,88 @@ body {
   .brand-name { font-size: 26px; }
   .brand-slogan { font-size: 18px; }
 }
+
+/* 倍投选择 */
+.multiplier-bar { display: flex; justify-content: center; gap: 10px; margin-bottom: 14px; }
+.mult-btn { padding: 6px 18px; border: 1.5px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.05); color: #aaa; border-radius: 20px; cursor: pointer; font-size: 14px; font-weight: bold; transition: all 0.3s; outline: none; }
+.mult-btn:hover { border-color: rgba(255,107,107,0.5); color: #fff; }
+.mult-btn.active { background: linear-gradient(135deg, #ff6b6b, #ee5a5a); border-color: #ff6b6b; color: #fff; box-shadow: 0 4px 15px rgba(255,107,107,0.3); }
+
+/* 多组结果展示 */
+.result-group { margin-bottom: 14px; }
+.result-group:last-child { margin-bottom: 0; }
+.group-label { color: #ffd93d; font-size: 12px; margin-bottom: 6px; display: block; text-align: center; }
+.group-balls { display: flex; justify-content: center; align-items: center; gap: 8px; flex-wrap: wrap; }
+.group-balls .ball { width: 44px; height: 44px; font-size: 16px; }
+.group-divider { height: 1px; background: rgba(255,255,255,0.08); margin: 10px 0; }
+
+/* 多组分析卡片 - 紧凑模式 */
+.group-analysis { margin-top: 10px; }
+.group-analysis .analysis-cards { margin-top: 8px; }
+.group-analysis .analysis-cards .card { padding: 10px 4px; }
+.group-analysis .analysis-cards .card .value { font-size: 16px; }
+
+@media (max-width: 400px) {
+  .group-balls .ball { width: 36px; height: 36px; font-size: 14px; }
+  .mult-btn { padding: 5px 14px; font-size: 13px; }
+}
+
+
+/* 鼠标跟随的💴图标 */
+.money-cursor {
+  position: fixed;
+  pointer-events: none;
+  z-index: 9999;
+  font-size: 24px;
+  opacity: 0;
+  transition: opacity 0.3s;
+  transform: translate(-50%, -50%);
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+}
+.money-cursor.show { opacity: 1; }
+.money-cursor::after {
+  content: "💴";
+  display: block;
+  animation: moneyFloat 1.5s ease-in-out infinite;
+}
+@keyframes moneyFloat {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  25% { transform: translateY(-6px) rotate(-10deg); }
+  75% { transform: translateY(-3px) rotate(10deg); }
+}
+
+/* 撒钱粒子 */
+.money-particle {
+  position: fixed;
+  pointer-events: none;
+  z-index: 9998;
+  font-size: 20px;
+  animation: moneyFall 1.2s ease-out forwards;
+}
+@keyframes moneyFall {
+  0% { opacity: 1; transform: translate(0, 0) rotate(0deg) scale(1); }
+  30% { opacity: 1; transform: translate(var(--tx), -40px) rotate(var(--r1)) scale(1.2); }
+  100% { opacity: 0; transform: translate(var(--tx2), var(--ty)) rotate(var(--r2)) scale(0.6); }
+}
+
+/* 点击闪光 */
+.click-flash {
+  position: fixed;
+  pointer-events: none;
+  z-index: 9997;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #ffd93d, transparent);
+  animation: flashExpand 0.5s ease-out forwards;
+}
+@keyframes flashExpand {
+  0% { opacity: 1; transform: scale(1); }
+  100% { opacity: 0; transform: scale(30); }
+}
+
 </style>
+<base target="_blank">
 <base target="_blank">
 <base target="_blank">
 <base target="_blank">
@@ -251,6 +422,11 @@ body {
           <button class="blue-num-btn" onclick="selectBlueNum(16)">16</button>
         </div>
         <span class="fixed-hint" id="fixedHint">已锁定蓝球，红球随机生成</span>
+      </div>
+      <div class="multiplier-bar" id="multiplierBar">
+        <button class="mult-btn active" data-mult="1" onclick="setMultiplier(1)">×1</button>
+        <button class="mult-btn" data-mult="5" onclick="setMultiplier(5)">×5</button>
+        <button class="mult-btn" data-mult="10" onclick="setMultiplier(10)">×10</button>
       </div>
       <span class="target-period" id="targetPeriod">目标期号：计算中...</span>
       <button class="shake-btn" id="shakeBtn" onclick="shakeBalls()">一键摇球</button>
@@ -591,6 +767,16 @@ let isShaking = false;
 let fixedBlueEnabled = false;
 let fixedBlueNum = 3;
 
+let currentMultiplier = 1;
+
+function setMultiplier(n) {
+  currentMultiplier = n;
+  document.querySelectorAll('.mult-btn').forEach(btn => {
+    btn.classList.toggle('active', parseInt(btn.dataset.mult) === n);
+  });
+  showToast(`已选择 ×${n} 倍投`);
+}
+
 function toggleFixedBlue() {
   fixedBlueEnabled = !fixedBlueEnabled;
   const toggle = document.getElementById('toggleSwitch');
@@ -625,31 +811,105 @@ function shakeBalls() {
   if (isShaking) return;
   isShaking = true;
   const btn = document.getElementById('shakeBtn');
+  const multBar = document.getElementById('multiplierBar');
   btn.disabled = true; btn.textContent = '摇球中...';
+  multBar.style.pointerEvents = 'none';
+  multBar.style.opacity = '0.5';
   document.getElementById('analysisCards').style.display = 'none';
   document.getElementById('plusText').style.display = 'none';
   document.getElementById('targetPeriod').style.display = 'none';
-  for (let i = 0; i < 7; i++) { const el = document.getElementById('b' + i); el.classList.add('shaking'); el.textContent = '?'; }
+
+  // 构建多组摇球UI
+  const row = document.getElementById('ballsRow');
+  row.innerHTML = '';
+  for (let g = 0; g < currentMultiplier; g++) {
+    if (g > 0) {
+      const div = document.createElement('div');
+      div.className = 'group-divider';
+      row.appendChild(div);
+    }
+    const group = document.createElement('div');
+    group.className = 'result-group';
+    group.id = 'group-' + g;
+    if (currentMultiplier > 1) {
+      const label = document.createElement('span');
+      label.className = 'group-label';
+      label.textContent = '第 ' + (g + 1) + ' 组';
+      group.appendChild(label);
+    }
+    const ballsWrap = document.createElement('div');
+    ballsWrap.className = 'group-balls';
+    for (let i = 0; i < 6; i++) {
+      const b = document.createElement('div');
+      b.className = 'ball red shaking';
+      b.id = 'g' + g + 'b' + i;
+      b.textContent = '?';
+      ballsWrap.appendChild(b);
+    }
+    const plus = document.createElement('span');
+    plus.className = 'plus-sign';
+    plus.textContent = '+';
+    ballsWrap.appendChild(plus);
+    const blueBall = document.createElement('div');
+    blueBall.className = 'ball blue shaking';
+    blueBall.id = 'g' + g + 'b6';
+    blueBall.textContent = '?';
+    ballsWrap.appendChild(blueBall);
+    group.appendChild(ballsWrap);
+    row.appendChild(group);
+  }
+
   let elapsed = 0;
   const timer = setInterval(() => {
     elapsed += 80;
-    for (let i = 0; i < 6; i++) document.getElementById('b' + i).textContent = Math.floor(Math.random() * 33) + 1;
-    document.getElementById('b6').textContent = Math.floor(Math.random() * 16) + 1;
+    for (let g = 0; g < currentMultiplier; g++) {
+      for (let i = 0; i < 6; i++) {
+        const el = document.getElementById('g' + g + 'b' + i);
+        if (el) el.textContent = Math.floor(Math.random() * 33) + 1;
+      }
+      const elb = document.getElementById('g' + g + 'b6');
+      if (elb) elb.textContent = Math.floor(Math.random() * 16) + 1;
+    }
     if (elapsed >= 2000) { clearInterval(timer); finalizeBalls(); }
   }, 80);
 }
 function finalizeBalls() {
-  const red = generateRed(), blue = generateBlue();
-  for (let i = 0; i < 7; i++) document.getElementById('b' + i).classList.remove('shaking');
-  let idx = 0;
-  const reveal = () => {
-    const el = document.getElementById('b' + idx);
-    el.textContent = idx < 6 ? red[idx] : blue;
-    el.classList.remove('appear'); void el.offsetWidth; el.classList.add('appear');
-    idx++;
-    if (idx <= 6) setTimeout(reveal, 250);
-    else {
-      const a = analyzeNumbers(red, blue);
+  const results = [];
+  for (let g = 0; g < currentMultiplier; g++) {
+    results.push({ red: generateRed(), blue: generateBlue() });
+  }
+
+  // 停止所有摇晃
+  for (let g = 0; g < currentMultiplier; g++) {
+    for (let i = 0; i < 7; i++) {
+      const el = document.getElementById('g' + g + 'b' + (i < 6 ? i : '6'));
+      if (el) el.classList.remove('shaking');
+    }
+  }
+
+  let groupIdx = 0;
+  let ballIdx = 0;
+
+  const revealNext = () => {
+    const g = groupIdx;
+    const b = ballIdx;
+    const elId = 'g' + g + 'b' + (b < 6 ? b : '6');
+    const el = document.getElementById(elId);
+    if (el) {
+      el.textContent = b < 6 ? results[g].red[b] : results[g].blue;
+      el.classList.remove('appear'); void el.offsetWidth; el.classList.add('appear');
+    }
+    ballIdx++;
+    if (ballIdx > 6) {
+      ballIdx = 0;
+      groupIdx++;
+    }
+    if (groupIdx < currentMultiplier) {
+      setTimeout(revealNext, 120);
+    } else {
+      // 全部揭示完成
+      // 显示第一组的分析卡片（多组时显示第一组作为参考）
+      const a = analyzeNumbers(results[0].red, results[0].blue);
       document.getElementById('aSum').textContent = a.sum;
       document.getElementById('aOdd').textContent = a.oddEven;
       document.getElementById('aBig').textContent = a.bigSmall;
@@ -660,29 +920,35 @@ function finalizeBalls() {
       document.getElementById('plusText').style.display = 'block';
       document.getElementById('targetPeriod').style.display = 'block';
 
-      // 计算目标期号并保存记录
+      // 保存所有记录
       const builtInLatest = INITIAL_DATA[0].period;
       const targetPeriod = getNextPeriod(builtInLatest);
       const recs = getRecords();
-      recs.unshift({ 
-        time: formatDate(), 
-        red, 
-        blue,
-        targetPeriod,
-        status: 'pending'
+      results.forEach(r => {
+        recs.unshift({
+          time: formatDate(),
+          red: r.red,
+          blue: r.blue,
+          targetPeriod,
+          status: 'pending'
+        });
       });
-      saveRecords(recs.slice(0, 100));
+      saveRecords(recs.slice(0, 200));
 
       // 立即尝试自动兑奖
       autoCheckPrizes();
 
-      document.getElementById('shakeBtn').disabled = false;
-      document.getElementById('shakeBtn').textContent = '再摇一次';
+      const btn = document.getElementById('shakeBtn');
+      const multBar = document.getElementById('multiplierBar');
+      btn.disabled = false;
+      btn.textContent = '再摇一次';
+      multBar.style.pointerEvents = 'auto';
+      multBar.style.opacity = '1';
       isShaking = false;
-      showToast('摇球完成！已保存到记录');
+      showToast(`摇球完成！已生成 ${currentMultiplier} 组号码并保存`);
     }
   };
-  reveal();
+  revealNext();
 }
 function generateRed() { const pool = Array.from({length:33},(_,i)=>i+1); const nums=[]; for(let i=0;i<6;i++){const r=Math.floor(Math.random()*pool.length);nums.push(pool.splice(r,1)[0]);} return nums.sort((a,b)=>a-b); }
 function generateBlue() { 
@@ -936,27 +1202,27 @@ function renderHistory() {
     return;
   }
 
-  const badgeColors = ['', 'gold', 'purple', 'red', 'orange', 'blue', 'green'];
-
   let html = '';
   records.forEach((rec, idx) => {
     const balls = rec.red.map(n => `<div class="mini-ball red">${n}</div>`).join('') + `<span class="plus">+</span><div class="mini-ball blue">${rec.blue}</div>`;
 
     let statusHtml = '';
+    let cardClass = '';
     if (rec.status === 'pending') {
-      statusHtml = `<span class="status-badge pending">⏳ 第${rec.targetPeriod || '未知'}期 · 待开奖</span>`;
+      statusHtml = `<span class="status-badge pending">第${rec.targetPeriod || '未知'}期 · 待开奖</span>`;
     } else if (rec.status === 'won') {
-      const colorClass = badgeColors[rec.prizeLevel] || 'green';
-      statusHtml = `<span class="status-badge won ${colorClass}">🎉 ${rec.prizeName} · ${rec.prizeMoney}元 · 命中${rec.matchedRed}红+${rec.matchedBlue}蓝</span>`;
+      const levelClass = 'level-' + (rec.prizeLevel || 6);
+      cardClass = 'won-card ' + levelClass;
+      statusHtml = `<span class="status-badge won ${levelClass}">${rec.prizeName} · ${rec.prizeMoney}元 · 命中${rec.matchedRed}红+${rec.matchedBlue}蓝</span>`;
     } else {
-      statusHtml = `<span class="status-badge lost">❌ 第${rec.targetPeriod || '未知'}期 · 未中奖 · 命中${rec.matchedRed}红+${rec.matchedBlue}蓝</span>`;
+      statusHtml = `<span class="status-badge lost">第${rec.targetPeriod || '未知'}期 · 未中奖 · 命中${rec.matchedRed}红+${rec.matchedBlue}蓝</span>`;
     }
 
-    html += `<div class="history-item">
+    html += `<div class="history-item ${cardClass}">
       <div class="item-header">
         <div>
           <span class="item-time">${rec.time}</span>
-          <span class="item-target">🎯 目标期号：第${rec.targetPeriod || '未指定'}期</span>
+          <span class="item-target">目标期号：第${rec.targetPeriod || '未指定'}期</span>
         </div>
         <div class="item-actions">
           <button class="action-btn copy" onclick="copyRecord(${idx})">复制</button>
@@ -1026,15 +1292,84 @@ function showToast(msg) {
   setTimeout(() => t.classList.remove('show'), 2500); 
 }
 
+// ==================== 撒钱特效 ====================
+function initMoneyEffects() {
+  const cursor = document.getElementById('moneyCursor');
+  if (!cursor) return; // 安全保护
+  let mouseX = 0, mouseY = 0;
+  let cursorX = 0, cursorY = 0;
+
+  // 鼠标跟随（平滑延迟效果）
+  document.addEventListener('mousemove', (e) => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+    cursor.classList.add('show');
+  });
+
+  document.addEventListener('mouseleave', () => {
+    cursor.classList.remove('show');
+  });
+
+  function animateCursor() {
+    cursorX += (mouseX - cursorX) * 0.15;
+    cursorY += (mouseY - cursorY) * 0.15;
+    cursor.style.left = cursorX + 'px';
+    cursor.style.top = cursorY + 'px';
+    requestAnimationFrame(animateCursor);
+  }
+  animateCursor();
+
+  // 点击撒钱
+  document.addEventListener('click', (e) => {
+    spawnMoneyRain(e.clientX, e.clientY);
+  });
+}
+
+function spawnMoneyRain(x, y) {
+  const symbols = ['💴', '💵', '💶', '💷', '💰', '💸', '✨', '⭐'];
+  const count = 12;
+
+  // 闪光效果
+  const flash = document.createElement('div');
+  flash.className = 'click-flash';
+  flash.style.left = (x - 3) + 'px';
+  flash.style.top = (y - 3) + 'px';
+  document.body.appendChild(flash);
+  setTimeout(() => flash.remove(), 600);
+
+  for (let i = 0; i < count; i++) {
+    const p = document.createElement('div');
+    p.className = 'money-particle';
+    p.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+
+    const angle = (Math.PI * 2 * i) / count + (Math.random() - 0.5) * 0.5;
+    const dist1 = 30 + Math.random() * 60;
+    const dist2 = 60 + Math.random() * 100;
+    const fallY = 80 + Math.random() * 120;
+    const r1 = (Math.random() - 0.5) * 360;
+    const r2 = r1 + (Math.random() - 0.5) * 540;
+
+    p.style.setProperty('--tx', (Math.cos(angle) * dist1) + 'px');
+    p.style.setProperty('--tx2', (Math.cos(angle) * dist2) + 'px');
+    p.style.setProperty('--ty', fallY + 'px');
+    p.style.setProperty('--r1', r1 + 'deg');
+    p.style.setProperty('--r2', r2 + 'deg');
+    p.style.left = x + 'px';
+    p.style.top = y + 'px';
+    p.style.animationDelay = (Math.random() * 0.1) + 's';
+
+    document.body.appendChild(p);
+    setTimeout(() => p.remove(), 1500);
+  }
+}
+
 // ==================== 初始化 ====================
 document.addEventListener('DOMContentLoaded', () => {
   initData();
   updateTargetPeriodDisplay();
-  autoCheckPrizes(); // 页面加载时自动兑奖
-  renderHistory();
-  // 初始化统计卡片
-  updateSummary(getRecords());
+  initMoneyEffects();
 });
 </script>
+<div class="money-cursor" id="moneyCursor"></div>
 </body>
 </html>
