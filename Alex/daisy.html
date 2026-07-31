@@ -394,6 +394,94 @@ body {
   text-align: center;
   margin-top: 10px;
 }
+
+/* ===== 统计页新样式 ===== */
+.stats-section { margin-bottom: 24px; }
+.stats-section-title { font-size: 16px; color: #ffd93d; font-weight: bold; margin-bottom: 12px; padding-left: 8px; border-left: 3px solid #ffd93d; }
+
+/* 数据概览卡片 */
+.overview-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.overview-card { background: rgba(0,0,0,0.2); border-radius: 14px; padding: 14px 6px; text-align: center; border-left: 3px solid #4d96ff; }
+.overview-card:nth-child(2) { border-left-color: #ff6b6b; }
+.overview-card:nth-child(3) { border-left-color: #2ecc71; }
+.ov-icon { font-size: 20px; display: block; margin-bottom: 4px; }
+.ov-label { font-size: 11px; color: #aaa; display: block; margin-bottom: 4px; }
+.ov-value { font-size: 20px; font-weight: bold; color: #fff; }
+.ov-unit { font-size: 11px; color: #888; }
+
+/* 蓝球网格 */
+.blue-grid-box { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; max-width: 280px; margin: 0 auto; }
+.blue-cell { aspect-ratio: 1; border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; transition: transform 0.2s; position: relative; }
+.blue-cell:hover { transform: scale(1.08); }
+.blue-cell.hot { background: linear-gradient(135deg, #3b82f6, #2563eb); box-shadow: 0 4px 15px rgba(59,130,246,0.3); }
+.blue-cell.warm { background: linear-gradient(135deg, #60a5fa, #3b82f6); box-shadow: 0 2px 8px rgba(59,130,246,0.2); }
+.blue-cell.cold { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); }
+.blue-cell .bc-num { font-size: 16px; font-weight: bold; color: #fff; }
+.blue-cell.cold .bc-num { color: #94a3b8; }
+.blue-cell .bc-omit { font-size: 10px; color: rgba(255,255,255,0.7); margin-top: 2px; }
+.blue-cell.cold .bc-omit { color: #64748b; }
+.blue-cell .bc-count { position: absolute; top: 4px; right: 6px; font-size: 9px; background: rgba(255,255,255,0.2); color: #fff; padding: 1px 5px; border-radius: 8px; }
+.blue-cell.cold .bc-count { background: rgba(255,255,255,0.08); color: #888; }
+.blue-legend { display: flex; justify-content: center; gap: 16px; margin-top: 10px; font-size: 11px; color: #94a3b8; }
+.bl-dot { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 4px; }
+.bl-dot.hot { background: linear-gradient(135deg, #3b82f6, #2563eb); }
+.bl-dot.warm { background: linear-gradient(135deg, #60a5fa, #3b82f6); }
+.bl-dot.cold { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15); }
+
+/* 红球遗漏值 */
+.omit-header { display: flex; justify-content: space-between; padding: 8px 12px; font-size: 12px; color: #888; border-bottom: 1px solid rgba(255,255,255,0.08); }
+.omit-item { display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; border-bottom: 1px solid rgba(255,255,255,0.04); }
+.omit-item:last-child { border-bottom: none; }
+.omit-ball { width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: bold; color: #fff; background: linear-gradient(135deg, #e74c3c, #c0392b); }
+.omit-value { font-size: 15px; font-weight: bold; }
+.omit-value.hot { color: #ef4444; }
+.omit-value.warm { color: #f97316; }
+.omit-value.normal { color: #22c55e; }
+.omit-badge { font-size: 10px; padding: 2px 8px; border-radius: 10px; }
+.omit-badge.hot { background: rgba(239,68,68,0.15); color: #ef4444; }
+.omit-badge.warm { background: rgba(249,115,22,0.15); color: #f97316; }
+.omit-badge.normal { background: rgba(34,197,94,0.15); color: #22c55e; }
+
+/* 红球热力图 */
+.heat-grid { display: grid; grid-template-columns: repeat(11, 1fr); gap: 5px; }
+.heat-cell { aspect-ratio: 1; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: bold; cursor: pointer; transition: transform 0.2s; }
+.heat-cell:hover { transform: scale(1.15); z-index: 1; }
+.heat-cell.hot { background: linear-gradient(135deg, #dc2626, #ef4444); color: #fff; box-shadow: 0 2px 8px rgba(239,68,68,0.3); }
+.heat-cell.warm { background: linear-gradient(135deg, #f97316, #ea580c); color: #fff; }
+.heat-cell.normal { background: rgba(255,255,255,0.08); color: #94a3b8; border: 1px solid rgba(255,255,255,0.05); }
+.heat-legend { display: flex; justify-content: center; gap: 16px; margin-top: 10px; font-size: 11px; color: #94a3b8; }
+.ht-dot { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 4px; }
+.ht-dot.hot { background: linear-gradient(135deg, #dc2626, #ef4444); }
+.ht-dot.warm { background: linear-gradient(135deg, #f97316, #ea580c); }
+.ht-dot.cold { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15); }
+
+/* 走势 */
+.trend-scroll { overflow-x: auto; padding-bottom: 4px; }
+.trend-row { display: flex; gap: 8px; min-width: max-content; }
+.trend-cell { text-align: center; }
+.trend-box { width: 40px; height: 40px; background: rgba(255,255,255,0.06); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: bold; color: #fff; }
+.trend-period { font-size: 10px; color: #64748b; margin-top: 4px; }
+
+/* 连号统计 */
+.consecutive-stats { background: rgba(0,0,0,0.2); border-radius: 14px; padding: 14px; }
+.con-row { display: flex; justify-content: space-around; text-align: center; margin-bottom: 14px; }
+.con-item .con-num { font-size: 26px; font-weight: bold; color: #ffd93d; }
+.con-item .con-label { font-size: 12px; color: #94a3b8; margin-top: 4px; }
+.con-pairs { padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.08); }
+.con-pairs-title { font-size: 12px; color: #94a3b8; margin-bottom: 8px; }
+.con-pair-list { display: flex; gap: 8px; flex-wrap: wrap; }
+.con-pair-tag { background: rgba(255,255,255,0.06); color: #fff; padding: 4px 10px; border-radius: 12px; font-size: 12px; }
+
+@media (max-width: 400px) {
+  .overview-cards { grid-template-columns: repeat(3, 1fr); gap: 6px; }
+  .overview-card { padding: 10px 4px; }
+  .ov-value { font-size: 16px; }
+  .blue-grid-box { gap: 6px; max-width: 240px; }
+  .blue-cell .bc-num { font-size: 14px; }
+  .heat-grid { grid-template-columns: repeat(11, 1fr); gap: 3px; }
+  .heat-cell { font-size: 9px; }
+  .trend-box { width: 34px; height: 34px; font-size: 11px; }
+}
 </style>
 <base target="_blank">
 <base target="_blank">
@@ -491,28 +579,70 @@ body {
       <button class="manual-btn" onclick="showModal()">手动添加开奖结果</button>
     </div>
     <div id="statsContent" style="display:none;">
-      <div class="stats-title" id="statsTitle">近0期开奖数据统计</div>
-      <div class="legend">
-        <div class="legend-item"><div class="legend-dot hot"></div><span>热号 (50期≥8次 或 近5期≥4次)</span></div>
-        <div class="legend-item"><div class="legend-dot warm"></div><span>温号 (其他)</span></div>
-        <div class="legend-item"><div class="legend-dot cold"></div><span>冷号 (50期≤2次)</span></div>
-      </div>
-      <div class="chart-box">
-        <div class="chart-title">红球出现频率 (1-33)</div>
-        <div class="bar-chart" id="redChart"></div>
-      </div>
-      <div class="chart-box">
-        <div class="chart-title">蓝球出现频率 (1-16)</div>
-        <div class="bar-chart blue-chart" id="blueChart"></div>
-      </div>
-      <div class="top-section">
-        <div class="section-title">热门号码 TOP 10</div>
-        <div class="top-table">
-          <div class="table-header"><span>排名</span><span>红球</span><span>次数</span><span>蓝球</span><span>次数</span></div>
-          <div id="topTableBody"></div>
+      <!-- 数据概览 -->
+      <div class="stats-section">
+        <div class="stats-section-title">📊 数据概览</div>
+        <div class="overview-cards">
+          <div class="overview-card"><span class="ov-icon">📅</span><span class="ov-label">统计期数</span><span class="ov-value" id="ovPeriods">0</span><span class="ov-unit">期</span></div>
+          <div class="overview-card"><span class="ov-icon">🆕</span><span class="ov-label">最新期号</span><span class="ov-value" id="ovLatest">-</span></div>
+          <div class="overview-card"><span class="ov-icon">🔄</span><span class="ov-label">数据更新</span><span class="ov-value" id="ovUpdate">-</span></div>
         </div>
       </div>
-      <button class="manual-btn bottom" onclick="showModal()" style="margin:30px auto;display:block;">手动添加最新一期</button>
+
+      <!-- 蓝球分析（重点） -->
+      <div class="stats-section">
+        <div class="stats-section-title">🔵 蓝球分析（重点）</div>
+        <div class="blue-grid-box" id="blueGridBox"></div>
+        <div class="blue-legend">
+          <span><span class="bl-dot hot"></span>高频(≥5次)</span>
+          <span><span class="bl-dot warm"></span>中频(3-4次)</span>
+          <span><span class="bl-dot cold"></span>低频(≤2次)</span>
+        </div>
+      </div>
+
+      <!-- 红球遗漏值 -->
+      <div class="stats-section">
+        <div class="stats-section-title">🔴 红球遗漏值排行</div>
+        <div class="omit-header">
+          <span>号码</span><span>遗漏期数</span><span>状态</span>
+        </div>
+        <div id="omitList"></div>
+      </div>
+
+      <!-- 红球热力图 -->
+      <div class="stats-section">
+        <div class="stats-section-title">🔥 红球热力图</div>
+        <div class="heat-grid" id="heatGrid"></div>
+        <div class="heat-legend">
+          <span><span class="ht-dot hot"></span>高频(≥5次)</span>
+          <span><span class="ht-dot warm"></span>中频(3-4次)</span>
+          <span><span class="ht-dot cold"></span>低频(≤2次)</span>
+        </div>
+      </div>
+
+      <!-- 奇偶比走势 -->
+      <div class="stats-section">
+        <div class="stats-section-title">⚖️ 奇偶比走势（最近10期）</div>
+        <div class="trend-scroll">
+          <div class="trend-row" id="oddEvenTrend"></div>
+        </div>
+      </div>
+
+      <!-- 大小比走势 -->
+      <div class="stats-section">
+        <div class="stats-section-title">📏 大小比走势（最近10期）</div>
+        <div class="trend-scroll">
+          <div class="trend-row" id="bigSmallTrend"></div>
+        </div>
+      </div>
+
+      <!-- 连号统计 -->
+      <div class="stats-section">
+        <div class="stats-section-title">🔗 连号统计（最近30期）</div>
+        <div class="consecutive-stats" id="consecutiveStats"></div>
+      </div>
+
+      <button class="manual-btn bottom" onclick="showModal()" style="margin:24px auto;display:block;">手动添加最新一期</button>
     </div>
   </div>
 
@@ -678,15 +808,25 @@ function initData() {
     saveData([...INITIAL_DATA]);
     return { lastUpdate: formatDate(), records: [...INITIAL_DATA] };
   }
-  const localPeriods = new Set(existing.records.map(r => r.period));
+  // 过滤本地数据中的无效记录
+  const validExisting = (existing.records || []).filter(d => 
+    d && d.period && Array.isArray(d.red) && d.red.length === 6 &&
+    d.red.every(n => typeof n === 'number' && n >= 1 && n <= 33) &&
+    typeof d.blue === 'number' && d.blue >= 1 && d.blue <= 16
+  );
+  const localPeriods = new Set(validExisting.map(r => r.period));
   const newRecords = INITIAL_DATA.filter(r => !localPeriods.has(r.period));
   if (newRecords.length > 0) {
-    const merged = [...newRecords, ...existing.records];
+    const merged = [...newRecords, ...validExisting];
     merged.sort((a, b) => parseInt(b.period) - parseInt(a.period));
     saveData(merged);
     return { lastUpdate: formatDate(), records: merged };
   }
-  return existing;
+  // 如果本地数据有无效记录，重新保存过滤后的数据
+  if (validExisting.length !== (existing.records || []).length) {
+    saveData(validExisting);
+  }
+  return { lastUpdate: existing.lastUpdate || formatDate(), records: validExisting };
 }
 
 function getRecords() {
@@ -1220,97 +1360,190 @@ function renderStats() {
   }
 
   const records = data.records;
-  if (updateInfo) updateInfo.textContent = `数据更新于: ${data.lastUpdate || '未知'} | 共${records.length}期`;
+  // 过滤有效记录
+  const validRecords = records.filter(d => 
+    Array.isArray(d.red) && d.red.length === 6 && 
+    d.red.every(n => typeof n === 'number' && n >= 1 && n <= 33) &&
+    typeof d.blue === 'number' && d.blue >= 1 && d.blue <= 16
+  );
+
+  if (validRecords.length === 0) {
+    if (updateInfo) updateInfo.textContent = '暂无有效数据';
+    if (statsEmpty) statsEmpty.style.display = 'block';
+    if (statsContent) statsContent.style.display = 'none';
+    return;
+  }
+
+  if (updateInfo) updateInfo.textContent = `数据更新于: ${data.lastUpdate || '未知'} | 共${validRecords.length}期`;
   if (statsEmpty) statsEmpty.style.display = 'none';
   if (statsContent) statsContent.style.display = 'block';
 
-  const statsTitle = document.getElementById('statsTitle');
-  if (statsTitle) statsTitle.textContent = `近${records.length}期开奖数据统计`;
+  // ===== 1. 数据概览 =====
+  const ovPeriods = document.getElementById('ovPeriods');
+  const ovLatest = document.getElementById('ovLatest');
+  const ovUpdate = document.getElementById('ovUpdate');
+  if (ovPeriods) ovPeriods.textContent = validRecords.length;
+  if (ovLatest) ovLatest.textContent = validRecords[0].period || '-';
+  if (ovUpdate) {
+    const lu = data.lastUpdate || '未知';
+    ovUpdate.textContent = lu.includes(' ') ? lu.split(' ')[0] : lu;
+  }
 
-  // 红球频率统计
+  // 频率统计
   const redCount = {};
   for (let i = 1; i <= 33; i++) redCount[i] = 0;
-  records.forEach(d => d.red.forEach(n => redCount[n]++));
-
-  // 蓝球频率统计
+  validRecords.forEach(d => d.red.forEach(n => redCount[n]++));
   const blueCount = {};
   for (let i = 1; i <= 16; i++) blueCount[i] = 0;
-  records.forEach(d => blueCount[d.blue]++);
+  validRecords.forEach(d => blueCount[d.blue]++);
 
-  const hotSet = getHotNumbers(records);
-
-  // 渲染红球柱状图
-  const redChart = document.getElementById('redChart');
-  if (redChart) {
-    redChart.innerHTML = '';
-    const maxRed = Math.max(...Object.values(redCount), 1);
-    for (let i = 1; i <= 33; i++) {
-      const count = redCount[i];
-      const wrapper = document.createElement('div');
-      wrapper.className = 'bar-wrapper';
-      const bar = document.createElement('div');
-      bar.className = 'bar red-bar';
-      if (hotSet.has(i)) bar.classList.add('hot');
-      else if (count >= 3) bar.classList.add('warm');
-      else bar.classList.add('cold');
-      bar.style.height = `${(count / maxRed) * 100}%`;
-      const countLabel = document.createElement('span');
-      countLabel.className = 'bar-count';
-      countLabel.textContent = count;
-      const numLabel = document.createElement('span');
-      numLabel.className = 'bar-num';
-      numLabel.textContent = String(i).padStart(2, '0');
-      wrapper.appendChild(countLabel);
-      wrapper.appendChild(bar);
-      wrapper.appendChild(numLabel);
-      redChart.appendChild(wrapper);
+  // ===== 2. 蓝球分析（重点）4×4 网格 + 遗漏值 =====
+  const blueGridBox = document.getElementById('blueGridBox');
+  if (blueGridBox) {
+    blueGridBox.innerHTML = '';
+    // 计算蓝球遗漏值
+    const blueOmit = {};
+    for (let i = 1; i <= 16; i++) blueOmit[i] = validRecords.length;
+    for (let idx = 0; idx < validRecords.length; idx++) {
+      const b = validRecords[idx].blue;
+      if (blueOmit[b] === validRecords.length) blueOmit[b] = idx;
     }
-  }
 
-  // 渲染蓝球柱状图
-  const blueChart = document.getElementById('blueChart');
-  if (blueChart) {
-    blueChart.innerHTML = '';
-    const maxBlue = Math.max(...Object.values(blueCount), 1);
+    const maxBlueCount = Math.max(...Object.values(blueCount), 1);
     for (let i = 1; i <= 16; i++) {
       const count = blueCount[i];
-      const wrapper = document.createElement('div');
-      wrapper.className = 'bar-wrapper';
-      const bar = document.createElement('div');
-      bar.className = 'bar blue-bar';
-      bar.style.height = `${(count / maxBlue) * 100}%`;
-      const countLabel = document.createElement('span');
-      countLabel.className = 'bar-count';
-      countLabel.textContent = count;
-      const numLabel = document.createElement('span');
-      numLabel.className = 'bar-num';
-      numLabel.textContent = String(i).padStart(2, '0');
-      wrapper.appendChild(countLabel);
-      wrapper.appendChild(bar);
-      wrapper.appendChild(numLabel);
-      blueChart.appendChild(wrapper);
+      const omit = blueOmit[i];
+      const cell = document.createElement('div');
+      let cls = 'blue-cell ';
+      if (count >= 5) cls += 'hot';
+      else if (count >= 3) cls += 'warm';
+      else cls += 'cold';
+      cell.className = cls;
+      cell.innerHTML = `<span class="bc-num">${String(i).padStart(2,'0')}</span><span class="bc-omit">遗漏${omit}</span><span class="bc-count">${count}次</span>`;
+      cell.title = `蓝球${i}: 出现${count}次, 遗漏${omit}期`;
+      blueGridBox.appendChild(cell);
     }
   }
 
-  // TOP 10 表格
-  const redSorted = Object.entries(redCount).map(([n, c]) => ({ num: parseInt(n), count: c })).sort((a, b) => b.count - a.count).slice(0, 10);
-  const blueSorted = Object.entries(blueCount).map(([n, c]) => ({ num: parseInt(n), count: c })).sort((a, b) => b.count - a.count).slice(0, 10);
-
-  const topTableBody = document.getElementById('topTableBody');
-  if (topTableBody) {
-    topTableBody.innerHTML = '';
-    for (let i = 0; i < 10; i++) {
-      const row = document.createElement('div');
-      row.className = 'table-row';
-      const redItem = redSorted[i] || { num: '-', count: '-' };
-      const blueItem = blueSorted[i] || { num: '-', count: '-' };
-      row.innerHTML = `<span>${i + 1}</span><span class="red-num">${redItem.num}</span><span>${redItem.count}</span><span class="blue-num">${blueItem.num}</span><span>${blueItem.count}</span>`;
-      topTableBody.appendChild(row);
+  // ===== 3. 红球遗漏值排行 =====
+  const omitList = document.getElementById('omitList');
+  if (omitList) {
+    omitList.innerHTML = '';
+    const redOmit = {};
+    for (let i = 1; i <= 33; i++) redOmit[i] = validRecords.length;
+    for (let idx = 0; idx < validRecords.length; idx++) {
+      validRecords[idx].red.forEach(n => {
+        if (redOmit[n] === validRecords.length) redOmit[n] = idx;
+      });
     }
+    // 按遗漏值降序排列
+    const omitSorted = Object.entries(redOmit).map(([n, o]) => ({ num: parseInt(n), omit: o })).sort((a, b) => b.omit - a.omit);
+    omitSorted.forEach(item => {
+      const div = document.createElement('div');
+      div.className = 'omit-item';
+      let valCls = 'omit-value normal';
+      let badgeCls = 'omit-badge normal';
+      let badgeText = '正常';
+      if (item.omit >= 15) { valCls = 'omit-value hot'; badgeCls = 'omit-badge hot'; badgeText = '极冷'; }
+      else if (item.omit >= 8) { valCls = 'omit-value warm'; badgeCls = 'omit-badge warm'; badgeText = '较冷'; }
+      div.innerHTML = `<div class="omit-ball">${String(item.num).padStart(2,'0')}</div><span class="${valCls}">${item.omit}期</span><span class="${badgeCls}">${badgeText}</span>`;
+      omitList.appendChild(div);
+    });
+  }
+
+  // ===== 4. 红球热力图 =====
+  const heatGrid = document.getElementById('heatGrid');
+  if (heatGrid) {
+    heatGrid.innerHTML = '';
+    const maxRedCount = Math.max(...Object.values(redCount), 1);
+    for (let i = 1; i <= 33; i++) {
+      const count = redCount[i];
+      const cell = document.createElement('div');
+      let cls = 'heat-cell ';
+      if (count >= 5) cls += 'hot';
+      else if (count >= 3) cls += 'warm';
+      else cls += 'normal';
+      cell.className = cls;
+      cell.textContent = String(i).padStart(2, '0');
+      cell.title = `红球${i}: 出现${count}次`;
+      heatGrid.appendChild(cell);
+    }
+  }
+
+  // ===== 5. 奇偶比走势 =====
+  const oddEvenTrend = document.getElementById('oddEvenTrend');
+  if (oddEvenTrend) {
+    oddEvenTrend.innerHTML = '';
+    const last10 = validRecords.slice(0, 10).reverse();
+    last10.forEach(d => {
+      const odd = d.red.filter(n => n % 2 === 1).length;
+      const even = 6 - odd;
+      const cell = document.createElement('div');
+      cell.className = 'trend-cell';
+      cell.innerHTML = `<div class="trend-box">${odd}:${even}</div><div class="trend-period">${d.period ? d.period.slice(-3) : ''}</div>`;
+      oddEvenTrend.appendChild(cell);
+    });
+  }
+
+  // ===== 6. 大小比走势 =====
+  const bigSmallTrend = document.getElementById('bigSmallTrend');
+  if (bigSmallTrend) {
+    bigSmallTrend.innerHTML = '';
+    const last10 = validRecords.slice(0, 10).reverse();
+    last10.forEach(d => {
+      const big = d.red.filter(n => n >= 17).length;
+      const small = 6 - big;
+      const cell = document.createElement('div');
+      cell.className = 'trend-cell';
+      cell.innerHTML = `<div class="trend-box">${big}:${small}</div><div class="trend-period">${d.period ? d.period.slice(-3) : ''}</div>`;
+      bigSmallTrend.appendChild(cell);
+    });
+  }
+
+  // ===== 7. 连号统计（最近30期） =====
+  const consecutiveStats = document.getElementById('consecutiveStats');
+  if (consecutiveStats) {
+    const last30 = validRecords.slice(0, 30);
+    let hasConsecutive = 0;
+    const pairCounts = {};
+    let maxConsecutive = 0;
+
+    last30.forEach(d => {
+      const sorted = [...d.red].sort((a, b) => a - b);
+      let currentConsecutive = 0;
+      let localPairs = [];
+      for (let i = 0; i < sorted.length - 1; i++) {
+        if (sorted[i + 1] - sorted[i] === 1) {
+          currentConsecutive++;
+          localPairs.push(`${sorted[i]}-${sorted[i+1]}`);
+        }
+      }
+      if (currentConsecutive > 0) hasConsecutive++;
+      if (currentConsecutive > maxConsecutive) maxConsecutive = currentConsecutive;
+      localPairs.forEach(p => {
+        pairCounts[p] = (pairCounts[p] || 0) + 1;
+      });
+    });
+
+    const rate = last30.length > 0 ? Math.round((hasConsecutive / last30.length) * 100) : 0;
+    const sortedPairs = Object.entries(pairCounts).sort((a, b) => b[1] - a[1]).slice(0, 6);
+
+    consecutiveStats.innerHTML = `
+      <div class="con-row">
+        <div class="con-item"><div class="con-num">${hasConsecutive}</div><div class="con-label">出现连号期数</div></div>
+        <div class="con-item"><div class="con-num">${rate}%</div><div class="con-label">连号出现率</div></div>
+        <div class="con-item"><div class="con-num">${maxConsecutive}</div><div class="con-label">最大连号数</div></div>
+      </div>
+      <div class="con-pairs">
+        <div class="con-pairs-title">热门连号组合</div>
+        <div class="con-pair-list">
+          ${sortedPairs.length > 0 ? sortedPairs.map(([p, c]) => `<span class="con-pair-tag">${p} (${c}次)</span>`).join('') : '<span style="color:#64748b;font-size:12px;">暂无连号数据</span>'}
+        </div>
+      </div>
+    `;
   }
 }
 
-// ==================== 渲染历史记录页 ====================
 function renderHistory() {
   const records = getRecords();
   const historyList = document.getElementById('historyList');
