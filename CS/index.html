@@ -85,6 +85,26 @@
     font-family: inherit;
   }
   .filter-bar button:hover { background: #163d5f; }
+  .toggle-group {
+    display: inline-flex;
+    border: 1px solid #1F4E79;
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .toggle-group button {
+    border-radius: 0;
+    background: white;
+    color: #1F4E79;
+    border: none;
+    border-right: 1px solid #1F4E79;
+    padding: 5px 12px;
+    font-size: 12px;
+  }
+  .toggle-group button:last-child { border-right: none; }
+  .toggle-group button.active {
+    background: #1F4E79;
+    color: white;
+  }
   .table-wrap {
     padding: 0 24px 24px;
     overflow-x: auto;
@@ -248,6 +268,10 @@
     <select id="filterFactory" onchange="renderTable()"><option value="">全部</option></select>
     <label>搜索:</label>
     <input type="text" id="filterSearch" placeholder="客户料号 / 内部料号 / 产品类型" oninput="renderTable()">
+    <div class="toggle-group">
+      <button id="btnExternal" class="active" onclick="setViewMode('external')">🌐 对外</button>
+      <button id="btnInternal" onclick="setViewMode('internal')">🔒 对内</button>
+    </div>
     <button id="toggleInternalBtn" onclick="toggleInternalPN()" style="background:#6c757d;">🔒 隐藏内部料号</button>
     <button onclick="exportExcel()">📥 导出 Excel</button>
   </div>
@@ -263,7 +287,7 @@
           <th style="min-width:58px">单价(26H2)</th>
           <th style="min-width:72px">Amount</th>
           <th style="min-width:52px">Total pcs</th>
-          
+
           <th style="min-width:50px">1-30days</th>
           <th style="min-width:50px">31-60days</th>
           <th style="min-width:55px">61-120days</th>
@@ -292,6 +316,7 @@ const today = new Date();
 const todayStr = today.toISOString().split('T')[0];
 document.getElementById('analysisDate').textContent = todayStr;
 
+// 原始料号 -> 对外显示类型 (SI D150 PW 等)
 const PART_MAP = {
     "6TNC4005": "SI D150 NPTW",
     "6BNP0120": "SI D200 AS",
@@ -370,26 +395,43 @@ const PART_MAP = {
     "6EMB3036": "SI D200 EW",
     "6TPP1026": "SI D200 PW",
     "6EMB1130": "SI D300 EW",
-    "6EMB3083": "SI D300 PW"
+    "6EMB3083": "SI D300 PW",
+    "6S0212": "样品",
+    "6S0470": "样品"
 };
 
-const PRODUCT_TYPE_MAP = {
-    "SI D150 AS": "6-Power-PW",
-    "SI D150 AW": "6-Test",
-    "SI D150 NPTW": "6-Test",
-    "SI D150 NPW": "6-Test",
-    "SI D150 PW": "6-Test",
-    "SI D150 TW": "6-Test",
-    "SI D200 AS": "8-Power-PW",
-    "SI D200 AS EW": "8-Power-PW",
-    "SI D200 EW": "8-Power-EPI",
-    "SI D200 NPW": "8-Fz",
-    "SI D200 PW": "8-Prime",
-    "SI D200 RED PHOS": "8-Power-PW",
-    "SI D200 TW": "8-Test",
-    "SI D300 EW": "12-EPI",
-    "SI D300 PW": "12-Logic",
-    "SI D300 TW": "12-Test"
+// 料号 -> 对内显示类型
+const INTERNAL_TYPE_MAP = {
+    "6BKP8028": "6-PRIME",
+    "6BNP0120": "8-PW-HD",
+    "6BNP4029": "8-PW-HD",
+    "6BNP6009": "8-PW-HD",
+    "6BNP8019": "8-PW-HD",
+    "6BNP9006": "8-PW-HD",
+    "6BNP7074": "8-PW-HD",
+    "6BNP0065": "8-PW-HD",
+    "6SMP2071": "8-PW-FZ",
+    "6SMP9028": "8-PW-FZ",
+    "6SMP0052": "8-Logic-Prime",
+    "6SMP5029": "8-Logic-Prime",
+    "6SMP7022": "8-Logic-Prime",
+    "6TNC4005": "6-PW-TVS",
+    "6TPP1031": "12-Test",
+    "6TPP1051": "8-Logic-Test-G",
+    "6TPP2075": "8-Logic-Dummy",
+    "6S0212": "样品",
+    "6S0470": "样品",
+    "6BKP1624": "6-PRIME",
+    "6BKP1625": "6-PRIME",
+    "6BNP1658": "6-PRIME",
+    "6BNP1731": "6-PRIME",
+    "6BQP0118": "6-PRIME",
+    "6BQP9005": "6-PRIME",
+    "6SMP1025": "8-PW-FZ",
+    "6TNP1476": "6-Logic-Test-A",
+    "6TNP9579": "6-Logic-Test-A",
+    "6TPP1477": "6-Logic-Test-A",
+    "6TPP9580": "6-Logic-Test-A"
 };
 
 let rawData = [];
@@ -397,6 +439,31 @@ let analyzedData = [];
 let summaryRows = [];
 let missingPartNumbers = new Set();
 let showInternalPN = true;
+let viewMode = 'external'; // 'external' 对外, 'internal' 对内
+
+function setViewMode(mode) {
+  viewMode = mode;
+  document.getElementById('btnExternal').classList.toggle('active', mode === 'external');
+  document.getElementById('btnInternal').classList.toggle('active', mode === 'internal');
+  // 重新计算所有已有数据的 productType
+  if (analyzedData.length > 0) {
+    missingPartNumbers.clear();
+    for (const r of analyzedData) {
+      r.productType = getProductType(r.customerPN);
+    }
+    if (missingPartNumbers.size > 0) {
+      const list = Array.from(missingPartNumbers).slice(0, 10).join('、');
+      const more = missingPartNumbers.size > 10 ? ' 等共' + missingPartNumbers.size + '条' : '';
+      document.getElementById('alertText').textContent = 
+        '以下客户料号未在映射表中找到对应产品类型，请联系管理员更新料号匹配表：' + list + more;
+      document.getElementById('alertBanner').classList.add('show');
+    } else {
+      document.getElementById('alertBanner').classList.remove('show');
+    }
+    buildSummary();
+    renderTable();
+  }
+}
 
 document.getElementById('dropZone').addEventListener('dragover', e => {
   e.preventDefault();
@@ -462,13 +529,20 @@ function extractPartNumber(customerPN) {
 
 function getProductType(customerPN) {
   const pn = extractPartNumber(customerPN);
-  const oldType = PART_MAP[pn];
-  if (!oldType) {
+  if (viewMode === 'internal') {
+    const internalType = INTERNAL_TYPE_MAP[pn];
+    if (internalType) return internalType;
+    // 对内模式下如果没有映射，显示空，提示手动补充
     missingPartNumbers.add(customerPN);
     return '';
+  } else {
+    const externalType = PART_MAP[pn];
+    if (!externalType) {
+      missingPartNumbers.add(customerPN);
+      return '';
+    }
+    return externalType;
   }
-  const newType = PRODUCT_TYPE_MAP[oldType];
-  return newType || oldType;
 }
 
 function processData() {
@@ -636,9 +710,14 @@ function buildSummary() {
 
   function getSizeSort(productType) {
     const s = String(productType || '');
-    if (s.startsWith('6-')) return 0;
-    if (s.startsWith('8-')) return 1;
-    if (s.startsWith('12-')) return 2;
+    // 对内模式：按前缀数字排序
+    if (viewMode === 'internal') {
+      if (s.startsWith('6-')) return 0;
+      if (s.startsWith('8-')) return 1;
+      if (s.startsWith('12-')) return 2;
+      if (s.startsWith('样品')) return 3;
+    }
+    // 对外模式：按尺寸关键字排序
     if (s.includes('D150')) return 0;
     if (s.includes('D200')) return 1;
     if (s.includes('D300')) return 2;
@@ -758,7 +837,7 @@ function toggleInternalPN() {
   const btn = document.getElementById('toggleInternalBtn');
   btn.textContent = showInternalPN ? '🔒 隐藏内部料号' : '🔓 显示内部料号';
   btn.style.background = showInternalPN ? '#6c757d' : '#28a745';
-  buildSummary(); // 切换分组方式后重新汇总
+  buildSummary();
   renderTable();
 }
 
@@ -792,12 +871,10 @@ function renderTable() {
         ? `<td class="col-left" title="${r.productType}">${r.productType}</td>`
         : `<td class="col-left"><input type="text" class="missing-input" placeholder="手动输入产品类型" onblur="updateProductType('${r.customerPN}', this.value)"></td>`;
 
-      // 寄售库列：仅在每组第一行显示并合并
       const whCell = i === 0 
         ? `<td class="col-center" rowspan="${group.length}"><span class="badge ${badgeClass}">${r.wh}</span></td>`
         : '';
 
-      // 客户料号：每行都显示，不再使用 rowspan 避免错位
       const pnCell = `<td class="col-center">${r.customerPN}</td>`;
 
       const internalCell = showInternalPN 
