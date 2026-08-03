@@ -241,6 +241,7 @@
 </style>
 <base target="_blank">
 <base target="_blank">
+<base target="_blank">
 </head>
 <body>
 
@@ -939,9 +940,8 @@ function renderTable() {
       <tr class="total">
         <td class="col-center" colspan="${descColspan}">总计</td>
         <td class="col-right">-</td>
-        <td class="col-right">-</td>
-        <td class="col-right">${fmtNum(total.qty)}</td>
         <td class="col-right money">${fmtMoney(total.amount)}</td>
+        <td class="col-right">${fmtNum(total.qty)}</td>
         <td class="col-right age-30">${fmtNum(total['1-30days'])}</td>
         <td class="col-right age-60">${fmtNum(total['31-60days'])}</td>
         <td class="col-right age-120">${fmtNum(total['61-120days'])}</td>
@@ -1185,7 +1185,7 @@ async function exportExcel() {
     });
 
     if (colIndex.qty) row.getCell(colIndex.qty).numFmt = '#,##0';
-    if (colIndex.totalAmt) row.getCell(colIndex.totalAmt).numFmt = '$#,##0.00';
+    if (colIndex.amount) row.getCell(colIndex.amount).numFmt = '$#,##0.00';
     ageColIndices.forEach(ci => {
       row.getCell(ci).numFmt = '#,##0';
     });
