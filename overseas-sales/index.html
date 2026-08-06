@@ -899,8 +899,77 @@ tr:hover td{background:#fafbfc}
   <p>理解ST的财务表现和战略方向，是制定销售策略的基础。以下基于ST最新公开财报数据，涵盖2026年Q2业绩，多维度分析ST的业绩走势。</p>
 
   <h2>一、季度营收趋势（2024 Q1 - 2026 Q2）</h2>
-  <div style="background:#fff;border:1px solid #e8eaed;border-radius:10px;padding:12px;margin-bottom:16px;overflow:auto">
-    <div id="st3-revenue-chart" style="width:100%;height:320px;"></div>
+  <div style="background:#fff;border:1px solid #e8eaed;border-radius:10px;padding:20px 16px;margin-bottom:16px;overflow:auto">
+    <div style="display:flex;align-items:flex-end;gap:4px;height:320px;padding:10px 0 40px 40px;border-left:1px solid #e8eaed;border-bottom:1px solid #e8eaed;position:relative;">
+      <!-- Y-axis labels -->
+      <div style="position:absolute;left:0;top:0;bottom:40px;width:36px;display:flex;flex-direction:column;justify-content:space-between;align-items:flex-end;padding-right:4px;font-size:10px;color:#8b919d;">
+        <span>40</span><span>35</span><span>30</span><span>25</span><span>20</span><span>15</span><span>10</span><span>5</span><span>0</span>
+      </div>
+      <!-- Horizontal grid lines -->
+      <div style="position:absolute;left:40px;right:0;top:0;bottom:40px;display:flex;flex-direction:column;justify-content:space-between;pointer-events:none;">
+        <div style="border-top:1px dashed #f0f0f0;height:0;"></div>
+        <div style="border-top:1px dashed #f0f0f0;height:0;"></div>
+        <div style="border-top:1px dashed #f0f0f0;height:0;"></div>
+        <div style="border-top:1px dashed #f0f0f0;height:0;"></div>
+        <div style="border-top:1px dashed #f0f0f0;height:0;"></div>
+        <div style="border-top:1px dashed #f0f0f0;height:0;"></div>
+        <div style="border-top:1px dashed #f0f0f0;height:0;"></div>
+        <div style="border-top:1px dashed #f0f0f0;height:0;"></div>
+        <div style="border-top:1px dashed #f0f0f0;height:0;"></div>
+      </div>
+      <!-- Bars -->
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;position:relative;z-index:1;">
+        <div style="font-size:9px;font-weight:700;color:#333;">35</div>
+        <div style="width:100%;max-width:40px;height:210px;background:#3b6cf6;border-radius:3px 3px 0 0;opacity:.85;"></div>
+        <div style="font-size:9px;color:#666;text-align:center;line-height:1.2;">Q1<br/>24</div>
+      </div>
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;position:relative;z-index:1;">
+        <div style="font-size:9px;font-weight:700;color:#333;">32.3</div>
+        <div style="width:100%;max-width:40px;height:193.8px;background:#3b6cf6;border-radius:3px 3px 0 0;opacity:.85;"></div>
+        <div style="font-size:9px;color:#666;text-align:center;line-height:1.2;">Q2<br/>24</div>
+      </div>
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;position:relative;z-index:1;">
+        <div style="font-size:9px;font-weight:700;color:#333;">32.5</div>
+        <div style="width:100%;max-width:40px;height:195px;background:#3b6cf6;border-radius:3px 3px 0 0;opacity:.85;"></div>
+        <div style="font-size:9px;color:#666;text-align:center;line-height:1.2;">Q3<br/>24</div>
+      </div>
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;position:relative;z-index:1;">
+        <div style="font-size:9px;font-weight:700;color:#333;">33.2</div>
+        <div style="width:100%;max-width:40px;height:199.2px;background:#3b6cf6;border-radius:3px 3px 0 0;opacity:.85;"></div>
+        <div style="font-size:9px;color:#666;text-align:center;line-height:1.2;">Q4<br/>24</div>
+      </div>
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;position:relative;z-index:1;">
+        <div style="font-size:9px;font-weight:700;color:#e8453c;">25.2</div>
+        <div style="width:100%;max-width:40px;height:151.2px;background:#e8453c;border-radius:3px 3px 0 0;opacity:.85;"></div>
+        <div style="font-size:9px;color:#666;text-align:center;line-height:1.2;">Q1<br/>25</div>
+      </div>
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;position:relative;z-index:1;">
+        <div style="font-size:9px;font-weight:700;color:#e8453c;">27.7</div>
+        <div style="width:100%;max-width:40px;height:166.2px;background:#e8453c;border-radius:3px 3px 0 0;opacity:.85;"></div>
+        <div style="font-size:9px;color:#666;text-align:center;line-height:1.2;">Q2<br/>25</div>
+      </div>
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;position:relative;z-index:1;">
+        <div style="font-size:9px;font-weight:700;color:#333;">31.8</div>
+        <div style="width:100%;max-width:40px;height:190.8px;background:#3b6cf6;border-radius:3px 3px 0 0;opacity:.85;"></div>
+        <div style="font-size:9px;color:#666;text-align:center;line-height:1.2;">Q3<br/>25</div>
+      </div>
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;position:relative;z-index:1;">
+        <div style="font-size:9px;font-weight:700;color:#333;">33.3</div>
+        <div style="width:100%;max-width:40px;height:199.8px;background:#3b6cf6;border-radius:3px 3px 0 0;opacity:.85;"></div>
+        <div style="font-size:9px;color:#666;text-align:center;line-height:1.2;">Q4<br/>25</div>
+      </div>
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;position:relative;z-index:1;">
+        <div style="font-size:9px;font-weight:700;color:#333;">31</div>
+        <div style="width:100%;max-width:40px;height:186px;background:#3b6cf6;border-radius:3px 3px 0 0;opacity:.85;"></div>
+        <div style="font-size:9px;color:#666;text-align:center;line-height:1.2;">Q1<br/>26</div>
+      </div>
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;position:relative;z-index:1;">
+        <div style="font-size:9px;font-weight:700;color:#00b894;">34.9</div>
+        <div style="width:100%;max-width:40px;height:209.4px;background:#00b894;border-radius:3px 3px 0 0;opacity:.85;"></div>
+        <div style="font-size:9px;color:#666;text-align:center;line-height:1.2;">Q2<br/>26</div>
+      </div>
+    </div>
+    <div style="text-align:center;font-size:11px;color:#8b919d;margin-top:8px;">营收 (十亿美元)</div>
   </div>
   <div class="table-wrap"><table>
     <thead><tr><th>季度</th><th>Q1 2024</th><th>Q2 2024</th><th>Q3 2024</th><th>Q4 2024</th><th>Q1 2025</th><th>Q2 2025</th><th>Q3 2025</th><th>Q4 2025</th><th>Q1 2026</th><th>Q2 2026</th></tr></thead>
@@ -4384,67 +4453,6 @@ window.showMgmtContact = function(){
 
 })();
 </script>
-<script>
-// ST3 Revenue Chart
-(function(){
-  var el = document.getElementById('st3-revenue-chart');
-  if(!el || typeof echarts === 'undefined') return;
-  var chart = echarts.init(el);
-  chart.setOption({
-    tooltip: {
-      trigger: 'axis',
-      axisPointer: { type: 'shadow' },
-      formatter: function(params) {
-        var p = params[0];
-        return p.name + '<br/>营收: <strong>$' + p.value + 'B</strong>';
-      }
-    },
-    grid: { left: '2%', right: '2%', bottom: '12%', top: '10%', containLabel: true },
-    xAxis: {
-      type: 'category',
-      data: ['Q1 24','Q2 24','Q3 24','Q4 24','Q1 25','Q2 25','Q3 25','Q4 25','Q1 26','Q2 26'],
-      axisLabel: { color: '#666', fontSize: 11, interval: 0, rotate: 0 },
-      axisLine: { lineStyle: { color: '#e8eaed' } },
-      axisTick: { show: false }
-    },
-    yAxis: {
-      type: 'value',
-      name: '营收 (十亿美元)',
-      nameTextStyle: { color: '#666', fontSize: 11, padding: [0, 0, 0, 40] },
-      axisLabel: { color: '#666', fontSize: 11 },
-      axisLine: { show: false },
-      splitLine: { lineStyle: { color: '#f0f0f0', type: 'dashed' } }
-    },
-    series: [{
-      name: '营收',
-      type: 'bar',
-      data: [
-        {value: 35.0, itemStyle: {color: '#3b6cf6'}},
-        {value: 32.3, itemStyle: {color: '#3b6cf6'}},
-        {value: 32.5, itemStyle: {color: '#3b6cf6'}},
-        {value: 33.2, itemStyle: {color: '#3b6cf6'}},
-        {value: 25.2, itemStyle: {color: '#e8453c'}},
-        {value: 27.7, itemStyle: {color: '#e8453c'}},
-        {value: 31.8, itemStyle: {color: '#3b6cf6'}},
-        {value: 33.3, itemStyle: {color: '#3b6cf6'}},
-        {value: 31.0, itemStyle: {color: '#3b6cf6'}},
-        {value: 34.9, itemStyle: {color: '#00b894'}}
-      ],
-      barWidth: '55%',
-      barGap: '20%',
-      label: {
-        show: true,
-        position: 'top',
-        fontSize: 10,
-        color: '#333',
-        fontWeight: 'bold',
-        formatter: function(p) { return p.value; }
-      },
-      itemStyle: { borderRadius: [4, 4, 0, 0] }
-    }]
-  });
-  window.addEventListener('resize', function() { chart.resize(); });
-})();
-</script>
+
 </body>
 </html>
