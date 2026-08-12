@@ -142,9 +142,10 @@
   .age-intransit { background: #E3F2FD !important; color: #1565c0; font-weight: 600; }
   .age-30 { background: #E2EFDA !important; color: #2e7d32; font-weight: 600; }
   .age-60 { background: #FFF2CC !important; color: #f57f17; font-weight: 600; }
-  .age-120 { background: #FCE4D6 !important; color: #e65100; font-weight: 600; }
-  .age-180 { background: #F8CBAD !important; color: #bf360c; font-weight: 600; }
-  .age-over { background: #F4B084 !important; color: #870000; font-weight: 700; }
+  .age-90 { background: #FCE4D6 !important; color: #e65100; font-weight: 600; }
+  .age-150 { background: #F8CBAD !important; color: #bf360c; font-weight: 600; }
+  .age-180 { background: #F4B084 !important; color: #bf360c; font-weight: 600; }
+  .age-over { background: #E65100 !important; color: #ffffff; font-weight: 700; }
   tr.subtotal td {
     background: #D6DCE4 !important;
     color: #1F4E79;
@@ -158,8 +159,8 @@
     font-weight: 700;
     border-top: 2px solid #0f2d47;
   }
-  tr.total td.age-intransit, tr.total td.age-30, tr.total td.age-60, tr.total td.age-120,
-  tr.total td.age-180, tr.total td.age-over {
+  tr.total td.age-intransit, tr.total td.age-30, tr.total td.age-60, tr.total td.age-90,
+  tr.total td.age-150, tr.total td.age-180, tr.total td.age-over {
     background: #1F4E79 !important;
     color: white !important;
   }
@@ -298,8 +299,9 @@
           <th style="min-width:50px">在途</th>
           <th style="min-width:50px">1-30days</th>
           <th style="min-width:50px">31-60days</th>
-          <th style="min-width:55px">61-120days</th>
-          <th style="min-width:55px">121-180days</th>
+          <th style="min-width:50px">61-90days</th>
+          <th style="min-width:55px">91-150days</th>
+          <th style="min-width:55px">151-180days</th>
           <th style="min-width:50px">>180days</th>
           <th style="min-width:46px">Total</th>
         </tr>
@@ -673,10 +675,12 @@ function processData() {
         ageBucket = '1-30days';
       } else if (ageDays <= 60) {
         ageBucket = '31-60days';
-      } else if (ageDays <= 120) {
-        ageBucket = '61-120days';
+      } else if (ageDays <= 90) {
+        ageBucket = '61-90days';
+      } else if (ageDays <= 150) {
+        ageBucket = '91-150days';
       } else if (ageDays <= 180) {
-        ageBucket = '121-180days';
+        ageBucket = '151-180days';
       } else {
         ageBucket = '>180days';
       }
@@ -728,9 +732,9 @@ function buildSummary() {
         price: 0,
         qty: 0, amount: 0,
         inTransit: 0,
-        '1-30days': 0, '31-60days': 0, '61-120days': 0, '121-180days': 0, '>180days': 0,
+        '1-30days': 0, '31-60days': 0, '61-90days': 0, '91-150days': 0, '151-180days': 0, '>180days': 0,
         ageDist: {
-          'inTransit': {}, '1-30days': {}, '31-60days': {}, '61-120days': {}, '121-180days': {}, '>180days': {}
+          'inTransit': {}, '1-30days': {}, '31-60days': {}, '61-90days': {}, '91-150days': {}, '151-180days': {}, '>180days': {}
         }
       };
     }
@@ -779,19 +783,20 @@ function buildSummary() {
 
   summaryRows = [];
   const whTotals = {};
-  const grandTotal = { qty: 0, amount: 0, inTransit: 0, '1-30days': 0, '31-60days': 0, '61-120days': 0, '121-180days': 0, '>180days': 0 };
+  const grandTotal = { qty: 0, amount: 0, inTransit: 0, '1-30days': 0, '31-60days': 0, '61-90days': 0, '91-150days': 0, '151-180days': 0, '>180days': 0 };
 
   for (const r of detailGroups) {
     if (!whTotals[r.wh]) {
-      whTotals[r.wh] = { qty: 0, amount: 0, inTransit: 0, '1-30days': 0, '31-60days': 0, '61-120days': 0, '121-180days': 0, '>180days': 0 };
+      whTotals[r.wh] = { qty: 0, amount: 0, inTransit: 0, '1-30days': 0, '31-60days': 0, '61-90days': 0, '91-150days': 0, '151-180days': 0, '>180days': 0 };
     }
     whTotals[r.wh].qty += r.qty;
     whTotals[r.wh].amount += r.amount;
     whTotals[r.wh].inTransit += r.inTransit;
     whTotals[r.wh]['1-30days'] += r['1-30days'];
     whTotals[r.wh]['31-60days'] += r['31-60days'];
-    whTotals[r.wh]['61-120days'] += r['61-120days'];
-    whTotals[r.wh]['121-180days'] += r['121-180days'];
+    whTotals[r.wh]['61-90days'] += r['61-90days'];
+    whTotals[r.wh]['91-150days'] += r['91-150days'];
+    whTotals[r.wh]['151-180days'] += r['151-180days'];
     whTotals[r.wh]['>180days'] += r['>180days'];
 
     grandTotal.qty += r.qty;
@@ -799,8 +804,9 @@ function buildSummary() {
     grandTotal.inTransit += r.inTransit;
     grandTotal['1-30days'] += r['1-30days'];
     grandTotal['31-60days'] += r['31-60days'];
-    grandTotal['61-120days'] += r['61-120days'];
-    grandTotal['121-180days'] += r['121-180days'];
+    grandTotal['61-90days'] += r['61-90days'];
+    grandTotal['91-150days'] += r['91-150days'];
+    grandTotal['151-180days'] += r['151-180days'];
     grandTotal['>180days'] += r['>180days'];
   }
 
@@ -817,7 +823,8 @@ function buildSummary() {
         qty: whTotals[wh].qty, amount: whTotals[wh].amount,
         inTransit: whTotals[wh].inTransit,
         '1-30days': whTotals[wh]['1-30days'], '31-60days': whTotals[wh]['31-60days'],
-        '61-120days': whTotals[wh]['61-120days'], '121-180days': whTotals[wh]['121-180days'],
+        '61-90days': whTotals[wh]['61-90days'], '91-150days': whTotals[wh]['91-150days'],
+        '151-180days': whTotals[wh]['151-180days'],
         '>180days': whTotals[wh]['>180days'],
         type: 'subtotal'
       });
@@ -829,7 +836,8 @@ function buildSummary() {
     qty: grandTotal.qty, amount: grandTotal.amount,
     inTransit: grandTotal.inTransit,
     '1-30days': grandTotal['1-30days'], '31-60days': grandTotal['31-60days'],
-    '61-120days': grandTotal['61-120days'], '121-180days': grandTotal['121-180days'],
+    '61-90days': grandTotal['61-90days'], '91-150days': grandTotal['91-150days'],
+    '151-180days': grandTotal['151-180days'],
     '>180days': grandTotal['>180days'],
     type: 'total'
   });
@@ -910,7 +918,7 @@ function renderTable() {
 
     for (let i = 0; i < group.length; i++) {
       const r = group[i];
-      const totalAge = r.inTransit + r['1-30days'] + r['31-60days'] + r['61-120days'] + r['121-180days'] + r['>180days'];
+      const totalAge = r.inTransit + r['1-30days'] + r['31-60days'] + r['61-90days'] + r['91-150days'] + r['151-180days'] + r['>180days'];
       const badgeClass = r.wh === 'DSV' ? 'badge-dsv' : r.wh === 'Evershine' ? 'badge-evershine' : 'badge-femar';
 
       const productTypeCell = r.productType 
@@ -935,8 +943,9 @@ function renderTable() {
       const tTransit = makeTooltip(r.ageDist && r.ageDist['inTransit']);
       const t30 = makeTooltip(r.ageDist && r.ageDist['1-30days']);
       const t60 = makeTooltip(r.ageDist && r.ageDist['31-60days']);
-      const t120 = makeTooltip(r.ageDist && r.ageDist['61-120days']);
-      const t180 = makeTooltip(r.ageDist && r.ageDist['121-180days']);
+      const t90 = makeTooltip(r.ageDist && r.ageDist['61-90days']);
+      const t150 = makeTooltip(r.ageDist && r.ageDist['91-150days']);
+      const t180 = makeTooltip(r.ageDist && r.ageDist['151-180days']);
       const tover = makeTooltip(r.ageDist && r.ageDist['>180days']);
 
       tbody.innerHTML += `
@@ -952,8 +961,9 @@ function renderTable() {
           <td class="col-right age-intransit" title="${tTransit}">${fmtNum(r.inTransit)}</td>
           <td class="col-right age-30" title="${t30}">${fmtNum(r['1-30days'])}</td>
           <td class="col-right age-60" title="${t60}">${fmtNum(r['31-60days'])}</td>
-          <td class="col-right age-120" title="${t120}">${fmtNum(r['61-120days'])}</td>
-          <td class="col-right age-180" title="${t180}">${fmtNum(r['121-180days'])}</td>
+          <td class="col-right age-90" title="${t90}">${fmtNum(r['61-90days'])}</td>
+          <td class="col-right age-150" title="${t150}">${fmtNum(r['91-150days'])}</td>
+          <td class="col-right age-180" title="${t180}">${fmtNum(r['151-180days'])}</td>
           <td class="col-right age-over" title="${tover}">${fmtNum(r['>180days'])}</td>
           <td class="col-right">${fmtNum(totalAge)}</td>
         </tr>`;
@@ -961,7 +971,7 @@ function renderTable() {
 
     const sub = summaryRows.find(r => r.type === 'subtotal' && r.wh === wh + ' 小计');
     if (sub) {
-      const totalAge = sub.inTransit + sub['1-30days'] + sub['31-60days'] + sub['61-120days'] + sub['121-180days'] + sub['>180days'];
+      const totalAge = sub.inTransit + sub['1-30days'] + sub['31-60days'] + sub['61-90days'] + sub['91-150days'] + sub['151-180days'] + sub['>180days'];
       const descColspan = 4 + (showInternalPN ? 1 : 0);
       tbody.innerHTML += `
         <tr class="subtotal">
@@ -972,8 +982,9 @@ function renderTable() {
           <td class="col-right age-intransit">${fmtNum(sub.inTransit)}</td>
           <td class="col-right age-30">${fmtNum(sub['1-30days'])}</td>
           <td class="col-right age-60">${fmtNum(sub['31-60days'])}</td>
-          <td class="col-right age-120">${fmtNum(sub['61-120days'])}</td>
-          <td class="col-right age-180">${fmtNum(sub['121-180days'])}</td>
+          <td class="col-right age-90">${fmtNum(sub['61-90days'])}</td>
+          <td class="col-right age-150">${fmtNum(sub['91-150days'])}</td>
+          <td class="col-right age-180">${fmtNum(sub['151-180days'])}</td>
           <td class="col-right age-over">${fmtNum(sub['>180days'])}</td>
           <td class="col-right">${fmtNum(totalAge)}</td>
         </tr>`;
@@ -982,7 +993,7 @@ function renderTable() {
 
   const total = summaryRows.find(r => r.type === 'total');
   if (total) {
-    const totalAge = total.inTransit + total['1-30days'] + total['31-60days'] + total['61-120days'] + total['121-180days'] + total['>180days'];
+    const totalAge = total.inTransit + total['1-30days'] + total['31-60days'] + total['61-90days'] + total['91-150days'] + total['151-180days'] + total['>180days'];
     const descColspan = 4 + (showInternalPN ? 1 : 0);
     tbody.innerHTML += `
       <tr class="total">
@@ -993,8 +1004,9 @@ function renderTable() {
         <td class="col-right age-intransit">${fmtNum(total.inTransit)}</td>
         <td class="col-right age-30">${fmtNum(total['1-30days'])}</td>
         <td class="col-right age-60">${fmtNum(total['31-60days'])}</td>
-        <td class="col-right age-120">${fmtNum(total['61-120days'])}</td>
-        <td class="col-right age-180">${fmtNum(total['121-180days'])}</td>
+        <td class="col-right age-90">${fmtNum(total['61-90days'])}</td>
+        <td class="col-right age-150">${fmtNum(total['91-150days'])}</td>
+        <td class="col-right age-180">${fmtNum(total['151-180days'])}</td>
         <td class="col-right age-over">${fmtNum(total['>180days'])}</td>
         <td class="col-right">${fmtNum(totalAge)}</td>
       </tr>`;
@@ -1036,8 +1048,9 @@ async function exportExcel() {
     { key: 'inTransit', header: '在途', width: 10 },
     { key: 'd30', header: '1-30days', width: 10 },
     { key: 'd60', header: '31-60days', width: 10 },
-    { key: 'd120', header: '61-120days', width: 11 },
-    { key: 'd180', header: '121-180days', width: 11 },
+    { key: 'd90', header: '61-90days', width: 10 },
+    { key: 'd150', header: '91-150days', width: 11 },
+    { key: 'd180', header: '151-180days', width: 11 },
     { key: 'over', header: '>180days', width: 10 },
     { key: 'total', header: 'Total', width: 9 },
   ];
@@ -1066,19 +1079,21 @@ async function exportExcel() {
     inTransit: { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFE3F2FD' } },
     d30: { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFE2EFDA' } },
     d60: { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFFFF2CC' } },
-    d120: { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFFCE4D6' } },
-    d180: { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFF8CBAD' } },
-    over: { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFF4B084' } },
+    d90: { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFFCE4D6' } },
+    d150: { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFF8CBAD' } },
+    d180: { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFF4B084' } },
+    over: { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFE65100' } },
   };
   const ageFonts = {
     inTransit: { color: { argb: 'FF1565c0' }, bold: true },
     d30: { color: { argb: 'FF2e7d32' }, bold: true },
     d60: { color: { argb: 'FFf57f17' }, bold: true },
-    d120: { color: { argb: 'FFe65100' }, bold: true },
+    d90: { color: { argb: 'FFe65100' }, bold: true },
+    d150: { color: { argb: 'FFbf360c' }, bold: true },
     d180: { color: { argb: 'FFbf360c' }, bold: true },
-    over: { color: { argb: 'FF870000' }, bold: true },
+    over: { color: { argb: 'FFFFFFFF' }, bold: true },
   };
-  const ageKeys = ['inTransit','d30','d60','d120','d180','over'];
+  const ageKeys = ['inTransit','d30','d60','d90','d150','d180','over'];
   const ageColIndices = ageKeys.map(k => colIndex[k]).filter(v => v !== undefined);
 
   let rowNum = 2;
@@ -1095,7 +1110,7 @@ async function exportExcel() {
 
     const startRow = rowNum;
     for (const r of group) {
-      const totalAge = r.inTransit + r['1-30days'] + r['31-60days'] + r['61-120days'] + r['121-180days'] + r['>180days'];
+      const totalAge = r.inTransit + r['1-30days'] + r['31-60days'] + r['61-90days'] + r['91-150days'] + r['151-180days'] + r['>180days'];
       const row = ws.getRow(rowNum);
 
       const values = cols.map(c => {
@@ -1111,8 +1126,9 @@ async function exportExcel() {
           case 'inTransit': return r.inTransit;
           case 'd30': return r['1-30days'];
           case 'd60': return r['31-60days'];
-          case 'd120': return r['61-120days'];
-          case 'd180': return r['121-180days'];
+          case 'd90': return r['61-90days'];
+          case 'd150': return r['91-150days'];
+          case 'd180': return r['151-180days'];
           case 'over': return r['>180days'];
           case 'total': return totalAge;
           default: return '';
@@ -1149,7 +1165,7 @@ async function exportExcel() {
 
     const sub = summaryRows.find(r => r.type === 'subtotal' && r.wh === wh + ' 小计');
     if (sub) {
-      const totalAge = sub.inTransit + sub['1-30days'] + sub['31-60days'] + sub['61-120days'] + sub['121-180days'] + sub['>180days'];
+      const totalAge = sub.inTransit + sub['1-30days'] + sub['31-60days'] + sub['61-90days'] + sub['91-150days'] + sub['151-180days'] + sub['>180days'];
       const row = ws.getRow(rowNum);
 
       const subValues = cols.map(c => {
@@ -1159,8 +1175,9 @@ async function exportExcel() {
         if (c.key === 'inTransit') return sub.inTransit;
         if (c.key === 'd30') return sub['1-30days'];
         if (c.key === 'd60') return sub['31-60days'];
-        if (c.key === 'd120') return sub['61-120days'];
-        if (c.key === 'd180') return sub['121-180days'];
+        if (c.key === 'd90') return sub['61-90days'];
+        if (c.key === 'd150') return sub['91-150days'];
+        if (c.key === 'd180') return sub['151-180days'];
         if (c.key === 'over') return sub['>180days'];
         if (c.key === 'total') return totalAge;
         return '';
@@ -1202,7 +1219,7 @@ async function exportExcel() {
 
   const total = summaryRows.find(r => r.type === 'total');
   if (total) {
-    const totalAge = total.inTransit + total['1-30days'] + total['31-60days'] + total['61-120days'] + total['121-180days'] + total['>180days'];
+    const totalAge = total.inTransit + total['1-30days'] + total['31-60days'] + total['61-90days'] + total['91-150days'] + total['151-180days'] + total['>180days'];
     const row = ws.getRow(rowNum);
 
     const totalValues = cols.map(c => {
@@ -1212,8 +1229,9 @@ async function exportExcel() {
       if (c.key === 'inTransit') return total.inTransit;
       if (c.key === 'd30') return total['1-30days'];
       if (c.key === 'd60') return total['31-60days'];
-      if (c.key === 'd120') return total['61-120days'];
-      if (c.key === 'd180') return total['121-180days'];
+      if (c.key === 'd90') return total['61-90days'];
+      if (c.key === 'd150') return total['91-150days'];
+      if (c.key === 'd180') return total['151-180days'];
       if (c.key === 'over') return total['>180days'];
       if (c.key === 'total') return totalAge;
       return '';
@@ -1272,16 +1290,16 @@ function exportPlainExcel() {
   const exportData = [];
   const headers = ['寄售库','ST工厂','客户料号','产品类型'];
   if (showInternalPN) headers.push('内部料号');
-  headers.push('单价(26H2)','Amount','Total pcs','在途','1-30days','31-60days','61-120days','121-180days','>180days','Total');
+  headers.push('单价(26H2)','Amount','Total pcs','在途','1-30days','31-60days','61-90days','91-150days','151-180days','>180days','Total');
   exportData.push(headers);
 
   for (const r of summaryRows) {
-    const totalAge = r.inTransit + r['1-30days'] + r['31-60days'] + r['61-120days'] + r['121-180days'] + r['>180days'];
+    const totalAge = r.inTransit + r['1-30days'] + r['31-60days'] + r['61-90days'] + r['91-150days'] + r['151-180days'] + r['>180days'];
     const row = [
       r.wh, r.factory, r.customerPN, r.productType,
       ...(showInternalPN ? [r.internalPN] : []),
       r.price, r.amount, r.qty, r.inTransit,
-      r['1-30days'], r['31-60days'], r['61-120days'], r['121-180days'], r['>180days'],
+      r['1-30days'], r['31-60days'], r['61-90days'], r['91-150days'], r['151-180days'], r['>180days'],
       totalAge
     ];
     exportData.push(row);
