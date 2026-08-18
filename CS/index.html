@@ -146,6 +146,7 @@
   .age-150 { background: #F8CBAD !important; color: #bf360c; font-weight: 600; }
   .age-180 { background: #F4B084 !important; color: #bf360c; font-weight: 600; }
   .age-over { background: #E65100 !important; color: #ffffff; font-weight: 700; }
+  .projection-cell { background: #f3e5f5 !important; color: #6a1b9a; font-weight: 600; }
   tr.subtotal td {
     background: #D6DCE4 !important;
     color: #1F4E79;
@@ -160,7 +161,8 @@
     border-top: 2px solid #0f2d47;
   }
   tr.total td.age-intransit, tr.total td.age-30, tr.total td.age-60, tr.total td.age-90,
-  tr.total td.age-150, tr.total td.age-180, tr.total td.age-over {
+  tr.total td.age-150, tr.total td.age-180, tr.total td.age-over,
+  tr.total td.projection-cell {
     background: #1F4E79 !important;
     color: white !important;
   }
@@ -282,6 +284,7 @@
       <button id="btnInternal" onclick="setViewMode('internal')">🔒 对内</button>
     </div>
     <button id="toggleInternalBtn" onclick="toggleInternalPN()" style="background:#6c757d;">🔒 隐藏内部料号</button>
+    <button id="toggleProjectionBtn" onclick="toggleProjection()" style="background:#17a2b8;">📅 库存推测预计</button>
     <button onclick="exportExcel()">📥 导出 Excel</button>
   </div>
   <div class="table-wrap">
@@ -303,6 +306,8 @@
           <th style="min-width:55px">91-150days</th>
           <th style="min-width:55px">151-180days</th>
           <th style="min-width:50px">>180days</th>
+          <th class="th-projection" style="min-width:55px; display:none;">预计超90天</th>
+          <th class="th-projection" style="min-width:60px; display:none;">预计超180天</th>
           <th style="min-width:46px">Total</th>
         </tr>
       </thead>
@@ -325,6 +330,9 @@
 const today = new Date();
 const todayStr = today.toISOString().split('T')[0];
 document.getElementById('analysisDate').textContent = todayStr;
+
+const lastDayOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+const daysUntilMonthEnd = Math.floor((lastDayOfMonth - today) / 86400000);
 
 const PART_MAP = {
     "6TNC4005": "SI D150 NPTW",
@@ -447,6 +455,7 @@ let analyzedData = [];
 let summaryRows = [];
 let missingPartNumbers = new Set();
 let showInternalPN = true;
+let showProjection = false;
 let viewMode = 'external';
 let selectedSizes = new Set(['6寸', '8寸', '12寸', '未知']);
 
@@ -482,6 +491,14 @@ function toggleSize(size) {
     selectedSizes.add(size);
     btn.classList.add('active');
   }
+  renderTable();
+}
+
+function toggleProjection() {
+  showProjection = !showProjection;
+  const btn = document.getElementById('toggleProjectionBtn');
+  btn.textContent = showProjection ? '📅 关闭库存推测' : '📅 库存推测预计';
+  btn.style.background = showProjection ? '#dc3545' : '#17a2b8';
   renderTable();
 }
 
@@ -689,6 +706,9 @@ function processData() {
     const productType = getProductType(customerPN);
     const size = getSize(productType);
 
+    const projectedOver90 = (ageDays !== null && ageDays + daysUntilMonthEnd > 90) ? qty : 0;
+    const projectedOver180 = (ageDays !== null && ageDays + daysUntilMonthEnd > 180) ? qty : 0;
+
     analyzedData.push({
       wh, factory, customerPN, productType,
       internalPN: material,
@@ -697,7 +717,9 @@ function processData() {
       qty,
       amount: qty * price,
       ageDays,
-      ageBucket
+      ageBucket,
+      projectedOver90,
+      projectedOver180
     });
   }
 
@@ -733,6 +755,8 @@ function buildSummary() {
         qty: 0, amount: 0,
         inTransit: 0,
         '1-30days': 0, '31-60days': 0, '61-90days': 0, '91-150days': 0, '151-180days': 0, '>180days': 0,
+        projectedOver90: 0,
+        projectedOver180: 0,
         ageDist: {
           'inTransit': {}, '1-30days': {}, '31-60days': {}, '61-90days': {}, '91-150days': {}, '151-180days': {}, '>180days': {}
         }
@@ -748,6 +772,8 @@ function buildSummary() {
       groups[key].ageDist[r.ageBucket][dayKey] = (groups[key].ageDist[r.ageBucket][dayKey] || 0) + r.qty;
     }
     if (!groups[key].productType && r.productType) groups[key].productType = r.productType;
+    groups[key].projectedOver90 += r.projectedOver90;
+    groups[key].projectedOver180 += r.projectedOver180;
   }
   for (const g of Object.values(groups)) {
     if (g.qty > 0) g.price = g.amount / g.qty;
@@ -783,11 +809,19 @@ function buildSummary() {
 
   summaryRows = [];
   const whTotals = {};
-  const grandTotal = { qty: 0, amount: 0, inTransit: 0, '1-30days': 0, '31-60days': 0, '61-90days': 0, '91-150days': 0, '151-180days': 0, '>180days': 0 };
+  const grandTotal = { 
+    qty: 0, amount: 0, 
+    inTransit: 0, '1-30days': 0, '31-60days': 0, '61-90days': 0, '91-150days': 0, '151-180days': 0, '>180days': 0,
+    projectedOver90: 0, projectedOver180: 0
+  };
 
   for (const r of detailGroups) {
     if (!whTotals[r.wh]) {
-      whTotals[r.wh] = { qty: 0, amount: 0, inTransit: 0, '1-30days': 0, '31-60days': 0, '61-90days': 0, '91-150days': 0, '151-180days': 0, '>180days': 0 };
+      whTotals[r.wh] = { 
+        qty: 0, amount: 0, 
+        inTransit: 0, '1-30days': 0, '31-60days': 0, '61-90days': 0, '91-150days': 0, '151-180days': 0, '>180days': 0,
+        projectedOver90: 0, projectedOver180: 0
+      };
     }
     whTotals[r.wh].qty += r.qty;
     whTotals[r.wh].amount += r.amount;
@@ -798,6 +832,8 @@ function buildSummary() {
     whTotals[r.wh]['91-150days'] += r['91-150days'];
     whTotals[r.wh]['151-180days'] += r['151-180days'];
     whTotals[r.wh]['>180days'] += r['>180days'];
+    whTotals[r.wh].projectedOver90 += r.projectedOver90;
+    whTotals[r.wh].projectedOver180 += r.projectedOver180;
 
     grandTotal.qty += r.qty;
     grandTotal.amount += r.amount;
@@ -808,6 +844,8 @@ function buildSummary() {
     grandTotal['91-150days'] += r['91-150days'];
     grandTotal['151-180days'] += r['151-180days'];
     grandTotal['>180days'] += r['>180days'];
+    grandTotal.projectedOver90 += r.projectedOver90;
+    grandTotal.projectedOver180 += r.projectedOver180;
   }
 
   let currentWh = null;
@@ -826,6 +864,8 @@ function buildSummary() {
         '61-90days': whTotals[wh]['61-90days'], '91-150days': whTotals[wh]['91-150days'],
         '151-180days': whTotals[wh]['151-180days'],
         '>180days': whTotals[wh]['>180days'],
+        projectedOver90: whTotals[wh].projectedOver90,
+        projectedOver180: whTotals[wh].projectedOver180,
         type: 'subtotal'
       });
     }
@@ -839,6 +879,8 @@ function buildSummary() {
     '61-90days': grandTotal['61-90days'], '91-150days': grandTotal['91-150days'],
     '151-180days': grandTotal['151-180days'],
     '>180days': grandTotal['>180days'],
+    projectedOver90: grandTotal.projectedOver90,
+    projectedOver180: grandTotal.projectedOver180,
     type: 'total'
   });
 }
@@ -902,6 +944,9 @@ function renderTable() {
   document.querySelectorAll('.th-internal').forEach(el => {
     el.style.display = showInternalPN ? '' : 'none';
   });
+  document.querySelectorAll('.th-projection').forEach(el => {
+    el.style.display = showProjection ? 'table-cell' : 'none';
+  });
 
   const whGroups = {};
   for (const r of summaryRows) {
@@ -935,6 +980,11 @@ function renderTable() {
         ? `<td class="col-center">${r.internalPN}</td>` 
         : '';
 
+      const projectionCells = showProjection ? `
+        <td class="col-right projection-cell">${fmtNum(r.projectedOver90)}</td>
+        <td class="col-right projection-cell">${fmtNum(r.projectedOver180)}</td>
+      ` : '';
+
       function makeTooltip(dist) {
         if (!dist || Object.keys(dist).length === 0) return '';
         const entries = Object.entries(dist).sort((a,b) => parseInt(a[0]) - parseInt(b[0]));
@@ -965,6 +1015,7 @@ function renderTable() {
           <td class="col-right age-150" title="${t150}">${fmtNum(r['91-150days'])}</td>
           <td class="col-right age-180" title="${t180}">${fmtNum(r['151-180days'])}</td>
           <td class="col-right age-over" title="${tover}">${fmtNum(r['>180days'])}</td>
+          ${projectionCells}
           <td class="col-right">${fmtNum(totalAge)}</td>
         </tr>`;
     }
@@ -973,6 +1024,10 @@ function renderTable() {
     if (sub) {
       const totalAge = sub.inTransit + sub['1-30days'] + sub['31-60days'] + sub['61-90days'] + sub['91-150days'] + sub['151-180days'] + sub['>180days'];
       const descColspan = 4 + (showInternalPN ? 1 : 0);
+      const projectionSubtotal = showProjection ? `
+        <td class="col-right projection-cell">${fmtNum(sub.projectedOver90)}</td>
+        <td class="col-right projection-cell">${fmtNum(sub.projectedOver180)}</td>
+      ` : '';
       tbody.innerHTML += `
         <tr class="subtotal">
           <td class="col-center" colspan="${descColspan}">${sub.wh}</td>
@@ -986,6 +1041,7 @@ function renderTable() {
           <td class="col-right age-150">${fmtNum(sub['91-150days'])}</td>
           <td class="col-right age-180">${fmtNum(sub['151-180days'])}</td>
           <td class="col-right age-over">${fmtNum(sub['>180days'])}</td>
+          ${projectionSubtotal}
           <td class="col-right">${fmtNum(totalAge)}</td>
         </tr>`;
     }
@@ -995,6 +1051,10 @@ function renderTable() {
   if (total) {
     const totalAge = total.inTransit + total['1-30days'] + total['31-60days'] + total['61-90days'] + total['91-150days'] + total['151-180days'] + total['>180days'];
     const descColspan = 4 + (showInternalPN ? 1 : 0);
+    const projectionTotal = showProjection ? `
+      <td class="col-right projection-cell">${fmtNum(total.projectedOver90)}</td>
+      <td class="col-right projection-cell">${fmtNum(total.projectedOver180)}</td>
+    ` : '';
     tbody.innerHTML += `
       <tr class="total">
         <td class="col-center" colspan="${descColspan}">总计</td>
@@ -1008,6 +1068,7 @@ function renderTable() {
         <td class="col-right age-150">${fmtNum(total['91-150days'])}</td>
         <td class="col-right age-180">${fmtNum(total['151-180days'])}</td>
         <td class="col-right age-over">${fmtNum(total['>180days'])}</td>
+        ${projectionTotal}
         <td class="col-right">${fmtNum(totalAge)}</td>
       </tr>`;
   }
@@ -1052,10 +1113,15 @@ async function exportExcel() {
     { key: 'd150', header: '91-150days', width: 11 },
     { key: 'd180', header: '151-180days', width: 11 },
     { key: 'over', header: '>180days', width: 10 },
+    { key: 'proj90', header: '预计超90天', width: 11 },
+    { key: 'proj180', header: '预计超180天', width: 12 },
     { key: 'total', header: 'Total', width: 9 },
   ];
   if (!showInternalPN) {
     cols = cols.filter(c => c.key !== 'internalPN');
+  }
+  if (!showProjection) {
+    cols = cols.filter(c => c.key !== 'proj90' && c.key !== 'proj180');
   }
   ws.columns = cols;
 
@@ -1093,6 +1159,8 @@ async function exportExcel() {
     d180: { color: { argb: 'FFbf360c' }, bold: true },
     over: { color: { argb: 'FFFFFFFF' }, bold: true },
   };
+  const projectionFill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFf3e5f5' } };
+  const projectionFont = { color: { argb: 'FF6a1b9a' }, bold: true };
   const ageKeys = ['inTransit','d30','d60','d90','d150','d180','over'];
   const ageColIndices = ageKeys.map(k => colIndex[k]).filter(v => v !== undefined);
 
@@ -1130,6 +1198,8 @@ async function exportExcel() {
           case 'd150': return r['91-150days'];
           case 'd180': return r['151-180days'];
           case 'over': return r['>180days'];
+          case 'proj90': return r.projectedOver90;
+          case 'proj180': return r.projectedOver180;
           case 'total': return totalAge;
           default: return '';
         }
@@ -1150,6 +1220,19 @@ async function exportExcel() {
           cell.numFmt = '#,##0';
         }
       });
+
+      if (colIndex.proj90) {
+        const cell = row.getCell(colIndex.proj90);
+        cell.fill = projectionFill;
+        cell.font = projectionFont;
+        cell.numFmt = '#,##0';
+      }
+      if (colIndex.proj180) {
+        const cell = row.getCell(colIndex.proj180);
+        cell.fill = projectionFill;
+        cell.font = projectionFont;
+        cell.numFmt = '#,##0';
+      }
 
       row.eachCell(cell => {
         cell.border = { top: thinBorder, left: thinBorder, bottom: thinBorder, right: thinBorder };
@@ -1179,6 +1262,8 @@ async function exportExcel() {
         if (c.key === 'd150') return sub['91-150days'];
         if (c.key === 'd180') return sub['151-180days'];
         if (c.key === 'over') return sub['>180days'];
+        if (c.key === 'proj90') return sub.projectedOver90;
+        if (c.key === 'proj180') return sub.projectedOver180;
         if (c.key === 'total') return totalAge;
         return '';
       });
@@ -1203,6 +1288,10 @@ async function exportExcel() {
           cell.fill = ageFills[ageKey];
           cell.font = ageFonts[ageKey];
         }
+        if (colNumber === colIndex.proj90 || colNumber === colIndex.proj180) {
+          cell.fill = projectionFill;
+          cell.font = projectionFont;
+        }
       });
 
       if (colIndex.qty) row.getCell(colIndex.qty).numFmt = '#,##0';
@@ -1210,6 +1299,8 @@ async function exportExcel() {
       ageColIndices.forEach(ci => {
         row.getCell(ci).numFmt = '#,##0';
       });
+      if (colIndex.proj90) row.getCell(colIndex.proj90).numFmt = '#,##0';
+      if (colIndex.proj180) row.getCell(colIndex.proj180).numFmt = '#,##0';
       if (colIndex.total) row.getCell(colIndex.total).numFmt = '#,##0';
 
       row.height = 22;
@@ -1233,6 +1324,8 @@ async function exportExcel() {
       if (c.key === 'd150') return total['91-150days'];
       if (c.key === 'd180') return total['151-180days'];
       if (c.key === 'over') return total['>180days'];
+      if (c.key === 'proj90') return total.projectedOver90;
+      if (c.key === 'proj180') return total.projectedOver180;
       if (c.key === 'total') return totalAge;
       return '';
     });
@@ -1255,6 +1348,10 @@ async function exportExcel() {
         cell.fill = ageFills[ageKey];
         cell.font = ageFonts[ageKey];
       }
+      if (colNumber === colIndex.proj90 || colNumber === colIndex.proj180) {
+        cell.fill = projectionFill;
+        cell.font = projectionFont;
+      }
     });
 
     if (colIndex.qty) row.getCell(colIndex.qty).numFmt = '#,##0';
@@ -1262,6 +1359,8 @@ async function exportExcel() {
     ageColIndices.forEach(ci => {
       row.getCell(ci).numFmt = '#,##0';
     });
+    if (colIndex.proj90) row.getCell(colIndex.proj90).numFmt = '#,##0';
+    if (colIndex.proj180) row.getCell(colIndex.proj180).numFmt = '#,##0';
     if (colIndex.total) row.getCell(colIndex.total).numFmt = '#,##0';
 
     row.height = 24;
@@ -1290,7 +1389,11 @@ function exportPlainExcel() {
   const exportData = [];
   const headers = ['寄售库','ST工厂','客户料号','产品类型'];
   if (showInternalPN) headers.push('内部料号');
-  headers.push('单价(26H2)','Amount','Total pcs','在途','1-30days','31-60days','61-90days','91-150days','151-180days','>180days','Total');
+  headers.push('单价(26H2)','Amount','Total pcs','在途','1-30days','31-60days','61-90days','91-150days','151-180days','>180days');
+  if (showProjection) {
+    headers.push('预计超90天', '预计超180天');
+  }
+  headers.push('Total');
   exportData.push(headers);
 
   for (const r of summaryRows) {
@@ -1300,6 +1403,7 @@ function exportPlainExcel() {
       ...(showInternalPN ? [r.internalPN] : []),
       r.price, r.amount, r.qty, r.inTransit,
       r['1-30days'], r['31-60days'], r['61-90days'], r['91-150days'], r['151-180days'], r['>180days'],
+      ...(showProjection ? [r.projectedOver90, r.projectedOver180] : []),
       totalAge
     ];
     exportData.push(row);
