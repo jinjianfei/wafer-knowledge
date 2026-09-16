@@ -5,72 +5,167 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Alex Jin 知识库</title>
 <style>
-:root{--bg:#f5f6fa;--card:#ffffff;--accent:#2563eb;--accent2:#0ea5e9;--text:#1e293b;--text2:#475569;--border:#e2e8f0}
+:root{
+  --bg:#0a1424;
+  --gold:#d4b45a;
+  --gold-soft:rgba(212,180,90,.5);
+  --text:#e8eef8;
+  --text2:#93a5c0;
+  --line:rgba(148,163,184,.16);
+}
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{height:100%}
-body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans SC","PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--text);line-height:1.7;min-height:100vh;display:flex;flex-direction:column}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans SC","PingFang SC","Microsoft YaHei",sans-serif;
+  color:var(--text);line-height:1.7;min-height:100vh;display:flex;flex-direction:column;position:relative;
+  background:linear-gradient(180deg,#1e3252 0%, #172841 40%, #101e33 100%);
+  background-attachment:fixed;
+}
+
+/* ===== 全页背景层（fixed，贯穿整页） ===== */
+/* 1. 细网格 */
+.bg-grid{
+  position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:
+    linear-gradient(rgba(148,163,184,.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(148,163,184,.055) 1px, transparent 1px);
+  background-size:64px 64px;
+  -webkit-mask-image:linear-gradient(180deg,#000 0%,#000 70%,transparent 100%);
+  mask-image:linear-gradient(180deg,#000 0%,#000 70%,transparent 100%);
+}
+/* 2. 晶圆元素 */
+.bg-wafer{position:fixed;z-index:0;pointer-events:none;opacity:.13}
+.bg-wafer.w1{top:-200px;right:-180px;width:760px;height:760px}
+.bg-wafer.w2{bottom:-300px;left:-260px;width:820px;height:820px;opacity:.09}
+.bg-wafer .edge{fill:none;stroke:var(--gold);stroke-width:1.6;filter:drop-shadow(0 0 12px rgba(212,180,90,.6))}
+.bg-wafer .die{stroke:rgba(212,180,90,.75);stroke-width:.6;fill:none}
+.bg-wafer .notch{fill:#182a45}
+/* 3. 金色周期曲线（底部横贯） */
+.bg-curve{position:fixed;left:0;right:0;bottom:0;width:100%;height:220px;z-index:0;pointer-events:none}
+.bg-curve path.line{fill:none;stroke:var(--gold);stroke-width:1.8;filter:drop-shadow(0 0 8px rgba(212,180,90,.7));opacity:.8}
+.bg-curve path.fill{fill:url(#curvefill);stroke:none;opacity:.7}
+.bg-curve circle{fill:var(--gold);filter:drop-shadow(0 0 6px rgba(212,180,90,.9))}
+/* 4. 顶部光晕 */
+.bg-glow{position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(1500px 800px at 85% -10%, rgba(64,100,150,.45), transparent 62%),
+    radial-gradient(1200px 700px at -10% 110%, rgba(44,74,116,.38), transparent 62%);
+}
 a{text-decoration:none;color:inherit}
 
-/* Header */
-.header{background:linear-gradient(135deg,#0f172a 0%,#1e293b 50%,#0ea5e9 100%);color:#fff;padding:16px 32px 18px;text-align:center;position:relative;overflow:hidden;flex-shrink:0}
-.header::before{content:'';position:absolute;top:-80px;right:-60px;width:320px;height:320px;background:rgba(14,165,233,.06);border-radius:50%}
-.header::after{content:'';position:absolute;bottom:-60px;left:-40px;width:240px;height:240px;background:rgba(37,99,235,.05);border-radius:50%}
-.header-content{position:relative;z-index:2;max-width:720px;margin:0 auto}
-.header h1{font-size:30px;font-weight:700;letter-spacing:-.3px}
-.header .subtitle{font-size:13px;color:#94a3b8;display:inline;margin-right:12px}
-.header .author{display:inline;font-size:12px;color:#60a5fa;font-style:italic}
+/* ===== Header ===== */
+.header{position:relative;z-index:2;flex-shrink:0;padding:44px 32px 26px;text-align:center}
+.header-content{max-width:780px;margin:0 auto}
+.header h1{font-size:30px;font-weight:700;letter-spacing:2px;color:#f4f7fc;text-shadow:0 0 46px rgba(212,180,90,.18)}
+.header h1 em{font-style:normal;color:var(--gold)}
+.subtitle{margin-top:10px;font-size:13px;color:var(--text2)}
+.subtitle b{color:#c9d7ec;font-weight:600}
 
-/* Main */
-.main{flex:1;padding:40px 32px;max-width:1200px;margin:0 auto;width:100%}
-.section-title{font-size:18px;font-weight:600;margin-bottom:20px;display:flex;align-items:center;gap:8px}
-.section-title::before{content:'';display:inline-block;width:4px;height:20px;background:var(--accent);border-radius:2px}
+/* ===== Main ===== */
+.main{flex:1;position:relative;z-index:2;padding:0 32px 160px;max-width:1200px;margin:0 auto;width:100%}
+.section-title{font-size:17px;font-weight:600;margin:22px 0 20px;display:flex;align-items:center;gap:10px;color:#dbe6f5}
+.section-title::before{content:'';display:inline-block;width:22px;height:2px;background:linear-gradient(90deg,var(--gold),transparent);border-radius:2px}
+.section-title small{font-size:12px;font-weight:400;color:var(--text2);letter-spacing:1px;margin-left:2px}
 
-/* Cards */
-.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-bottom:40px}
-.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:28px;transition:all .25s;cursor:pointer;position:relative;overflow:hidden;display:block}
-.card:hover{transform:translateY(-4px);box-shadow:0 12px 32px rgba(0,0,0,.1);border-color:var(--accent)}
-.card .card-icon{font-size:40px;margin-bottom:16px;display:block}
-.card .card-title{font-size:18px;font-weight:600;margin-bottom:8px;color:var(--text)}
-.card .card-desc{font-size:14px;color:var(--text2);margin-bottom:16px;line-height:1.6}
-.card .card-meta{display:flex;gap:16px;font-size:13px;color:var(--text2)}
-.card .card-meta span{display:flex;align-items:center;gap:4px}
-.card .card-arrow{position:absolute;right:20px;top:50%;transform:translateY(-50%);font-size:20px;color:var(--border);transition:all .2s}
-.card:hover .card-arrow{color:var(--accent);right:16px}
+/* ===== Cards ===== */
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.card{
+  position:relative;overflow:hidden;display:block;
+  background:rgba(13,26,46,.78);border:1px solid var(--line);border-radius:14px;padding:26px 24px;
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  transition:all .25s;cursor:pointer;
+}
+.card::before{
+  content:'';position:absolute;top:0;left:24px;right:24px;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(212,180,90,.55),transparent);
+  opacity:0;transition:opacity .25s;
+}
+.card:hover{transform:translateY(-4px);border-color:rgba(212,180,90,.5);box-shadow:0 14px 36px rgba(0,0,0,.5),0 0 0 1px rgba(212,180,90,.12);background:rgba(17,33,58,.85)}
+.card:hover::before{opacity:1}
+.card .card-icon{font-size:34px;margin-bottom:14px;display:block;filter:saturate(.9)}
+.card .card-title{font-size:17px;font-weight:600;margin-bottom:8px;color:#eef3fb}
+.card .card-desc{font-size:13px;color:var(--text2);margin-bottom:16px;line-height:1.65}
+.card .card-meta{display:flex;gap:14px;font-size:12px;color:#7f93b3;flex-wrap:wrap}
+.card .card-meta span{display:flex;align-items:center;gap:5px}
+.card .card-meta span::before{content:'';width:3px;height:3px;border-radius:50%;background:var(--gold-soft)}
+.card .card-arrow{position:absolute;right:20px;top:26px;font-size:15px;color:#3d5170;transition:all .2s}
+.card:hover .card-arrow{color:var(--gold);right:16px}
 
-/* Coming soon */
-.card-soon{opacity:.6;cursor:default}
-.card-soon:hover{transform:none;box-shadow:none;border-color:var(--border)}
-.card-soon:hover .card-arrow{color:var(--border);right:20px}
-.card-soon .card-badge{font-size:11px;background:#f1f5f9;color:var(--text2);padding:2px 10px;border-radius:4px;font-weight:500;display:inline-block;margin-bottom:12px}
-
-/* Footer */
-.footer{text-align:center;padding:24px;font-size:12px;color:#94a3b8;border-top:1px solid var(--border)}
+.footer{position:relative;z-index:2;text-align:center;padding:26px;font-size:12px;color:#4d6284;border-top:1px solid rgba(148,163,184,.08)}
+.footer .wflines{display:flex;justify-content:center;align-items:flex-end;gap:6px;margin-bottom:10px;opacity:.55}
+.footer .wflines i{display:block;width:1px;background:var(--gold-soft)}
 
 @media(max-width:1024px){
   .cards{grid-template-columns:repeat(2,1fr)}
+  .bg-wafer.w1{width:480px;height:480px;right:-240px}
+  .bg-wafer.w2{width:520px;height:520px;left:-280px}
 }
 @media(max-width:768px){
-  .header h1{font-size:22px;display:block}
-  .header .subtitle{display:block;margin-left:0;margin-top:4px}
-  .header{padding:20px 20px 24px}
-  .main{padding:28px 20px}
+  .header{padding:36px 20px 20px}
+  .header h1{font-size:24px}
+  .subtitle{font-size:12px}
+  .main{padding:0 20px 150px}
   .cards{grid-template-columns:1fr}
+  .bg-curve{height:150px}
+  .bg-wafer.w1{width:380px;height:380px;right:-220px;top:-140px}
 }
 </style>
-<base target="_blank">
 <base target="_blank">
 <base target="_blank">
 </head>
 <body>
 
+<!-- ===== 全页背景 SVG 定义 ===== -->
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <pattern id="dieg" width="64" height="64" patternUnits="userSpaceOnUse">
+      <path class="die" d="M0 0H64V64H0Z" fill="none" stroke="rgba(212,180,90,.8)" stroke-width="1"/>
+    </pattern>
+    <linearGradient id="curvefill" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="rgba(212,180,90,.14)"/>
+      <stop offset="1" stop-color="rgba(212,180,90,0)"/>
+    </linearGradient>
+    <clipPath id="waferclip">
+      <path d="M280 20 A260 260 0 1 1 231.5 455.6 L231.5 470 L328.5 470 L328.5 455.6 A260 260 0 0 1 280 20 Z"/>
+    </clipPath>
+  </defs>
+</svg>
+
+<!-- 背景层 -->
+<div class="bg-glow"></div>
+<div class="bg-grid"></div>
+
+<svg class="bg-wafer w1" viewBox="0 0 560 560">
+  <g clip-path="url(#waferclip)"><rect x="0" y="0" width="560" height="560" fill="url(#dieg)"/></g>
+  <path class="edge" d="M280 20 A260 260 0 1 1 231.5 455.6"/>
+  <path class="edge" d="M280 20 A260 260 0 0 0 328.5 455.6" opacity=".55"/>
+  <rect class="notch" x="231.5" y="452" width="97" height="20"/>
+</svg>
+<svg class="bg-wafer w2" viewBox="0 0 560 560">
+  <g clip-path="url(#waferclip)"><rect x="0" y="0" width="560" height="560" fill="url(#dieg)"/></g>
+  <path class="edge" d="M280 20 A260 260 0 1 1 231.5 455.6"/>
+  <path class="edge" d="M280 20 A260 260 0 0 0 328.5 455.6" opacity=".55"/>
+  <rect class="notch" x="231.5" y="452" width="97" height="20"/>
+</svg>
+
+<svg class="bg-curve" viewBox="0 0 1440 220" preserveAspectRatio="none">
+  <path class="fill" d="M0 200 C120 188 200 172 300 176 C400 180 460 156 560 146 C660 136 720 162 820 154 C920 146 980 106 1080 90 C1180 74 1280 80 1440 24 L1440 220 L0 220 Z"/>
+  <path class="line" d="M0 200 C120 188 200 172 300 176 C400 180 460 156 560 146 C660 136 720 162 820 154 C920 146 980 106 1080 90 C1180 74 1280 80 1440 24"/>
+  <circle cx="300" cy="176" r="3.2"/>
+  <circle cx="560" cy="146" r="3.2"/>
+  <circle cx="820" cy="154" r="3.2"/>
+  <circle cx="1080" cy="90" r="3.2"/>
+</svg>
+
 <div class="header">
   <div class="header-content">
-    <h1>Alex Jin 知识库</h1><p class="subtitle">系统化学习资料整理 &middot; 专业领域知识沉淀</p><p class="author">Created By Alex Jin</p>
+    <h1>Alex Jin <em>知识库</em></h1>
+    <p class="subtitle"><b>系统化学习资料整理</b> · Created By Alex Jin</p>
   </div>
 </div>
 
 <div class="main">
-  <div class="section-title">学习模块</div>
+  <div class="section-title">学习模块 <small>LEARNING</small></div>
   <div class="cards">
 
     <!-- 半导体硅片材料 -->
@@ -111,7 +206,7 @@ a{text-decoration:none;color:inherit}
 
   </div>
 
-  <div class="section-title">分析模块</div>
+  <div class="section-title">分析模块 <small>ANALYTICS</small></div>
   <div class="cards">
 
     <!-- 库存分析驾驶舱 -->
@@ -157,6 +252,7 @@ a{text-decoration:none;color:inherit}
 </div>
 
 <div class="footer">
+  <div class="wflines"><i style="height:10px"></i><i style="height:16px"></i><i style="height:10px"></i></div>
   &copy; Alex Jin. All rights reserved.
 </div>
 
