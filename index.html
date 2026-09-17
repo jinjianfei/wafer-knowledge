@@ -57,8 +57,9 @@ a{text-decoration:none;color:inherit}
 .header{position:relative;z-index:2;flex-shrink:0;padding:44px 32px 26px;text-align:center}
 .header-content{max-width:780px;margin:0 auto}
 .header h1{font-size:30px;font-weight:700;letter-spacing:2px;color:#f4f7fc;text-shadow:0 0 46px rgba(212,180,90,.18)}
+.header h1 .sig{height:56px;width:auto;vertical-align:-5px;margin-right:10px;filter:drop-shadow(0 0 14px rgba(212,180,90,.28))}
 .header h1 em{font-style:normal;color:var(--gold)}
-.subtitle{margin-top:10px;font-size:13px;color:var(--text2)}
+.subtitle{margin-top:14px;font-size:16px;color:var(--text2)}
 .subtitle b{color:#c9d7ec;font-weight:600}
 
 /* ===== Main ===== */
@@ -103,6 +104,8 @@ a{text-decoration:none;color:inherit}
 @media(max-width:768px){
   .header{padding:36px 20px 20px}
   .header h1{font-size:24px}
+  .header h1 .sig{height:42px;vertical-align:-4px;margin-right:8px}
+  .subtitle{font-size:14px}
   .subtitle{font-size:12px}
   .main{padding:0 20px 150px}
   .cards{grid-template-columns:1fr}
@@ -110,6 +113,7 @@ a{text-decoration:none;color:inherit}
   .bg-wafer.w1{width:380px;height:380px;right:-220px;top:-140px}
 }
 </style>
+<base target="_blank">
 <base target="_blank">
 <base target="_blank">
 </head>
@@ -159,7 +163,7 @@ a{text-decoration:none;color:inherit}
 
 <div class="header">
   <div class="header-content">
-    <h1>Alex Jin <em>知识库</em></h1>
+    <h1><img class="sig" src="alex.png" alt="Alex Jin"><em>知识库</em></h1>
     <p class="subtitle"><b>系统化学习资料整理</b> · Created By Alex Jin</p>
   </div>
 </div>
