@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ST 客户发票汇总工具</title>
+<script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
+<style>
+  :root{
+    --bg:#e8edf5; --card:#ffffff; --line:#d4dce8; --line2:#eef1f6;
+    --txt:#1f2430; --sub:#6b7484; --accent:#1e40af; --deep:#16294d;
+    --green:#16a34a; --yellow:#b45309; --red:#dc2626; --shadow:0 1px 3px rgba(20,30,60,.08);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:linear-gradient(180deg,#dde6f2 0%,var(--bg) 320px);color:var(--txt);font-family:"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;padding:32px 20px 80px}
+  .wrap{max-width:1180px;margin:0 auto}
+  h1{font-size:22px;font-weight:700;margin-bottom:6px;color:var(--deep)}
+  .desc strong{color:var(--accent)}
+  .desc{color:var(--sub);font-size:13px;margin-bottom:28px;line-height:1.7}
+  .steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px;margin-bottom:24px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;box-shadow:var(--shadow);transition:border-color .2s}
+  .card.done{border-color:var(--green)}
+  .card h3{font-size:14px;margin-bottom:4px;display:flex;align-items:center;gap:8px}
+  .num{display:inline-flex;width:22px;height:22px;border-radius:50%;background:#eef1f6;color:var(--sub);font-size:12px;align-items:center;justify-content:center;flex-shrink:0;font-weight:600}
+  .card.done .num{background:var(--green);color:#fff}
+  .card p{font-size:12px;color:var(--sub);line-height:1.6;margin:6px 0 12px}
+  .drop{border:1.5px dashed #c9d2e0;border-radius:8px;padding:14px;text-align:center;font-size:12px;color:var(--sub);cursor:pointer;transition:.2s;background:#fafbfd}
+  .drop:hover{border-color:var(--accent);color:var(--accent)}
+  .drop.has{border-style:solid;border-color:var(--green);color:var(--green);font-weight:600;background:#f0fdf4}
+  input[type=file]{display:none}
+  select{width:100%;margin-top:10px;padding:8px;background:#fff;color:var(--txt);border:1px solid var(--line);border-radius:6px;font-size:13px}
+  button.primary{background:linear-gradient(180deg,#1e40af,#16294d);color:#fff;border:none;border-radius:8px;padding:12px 32px;font-size:15px;font-weight:600;cursor:pointer;box-shadow:var(--shadow)}
+  button.primary:disabled{background:#c7cedb;color:#f4f6f9;cursor:not-allowed;box-shadow:none}
+  .actions{display:flex;gap:14px;align-items:flex-start;margin:8px 0 26px;flex-wrap:wrap}
+  .err{color:var(--red);font-size:12px;line-height:1.7;white-space:pre-wrap}
+  .section{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:20px;margin-bottom:24px;box-shadow:var(--shadow)}
+  .section h2{font-size:16px;margin-bottom:14px;color:var(--deep);padding-left:10px;border-left:4px solid var(--accent)}
+
+  /* 汇总表 */
+  .sumwrap{overflow-x:auto}
+  table{border-collapse:collapse;width:100%;font-size:13px;background:#fff}
+  th,td{border:1px solid var(--line);padding:8px 12px;text-align:left;white-space:nowrap}
+  th{background:var(--deep);color:#dbe4f5;font-weight:600}
+  td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+  tr.total td{font-weight:700;background:#e3eaf7;color:var(--deep)}
+  tr:hover td{background:#f2f6fd}
+
+  /* 明细页签 */
+  .tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+  .tab{padding:8px 16px;border-radius:8px 8px 0 0;border:1px solid var(--line);border-bottom:none;background:#eef2f9;color:var(--sub);font-size:13px;cursor:pointer;font-weight:600}
+  .tab:hover{color:var(--accent)}
+  .tab.active{background:#fff;color:var(--accent);border-color:var(--accent);border-top:2px solid var(--accent);position:relative}
+  .tab .cnt{display:inline-block;margin-left:6px;padding:1px 7px;border-radius:9px;background:#dbe6f8;font-size:11px;color:var(--accent)}
+  .detwrap{overflow-x:auto;border:1px solid var(--line);border-radius:0 8px 8px 8px}
+  .detwrap table th{position:sticky;top:0;z-index:1}
+  tr.warn td{background:#fef9e7}
+  .tag{display:inline-block;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600}
+  .tag.ok{background:#e7f6ec;color:var(--green)}
+  .tag.review{background:#fdf2e0;color:var(--yellow)}
+  .tag.na{background:#fdeaea;color:var(--red)}
+  .dl{background:#fff;color:var(--txt);border:1px solid var(--line);border-radius:8px;padding:10px 20px;font-size:13px;cursor:pointer;font-weight:600}
+  .dl:hover{border-color:var(--accent);color:var(--accent)}
+  .empty{color:var(--sub);font-size:13px;padding:30px;text-align:center}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>ST 客户发票汇总工具</h1>
+  <div class="desc">按顺序上传 4 个文件 → 自动匹配「系统发票金额 / 系统发票状态 / 报关单价 / 报关金额 / 开票通知单」→ 输出工厂汇总表（图1）与匹配明细，可下载 Excel。<br>匹配规则：发票号去末尾编码序号作为辅助 key（如 ZHA26155C1 → ZHA26155C）。</div>
+
+  <div class="steps">
+    <div class="card" id="card0">
+      <h3><span class="num">1</span>客户月度领用发票表</h3>
+      <p>你手工整理好的当月发票表，含各工厂 sheet（Agrate / Catania / Crolles / Rousset / Tours / Singarpore 等），A–I 列已填好。</p>
+      <label class="drop" id="drop0">点击选择文件<input type="file" id="f0"></label>
+    </div>
+    <div class="card" id="card1">
+      <h3><span class="num">2</span>ST 回款系统导出</h3>
+      <p>从 ST 回款系统导出的文件（All.csv），需包含 Invoice.nr、Amount、Status 三列，用于匹配系统发票金额与状态。</p>
+      <label class="drop" id="drop1">点击选择文件<input type="file" id="f1"></label>
+    </div>
+    <div class="card" id="card2">
+      <h3><span class="num">3</span>发货统计表（ST提单）</h3>
+      <p>发货统计文件，需包含「ST提单」sheet，用 Invoice no 匹配合同单价（报关单价）与发货金额（报关金额）。</p>
+      <label class="drop" id="drop2">点击选择文件<input type="file" id="f2"></label>
+    </div>
+    <div class="card" id="card3">
+      <h3><span class="num">4</span>开票台账</h3>
+      <p>开票台账文件，含各月份 sheet，用形式发票号匹配开票通知单。</p>
+      <label class="drop" id="drop3">点击选择文件<input type="file" id="f3"></label>
+      <select id="monthSel" multiple size="5" style="display:none"></select>
+      <p id="monthHint" style="display:none;font-size:11px;color:var(--sub);margin-top:6px">按住 Ctrl 可多选月份；Tours直发 sheet 会自动一并匹配</p>
+    </div>
+  </div>
+
+  <div class="actions">
+    <button class="primary" id="runBtn" disabled>开始匹配并汇总</button>
+    <button class="dl" id="dlBtn" style="display:none">下载 Excel（汇总 + 明细）</button>
+    <span class="err" id="errBox"></span>
+  </div>
+
+  <div class="section" id="sumBox" style="display:none">
+    <h2>工厂汇总表（图1）</h2>
+    <div class="sumwrap" id="sumTable"></div>
+  </div>
+
+  <div class="section" id="detBox" style="display:none">
+    <h2>匹配明细（按工厂）</h2>
+    <div class="tabs" id="tabBar"></div>
+    <div class="detwrap" id="detView"></div>
+  </div>
+</div>
+
+<script>
+const S = { inv:null, all:null, tl:null, kp:null, kpMonths:null };
+const $ = id => document.getElementById(id);
+
+function norm(v){ return (v==null?'':String(v)).trim(); }
+function upper(v){ return norm(v).toUpperCase(); }
+function auxKey(inv){ return norm(inv).replace(/\s+/g,'').replace(/\d+$/,''); }
+function num(v){ if(v==null||v==='')return null; const n=parseFloat(String(v).replace(/[,$¥\s]/g,'')); return isNaN(n)?null:n; }
+function fmtMoney(n){ return n==null?'':n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}); }
+function fmtDate(v){ if(v==null)return ''; if(v instanceof Date)return v.toISOString().slice(0,10); const s=String(v).trim(); return s.slice(0,10); }
+
+async function readFile(file){
+  const buf = await file.arrayBuffer();
+  const isCsv = /\.csv$/i.test(file.name);
+  return XLSX.read(buf, {type:'array', cellDates:!isCsv, raw:false});
+}
+
+function bindUpload(idx, dropId, fileId, cb){
+  $(fileId).addEventListener('change', async e=>{
+    const f = e.target.files[0]; if(!f) return;
+    try{
+      const wb = await readFile(f);
+      cb(wb, f.name);
+      $(dropId).textContent = '✓ ' + f.name;
+      $(dropId).classList.add('has');
+      $('card'+idx).classList.add('done');
+      $('errBox').textContent='';
+      checkReady();
+    }catch(err){ $('errBox').textContent = '文件读取失败：' + f.name + '\n' + err.message; }
+  });
+}
+
+function checkReady(){ $('runBtn').disabled = !(S.inv && S.all && S.tl && S.kp && S.kpMonths && S.kpMonths.length); }
+
+// ---- 文件1：领用发票 ----
+bindUpload(0,'drop0','f0',(wb,name)=>{ S.inv = wb; });
+// ---- 文件2：All ----
+bindUpload(1,'drop1','f1',(wb,name)=>{
+  const ws = wb.Sheets[wb.SheetNames[0]];
+  S.all = XLSX.utils.sheet_to_json(ws, {defval:null, blankrows:false});
+  if(!S.all.length || !('Invoice.nr' in S.all[0])) throw new Error('未找到 Invoice.nr 列，请确认是 ST 回款系统导出的原始文件');
+  const map = {};
+  S.all.forEach(r=>{ map[upper(r['Invoice.nr'])] = {amt:num(r['Amount']), status:norm(r['Status'])}; });
+  S.allMap = map;
+});
+// ---- 文件3：发货统计 ----
+bindUpload(2,'drop2','f2',(wb,name)=>{
+  const sn = wb.SheetNames.find(n=>n.replace(/\s/g,'').replace(/[\u3000]/g,'').includes('ST提单'));
+  if(!sn) throw new Error('未找到「ST提单」sheet。\n该文件包含的 sheet：' + wb.SheetNames.join('、') + '\n请确认上传的是发货统计总表。');
+  const rows = XLSX.utils.sheet_to_json(wb.Sheets[sn], {defval:null, blankrows:false});
+  const map = {};
+  rows.forEach(r=>{
+    const k = upper(r['Invoice no']);
+    if(!k) return;
+    map[k] = {price:num(r['合同单价']), amt:num(r['发货金额'])};
+  });
+  S.tlMap = map;
+  S.tl = true;
+});
+// ---- 文件4：开票台账 ----
+bindUpload(3,'drop3','f3',(wb,name)=>{
+  S.kp = wb;
+  const sel = $('monthSel'); sel.innerHTML='';
+  wb.SheetNames.forEach(n=>{
+    const o = document.createElement('option'); o.value=n; o.textContent=n; sel.appendChild(o);
+  });
+  sel.style.display='block'; $('monthHint').style.display='block';
+  Array.from(sel.options).forEach(o=>{ o.selected = /^\d{1,2}月$/.test(o.value.trim()); });
+  sel.onchange = ()=>{ S.kpMonths = selectedMonths(); checkReady(); };
+  S.kpMonths = selectedMonths();
+});
+function selectedMonths(){
+  return Array.from($('monthSel').selectedOptions).map(o=>o.value);
+}
+function buildKpMap(){
+  const map = {};
+  const scan = (sheetName)=>{
+    const rows = XLSX.utils.sheet_to_json(S.kp.Sheets[sheetName], {header:1, defval:null, blankrows:false});
+    let hr = -1, cPI = -1, cNote = -1;
+    for(let i=0;i<Math.min(rows.length,15);i++){
+      const r = rows[i]||[];
+      let idx = r.findIndex(c=>norm(c)==='形式发票号');
+      if(idx<0) idx = r.findIndex(c=>/^(invoice\s*no\.?)$/i.test(norm(c)));   // Tours直发 sheet
+      if(idx>=0){
+        hr=i; cPI=idx;
+        const cands = r.map((c,j)=>norm(c)==='开票通知单'||norm(c)==='开票通知单号'?j:-1).filter(j=>j>=0);
+        let best = -1, bestN = -1;
+        cands.forEach(j=>{
+          let n = 0;
+          for(let k=hr+1;k<rows.length;k++){ if(norm(rows[k]&&rows[k][j])!=='') n++; }
+          if(n>bestN){ bestN=n; best=j; }
+        });
+        cNote=best; break;
+      }
+    }
+    if(hr<0) return false;
+    rows.slice(hr+1).forEach(r=>{
+      const k = upper(r[cPI]);
+      if(k && !(k in map) && cNote>=0 && norm(r[cNote])!=='') map[k]=norm(r[cNote]);
+    });
+    return true;
+  };
+  let any = false;
+  (S.kpMonths||[]).forEach(m=>{ if(scan(m)) any = true; });
+  S.kp.SheetNames.forEach(n=>{ if(/tours直发/i.test(n)) scan(n); });
+  if(!any) throw new Error('所选开票台账 sheet 中未找到「形式发票号」列');
+  S.kpMap = map;
+}
+
+// ---- 列识别 ----
+const HEADER_RULES = [
+  ['invoice',  /^(invoice\s*no\.?|invoice)$/i],
+  ['pino',     /^(形式发票号)$/],
+  ['spec',     /^(spec|客户料号)$/i],
+  ['qty',      /^(qty|数量)$/i],
+  ['unitprice',/^(unit\s*price\.?|单价)$/i],
+  ['invdate',  /^(invoice date|sbi date)$/i],
+  ['total',    /^(total|inv amount|invamount|开票 usd|发票金额)$/i],
+  ['paydate',  /^(pay date|due payment)$/i],
+  ['status',   /^(status|发票状态)$/i],
+];
+function detectCols(headerRow){
+  const cols = {};
+  headerRow.forEach((h,i)=>{
+    const hs = norm(h);
+    for(const [key,re] of HEADER_RULES){
+      if(cols[key]===undefined && re.test(hs)){ cols[key]=i; break; }
+    }
+  });
+  return cols;
+}
+function findHeaderRow(rows){
+  for(let i=0;i<Math.min(rows.length,12);i++){
+    const joined = rows[i].map(norm).join('|').toLowerCase();
+    if(/invoice/.test(joined) || /形式发票号/.test(joined)) return i;
+  }
+  return -1;
+}
+
+function siteName(sheet){
+  const s = sheet.trim();
+  if(/singar?pore/i.test(s)) return 'AMK';
+  return s;
+}
+
+$('runBtn').addEventListener('click', ()=>{
+  $('runBtn').disabled = true; $('runBtn').textContent = '处理中…'; $('errBox').textContent='';
+  setTimeout(()=>{
+    try{ run(); }
+    catch(e){ $('errBox').textContent = '处理出错：'+e.message; }
+    $('runBtn').disabled = false; $('runBtn').textContent = '开始匹配并汇总';
+  }, 30);
+});
+
+function run(){
+  buildKpMap();
+  const detail = {};
+  const summary = {};
+  const monthNum = parseInt((S.kpMonths||[''])[0]);   // 用于过滤 AMK 的 SBI Date 月份（取第一个选中月份）
+
+  S.inv.SheetNames.forEach(sn=>{
+    if(/summary|汇总/i.test(sn)) return;
+    const rows = XLSX.utils.sheet_to_json(S.inv.Sheets[sn], {header:1, defval:null, blankrows:false});
+    if(!rows.length) return;
+    const hr = findHeaderRow(rows);
+    if(hr<0) return;
+    const header = rows[hr].map(norm);
+    const cols = detectCols(rows[hr]);
+    if(cols.invoice===undefined && cols.pino===undefined) return;
+    if(cols.invoice===undefined) cols.invoice = cols.pino;
+    const site = siteName(sn);
+
+    // ---- AMK/Singarpore：按 SBI Date 所属月份过滤，明细保留下原行，汇总按 SBI# 聚合 ----
+    if(site==='AMK'){
+      const cSBI = header.findIndex(h=>norm(h)==='SBI#');
+      const cSBIDate = header.findIndex(h=>/^(sbi date)$/i.test(norm(h)));
+      const cUSD1 = header.findIndex(h=>/^(开票 usd)$/i.test(norm(h)));
+      const cUSD2 = header.findIndex(h=>/^(sbi金额usd)$/i.test(norm(h)));
+      const aggs = {};
+      if(!detail[site]) detail[site] = {headers:header.filter(h=>h!==''), rows:[], cols};
+      const d = detail[site];
+      ['系统发票状态','系统发票金额','报关单价-CS','报关金额','开票通知单'].forEach(h=>{
+        if(!d.headers.includes(h)) d.headers.push(h);
+      });
+      rows.slice(hr+1).forEach(r=>{
+        if(r.every(c=>norm(c)==='')) return;
+        const sd = r[cSBIDate];
+        if(!(sd instanceof Date)) return;
+        if(sd.getMonth()+1 !== monthNum) return;
+        const rowObj = {};
+        d.headers.forEach(h=>rowObj[h]='');
+        header.forEach((h,i)=>{ if(h) rowObj[h]=r[i]; });
+        rowObj['开票通知单'] = S.kpMap[upper(auxKey(r[cols.invoice]))] || '';
+        d.rows.push(rowObj);
+        const sbi = norm(r[cSBI]);
+        if(!aggs[sbi]) aggs[sbi] = {usd1:0, usd2:0};
+        aggs[sbi].usd1 += num(r[cUSD1]) ?? 0;
+        aggs[sbi].usd2 += num(r[cUSD2]) ?? 0;
+      });
+      const keys = Object.keys(aggs);
+      summary[site] = {
+        inv: keys.length,
+        invAmt: Math.round(keys.reduce((a,k)=>a+aggs[k].usd2,0)*100)/100,
+        declared: Math.round(keys.reduce((a,k)=>a+aggs[k].usd1,0)*100)/100,
+        ready: 0, review: 0, noupload: 0
+      };
+      // AMK 不在 ST 回款系统（All）中，按业务口径全部视为 Ready to pay
+      summary[site].ready = summary[site].invAmt;
+      return;
+    }
+
+    if(!detail[site]) detail[site] = {headers:header.filter(h=>h!==''), rows:[], cols};
+    const d = detail[site];
+    const outHeaders = d.headers.slice();
+    ['系统发票状态','系统发票金额','报关单价-CS','报关金额','开票通知单'].forEach(h=>{
+      if(!outHeaders.includes(h)) outHeaders.push(h);
+    });
+    d.headers = outHeaders;
+
+    rows.slice(hr+1).forEach(r=>{
+      if(r.every(c=>norm(c)==='')) return;
+      const inv = norm(r[cols.invoice]);
+      if(!inv) return;
+      const key = auxKey(inv);
+      const all = S.allMap[upper(inv)];
+      const tl  = S.tlMap[upper(key)];
+      const kp  = S.kpMap[upper(key)];
+      const sysAmt  = all ? all.amt : null;
+      let sysStatus = all ? (all.status.toLowerCase()==='posted' ? 'Ready to pay' : all.status) : '未释放';
+      const bgPrice = tl ? tl.price : null;
+      // 个别 sheet QTY / unit price 两列填反，用「qty × 报关单价 ≈ 发票金额」自动纠正
+      const rowTotal = cols.total!==undefined ? num(r[cols.total]) : null;
+      let qty = cols.qty!==undefined ? num(r[cols.qty]) : null;
+      if(cols.unitprice!==undefined && rowTotal!=null && bgPrice!=null){
+        const q1 = qty, q2 = num(r[cols.unitprice]);
+        const err1 = q1!=null ? Math.abs(q1*bgPrice-rowTotal) : Infinity;
+        const err2 = q2!=null ? Math.abs(q2*bgPrice-rowTotal) : Infinity;
+        if(err2 < err1) qty = q2;
+      }
+      const bgAmt = (bgPrice!=null && qty!=null) ? Math.round(bgPrice*qty*100)/100 : null;
+      const note    = kp || '';
+
+      const rowObj = {};
+      d.headers.forEach(h=>rowObj[h]='');
+      header.forEach((h,i)=>{ if(h) rowObj[h]=r[i]; });
+      rowObj['系统发票状态']=sysStatus;
+      rowObj['系统发票金额']=sysAmt;
+      rowObj['报关单价-CS']=bgPrice;
+      rowObj['报关金额']=bgAmt;
+      rowObj['开票通知单']=note;
+      d.rows.push(rowObj);
+
+      if(!summary[site]) summary[site]={inv:0, invAmt:0, declared:0, ready:0, review:0, noupload:0};
+      const s = summary[site];
+      s.inv++;
+      const total = num(rowObj[['Total','Inv Amount','InvAmount','开票 USD'].find(h=>h in rowObj) || 'Total']) ?? 0;
+      s.invAmt += total;
+      s.declared += bgAmt ?? 0;
+      if(sysStatus==='Ready to pay') s.ready += Math.abs(sysAmt??0);
+      else if(/under review/i.test(sysStatus)) s.review += Math.abs(sysAmt??0);
+      else if(sysStatus==='未释放') s.noupload += total;
+    });
+  });
+
+  renderSummary(summary);
+  renderDetailTabs(detail);
+  window._data = {summary, detail};
+  $('dlBtn').style.display='inline-block';
+}
+
+function renderSummary(summary){
+  const box = $('sumTable');
+  const sites = Object.keys(summary);
+  if(!sites.length){ box.innerHTML='<div class="empty">无数据</div>'; $('sumBox').style.display='block'; return; }
+  let html = '<table><tr><th>Site</th><th class="num">Inv</th><th class="num">Inv amount</th><th class="num">Declared value</th><th class="num">Ready to pay</th><th class="num">Under review</th><th class="num">No upload</th></tr>';
+  let T={inv:0,a:0,d:0,r:0,u:0,n:0};
+  sites.forEach(s=>{
+    const v = summary[s];
+    T.inv+=v.inv; T.a+=v.invAmt; T.d+=v.declared; T.r+=v.ready; T.u+=v.review; T.n+=v.noupload;
+    html += `<tr><td>${s}</td><td class="num">${v.inv}</td><td class="num">${fmtMoney(v.invAmt)}</td><td class="num">${fmtMoney(v.declared)}</td><td class="num">${fmtMoney(v.ready)}</td><td class="num">${fmtMoney(v.review)}</td><td class="num">${v.noupload?fmtMoney(v.noupload):''}</td></tr>`;
+  });
+  html += `<tr class="total"><td>Total</td><td class="num">${T.inv}</td><td class="num">${fmtMoney(T.a)}</td><td class="num">${fmtMoney(T.d)}</td><td class="num">${fmtMoney(T.r)}</td><td class="num">${fmtMoney(T.u)}</td><td class="num">${T.n?fmtMoney(T.n):''}</td></tr>`;
+  html += '</table>';
+  box.innerHTML = html;
+  $('sumBox').style.display='block';
+}
+
+let curTab = null;
+function renderDetailTabs(detail){
+  const sites = Object.keys(detail);
+  const bar = $('tabBar');
+  bar.innerHTML = '';
+  sites.forEach((site,i)=>{
+    const b = document.createElement('button');
+    b.className = 'tab' + (i===0?' active':'');
+    b.innerHTML = `${site}<span class="cnt">${detail[site].rows.length}</span>`;
+    b.onclick = ()=>{
+      curTab = site;
+      Array.from(bar.children).forEach(t=>t.classList.remove('active'));
+      b.classList.add('active');
+      renderSiteTable(site, detail[site]);
+    };
+    bar.appendChild(b);
+  });
+  $('detBox').style.display='block';
+  if(sites.length){
+    curTab = sites[0];
+    renderSiteTable(sites[0], detail[sites[0]]);
+  } else {
+    $('detView').innerHTML = '<div class="empty">无数据</div>';
+  }
+}
+
+function renderSiteTable(site, d){
+  if(!d.rows.length){ $('detView').innerHTML = '<div class="empty">该工厂无匹配数据</div>'; return; }
+  let html = '<table><tr>';
+  d.headers.forEach(h=>html+=`<th>${h}</th>`);
+  html += '</tr>';
+  d.rows.forEach(r=>{
+    const warn = r['系统发票状态']==='未释放' ? ' class="warn"' : '';
+    html += `<tr${warn}>`;
+    d.headers.forEach(h=>{
+      let v = r[h];
+      if(v==null) v='';
+      if(v instanceof Date) v = fmtDate(v);
+      const isNum = typeof v === 'number';
+      let disp = isNum ? v.toLocaleString('en-US') : v;
+      if(h==='系统发票状态' && v){
+        const cls = v==='Ready to pay'?'ok':(/under review/i.test(v)?'review':(v==='未释放'?'na':''));
+        disp = cls ? `<span class="tag ${cls}">${v}</span>` : v;
+      }
+      html += `<td class="${isNum?'num':''}">${disp}</td>`;
+    });
+    html += '</tr>';
+  });
+  html += '</table>';
+  $('detView').innerHTML = html;
+}
+
+$('dlBtn').addEventListener('click', ()=>{
+  const {summary, detail} = window._data;
+  const wb = XLSX.utils.book_new();
+  const sumRows = [['Site','Inv','Inv amount','Declared value','Ready to pay','Under review','No upload']];
+  Object.keys(summary).forEach(s=>{
+    const v = summary[s];
+    sumRows.push([s, v.inv, round2(v.invAmt), round2(v.declared), round2(v.ready), round2(v.review), round2(v.noupload)||'']);
+  });
+  const ws = XLSX.utils.aoa_to_sheet(sumRows);
+  ws['!cols'] = [{wch:10},{wch:6},{wch:14},{wch:14},{wch:14},{wch:14},{wch:12}];
+  XLSX.utils.book_append_sheet(wb, ws, 'Summary');
+  Object.keys(detail).forEach(site=>{
+    const d = detail[site];
+    const aoa = [d.headers];
+    d.rows.forEach(r=>aoa.push(d.headers.map(h=>{
+      let v = r[h];
+      if(v instanceof Date) v = fmtDate(v);
+      if(typeof v === 'number') v = Math.round(v*100)/100;
+      return v;
+    })));
+    const ws2 = XLSX.utils.aoa_to_sheet(aoa);
+    ws2['!cols'] = d.headers.map(h=>({wch:Math.max(10, String(h).length*2)}));
+    XLSX.utils.book_append_sheet(wb, ws2, site.slice(0,31));
+  });
+  XLSX.writeFile(wb, 'ST发票汇总.xlsx');
+});
+function round2(n){ return Math.round(n*100)/100; }
+</script>
+</body>
+</html>
